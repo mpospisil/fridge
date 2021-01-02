@@ -4,7 +4,8 @@
              x:Class="FridgeApp.Views.SettingsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:FridgeApp.ViewModels"  
-             xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"  
+             xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"
+						 xmlns:res="clr-namespace:FridgeApp"
              x:Name="MySettingsPage">
 	<ContentPage.ToolbarItems>
 		<ToolbarItem Text="Add" Command="{Binding AddFridgeCommand}" />

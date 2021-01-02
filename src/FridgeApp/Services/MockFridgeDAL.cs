@@ -49,10 +49,20 @@ namespace FridgeApp.Services
 			return await Task.FromResult(fridges.First(f => f.FridgeId == fridgeId));
 		}
 
-		public void AddFridge(Fridge.Model.Fridge fridge)
+		public async Task AddFridge(Fridge.Model.Fridge newFridge)
 		{
-			fridges.Add(fridge);
+			fridges.Add(newFridge);
+			await Task.CompletedTask;
 		}
+
+		public async Task UpdateFridge(Fridge.Model.Fridge fridge)
+		{
+			int index = fridges.FindIndex((item) => item.FridgeId == fridge.FridgeId);
+			var fridgeToUpdate = fridges[index];
+			fridgeToUpdate.CopyFrom(fridge);
+			await Task.CompletedTask;
+		}
+
 		public void DeleteFridge(Fridge.Model.Fridge fridge)
 		{
 			int index = fridges.FindIndex((item) => item.FridgeId == fridge.FridgeId);

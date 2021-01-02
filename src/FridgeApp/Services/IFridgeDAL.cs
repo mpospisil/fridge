@@ -13,7 +13,9 @@ namespace FridgeApp.Services
 
 		Task<Fridge.Model.Fridge> GetFridgeAsync(Guid fridgeId);
 
-		void AddFridge(Fridge.Model.Fridge fridge);
+		Task AddFridge(Fridge.Model.Fridge newFridgeData);
+
+		Task UpdateFridge(Fridge.Model.Fridge modifiedFridge);
 
 		void DeleteFridge(Fridge.Model.Fridge fridge);
 	}

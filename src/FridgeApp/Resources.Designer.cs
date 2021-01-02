@@ -61,11 +61,29 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to xxxx.
+        ///   Looks up a localized string similar to Add.
         /// </summary>
-        internal static string String1 {
+        internal static string Add {
             get {
-                return ResourceManager.GetString("String1", resourceCulture);
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Fridge.
+        /// </summary>
+        internal static string NewFridge {
+            get {
+                return ResourceManager.GetString("NewFridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
     }

@@ -18,7 +18,7 @@ namespace FridgeApp.ViewModels
 	{
 		public SettingsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
-			Title = "Settings";
+			Title = Resources.Settings;
 			Fridges = new ObservableCollection<FridgeViewModel>();
 			LoadFridgesCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
@@ -82,7 +82,7 @@ namespace FridgeApp.ViewModels
 
 		private async void OnAddFridge(object obj)
 		{
-			//await Shell.Current.GoToAsync(nameof(NewItemPage));
+			await Shell.Current.GoToAsync($"{nameof(FridgePage)}?{nameof(FridgeViewModel.FridgeId)}={Guid.Empty.ToString()}");
 		}
 
 		async void OnFridgeSelected(FridgeViewModel item)

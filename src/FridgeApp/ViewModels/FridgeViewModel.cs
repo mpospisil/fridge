@@ -17,9 +17,7 @@ namespace FridgeApp.ViewModels
 	{
 		private string name;
 		private string description;
-		private Guid fridge;
-
-		private Fridge.Model.Fridge Fridge { get; set; }
+		private Guid fridgeGuid;
 
 		public FridgeViewModel() : this(null)
 		{
@@ -67,16 +65,27 @@ namespace FridgeApp.ViewModels
 		/// </summary>
 		public string FridgeId
 		{
-			get => fridge.ToString();
+			get => fridgeGuid.ToString();
 			set
 			{
 				Guid newId = Guid.Parse(value);
-				SetProperty(ref fridge, newId);
-				LoadItemId(newId);
+
+				if (newId != Guid.Empty)
+				{
+					// existing fridge
+					SetProperty(ref fridgeGuid, newId);
+					LoadItemId(newId);
+				}
+				else
+				{
+					// create temporary fridge
+					fridgeGuid = Guid.Empty;
+					Name = Resources.NewFridge;
+				}
 			}
 		}
-
-		public async void LoadItemId(Guid fridgeId)
+	
+		private async void LoadItemId(Guid fridgeId)
 		{
 			try
 			{
@@ -97,26 +106,40 @@ namespace FridgeApp.ViewModels
 			// This will pop the current page off the navigation stack
 			await Shell.Current.GoToAsync("..");
 		}
-		private void SetPropertiesInVM(Fridge.Model.Fridge fridge)
-		{
-			this.Fridge = fridge;
-			this.fridge = fridge.FridgeId;
-			this.Name = fridge.Name;
-		}
 
 		private async void OnSave()
 		{
-			//Item newItem = new Item()
-			//{
-			//	Id = Guid.NewGuid().ToString(),
-			//	Text = Text,
-			//	Description = Description
-			//};
-
-			//await DataStore.AddItemAsync(newItem);
+			if(fridgeGuid == Guid.Empty)
+			{
+				// new fridge
+				var newFridge = FridgeFromVM();
+				newFridge.FridgeId = Guid.NewGuid();
+				await FridgeDal.AddFridge(newFridge);
+			}
+			else
+			{
+				// existing fridge
+				var updatedFridge = FridgeFromVM();
+				await FridgeDal.UpdateFridge(updatedFridge);
+			}
 
 			// This will pop the current page off the navigation stack
 			await Shell.Current.GoToAsync("..");
+		}
+
+		private void SetPropertiesInVM(Fridge.Model.Fridge fridge)
+		{
+			this.fridgeGuid = fridge.FridgeId;
+			this.Name = fridge.Name;
+		}
+
+		private Fridge.Model.Fridge FridgeFromVM()
+		{
+			var fridgeDataFromVM = new Fridge.Model.Fridge();
+			fridgeDataFromVM.FridgeId = fridgeGuid;
+			fridgeDataFromVM.Name = Name;
+
+			return fridgeDataFromVM;
 		}
 	}
 }
