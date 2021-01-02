@@ -120,8 +120,17 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Fridge" xml:space="preserve">
+    <value>Fridge</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>New</value>
+  </data>
   <data name="NewFridge" xml:space="preserve">
     <value>New Fridge</value>
+  </data>
+  <data name="Partitions" xml:space="preserve">
+    <value>Partitions</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>

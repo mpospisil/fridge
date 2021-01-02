@@ -70,11 +70,38 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fridge.
+        /// </summary>
+        internal static string Fridge {
+            get {
+                return ResourceManager.GetString("Fridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New.
+        /// </summary>
+        internal static string New {
+            get {
+                return ResourceManager.GetString("New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Fridge.
         /// </summary>
         internal static string NewFridge {
             get {
                 return ResourceManager.GetString("NewFridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Partitions.
+        /// </summary>
+        internal static string Partitions {
+            get {
+                return ResourceManager.GetString("Partitions", resourceCulture);
             }
         }
         
