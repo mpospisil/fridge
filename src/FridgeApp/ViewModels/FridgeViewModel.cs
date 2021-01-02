@@ -1,7 +1,7 @@
 ﻿using FridgeApp.Services;
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace FridgeApp.ViewModels
@@ -16,8 +16,8 @@ namespace FridgeApp.ViewModels
 	public class FridgeViewModel : BaseViewModel, IFridgeViewModel
 	{
 		private string name;
-		private string description;
 		private Guid fridgeGuid;
+		private DateTime timeStamp;
 
 		public FridgeViewModel() : this(null)
 		{
@@ -30,12 +30,12 @@ namespace FridgeApp.ViewModels
 
 		public FridgeViewModel(IFridgeDAL fridgeDal, Fridge.Model.Fridge fridge) : base(fridgeDal)
 		{
+			Partitions = new ObservableCollection<PartitionViewModel>();
 			if (fridge != null)
 			{
 				SetPropertiesInVM(fridge);
 			}
-
-			Description = string.Empty;
+			
 			SaveCommand = new Command(OnSave, ValidateSave);
 			CancelCommand = new Command(OnCancel);
 			this.PropertyChanged +=
@@ -54,11 +54,13 @@ namespace FridgeApp.ViewModels
 			set => SetProperty(ref name, value);
 		}
 
-		public string Description
+		public DateTime TimeStamp
 		{
-			get => description;
-			set => SetProperty(ref description, value);
+			get => timeStamp;
+			set => SetProperty(ref timeStamp, value);
 		}
+
+		public ObservableCollection<PartitionViewModel> Partitions { get; }
 
 		/// <summary>
 		/// The unique identifier of the fridge
@@ -131,6 +133,14 @@ namespace FridgeApp.ViewModels
 		{
 			this.fridgeGuid = fridge.FridgeId;
 			this.Name = fridge.Name;
+			this.TimeStamp = fridge.TimeStamp;
+
+			Partitions.Clear();
+
+			foreach (var partition in fridge.Partitions)
+			{
+				Partitions.Add(new PartitionViewModel(FridgeDal, partition));
+			}
 		}
 
 		private Fridge.Model.Fridge FridgeFromVM()

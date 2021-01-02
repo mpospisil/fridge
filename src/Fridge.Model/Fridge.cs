@@ -15,13 +15,6 @@ namespace Fridge.Model
 			FridgeId = Guid.NewGuid();
 		}
 
-		public void CopyFrom(Fridge source)
-		{
-			this.TimeStamp = DateTime.UtcNow;
-			this.Name = source.Name;
-			this.FridgeId = source.FridgeId;
-		}
-
 		/// <summary>
 		/// The unique identifier of the fridge
 		/// </summary>

@@ -58,8 +58,8 @@ namespace FridgeApp.Services
 		public async Task UpdateFridge(Fridge.Model.Fridge fridge)
 		{
 			int index = fridges.FindIndex((item) => item.FridgeId == fridge.FridgeId);
-			var fridgeToUpdate = fridges[index];
-			fridgeToUpdate.CopyFrom(fridge);
+			fridges.RemoveAt(index);
+			fridges.Insert(index, fridge);
 			await Task.CompletedTask;
 		}
 
