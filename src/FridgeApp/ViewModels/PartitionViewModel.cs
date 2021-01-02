@@ -11,7 +11,7 @@ namespace FridgeApp.ViewModels
 		Guid PartitionId { get; set; }
 
 		void SetPropertiesInVM(Fridge.Model.Partition partition);
-		Fridge.Model.Partition FridgeFromVM();
+		Fridge.Model.Partition PartitionFromVM();
 	}
 
 	public class PartitionViewModel : BaseViewModel, IPartitionViewModel
@@ -46,6 +46,10 @@ namespace FridgeApp.ViewModels
 			set => SetProperty(ref timeStamp, value);
 		}
 
+		/// <summary>
+		/// Write data to the view model
+		/// </summary>
+		/// <param name="partition"></param>
 		public void SetPropertiesInVM(Fridge.Model.Partition partition)
 		{
 			this.PartitionId = partition.PartitionId;
@@ -53,7 +57,11 @@ namespace FridgeApp.ViewModels
 			this.TimeStamp = partition.TimeStamp;
 		}
 
-		public Fridge.Model.Partition FridgeFromVM()
+		/// <summary>
+		/// Read data from the view model
+		/// </summary>
+		/// <returns></returns>
+		public Fridge.Model.Partition PartitionFromVM()
 		{
 			var partitionDataFromVM = new Fridge.Model.Partition();
 			partitionDataFromVM.PartitionId = PartitionId;

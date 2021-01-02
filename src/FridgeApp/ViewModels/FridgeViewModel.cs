@@ -148,6 +148,12 @@ namespace FridgeApp.ViewModels
 			var fridgeDataFromVM = new Fridge.Model.Fridge();
 			fridgeDataFromVM.FridgeId = fridgeGuid;
 			fridgeDataFromVM.Name = Name;
+			fridgeDataFromVM.TimeStamp = TimeStamp;
+
+			foreach(var partitionVM in Partitions)
+			{
+				fridgeDataFromVM.Partitions.Add(partitionVM.PartitionFromVM());
+			}
 
 			return fridgeDataFromVM;
 		}
