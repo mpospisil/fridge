@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FridgeApp.Services
@@ -9,6 +10,8 @@ namespace FridgeApp.Services
 	public interface IFridgeDAL
 	{ 
 		Task<IEnumerable<Fridge.Model.Fridge>> GetFridgesAsync(bool forceRefresh = false);
+
+		Task<Fridge.Model.Fridge> GetFridgeAsync(Guid fridgeId);
 
 		void AddFridge(Fridge.Model.Fridge fridge);
 

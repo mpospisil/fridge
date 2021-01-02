@@ -1,4 +1,5 @@
 ﻿using FridgeApp.Services;
+using FridgeApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,7 +24,7 @@ namespace FridgeApp.ViewModels
 			Fridges = new ObservableCollection<FridgeViewModel>();
 			LoadFridgesCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-			//ItemTapped = new Command<Item>(OnItemSelected);
+			FridgeTapped = new Command<FridgeViewModel>(OnFridgeSelected);
 
 			AddFridgeCommand = new Command(OnAddFridge);
 		}
@@ -33,7 +34,8 @@ namespace FridgeApp.ViewModels
 		public ObservableCollection<FridgeViewModel> Fridges { get; }
 		public Command LoadFridgesCommand { get; }
 		public Command AddFridgeCommand { get; }
-		//public Command<Item> ItemTapped { get; }
+
+		public Command<FridgeViewModel> FridgeTapped { get; }
 
 		private SettingsViewModel()
 		{
@@ -76,7 +78,7 @@ namespace FridgeApp.ViewModels
 			set
 			{
 				SetProperty(ref selectedFridge, value);
-				OnItemSelected(value);
+				OnFridgeSelected(value);
 			}
 		}
 
@@ -85,13 +87,13 @@ namespace FridgeApp.ViewModels
 			//await Shell.Current.GoToAsync(nameof(NewItemPage));
 		}
 
-		async void OnItemSelected(FridgeViewModel item)
+		async void OnFridgeSelected(FridgeViewModel item)
 		{
 			if (item == null)
 				return;
 
 			// This will push the ItemDetailPage onto the navigation stack
-			//await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
+			await Shell.Current.GoToAsync($"{nameof(FridgePage)}?{nameof(FridgeViewModel.FridgeId)}={item.FridgeId}");
 		}
 	}
 }

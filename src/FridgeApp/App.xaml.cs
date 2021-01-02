@@ -20,6 +20,7 @@ namespace FridgeApp
 			builder = new ContainerBuilder();
 			builder.RegisterInstance<IFridgeDAL>(new MockFridgeDAL());
 			RegisterType<ISettingsViewModel, SettingsViewModel>();
+			RegisterType<IFridgeViewModel, FridgeViewModel>();
 			BuildContainer();
 		}
 

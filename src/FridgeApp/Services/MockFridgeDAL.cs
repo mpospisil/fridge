@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace FridgeApp.Services
 {
@@ -24,6 +25,11 @@ namespace FridgeApp.Services
 		public async Task<IEnumerable<Fridge.Model.Fridge>> GetFridgesAsync(bool forceRefresh = false)
 		{
 			return await Task.FromResult(fridges);
+		}
+
+		public async Task<Fridge.Model.Fridge> GetFridgeAsync(Guid fridgeId)
+		{
+			return await Task.FromResult(fridges.First(f => f.FridgeId == fridgeId));
 		}
 
 		public void AddFridge(Fridge.Model.Fridge fridge)
