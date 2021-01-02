@@ -15,7 +15,7 @@
 					<ColumnDefinition Width="35"></ColumnDefinition>
 				</Grid.ColumnDefinitions>
 				<Label Text="Partitions" FontSize="Medium"></Label>
-				<Button Grid.Column="1" Text="+" FontSize="Medium"></Button>
+				<Button Grid.Column="1" Text="+" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
 			</Grid>
 
 			<CollectionView x:Name="PartitionsView"
@@ -36,7 +36,6 @@
 					</DataTemplate>
 				</CollectionView.ItemTemplate>
 			</CollectionView>
-
 
 			<StackLayout Orientation="Horizontal">
 				<Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>

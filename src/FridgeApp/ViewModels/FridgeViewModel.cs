@@ -15,13 +15,15 @@ namespace FridgeApp.ViewModels
 	[QueryProperty(nameof(FridgeId), nameof(FridgeId))]
 	public class FridgeViewModel : BaseViewModel, IFridgeViewModel
 	{
+		#region Private fields
 		private string name;
 		private Guid fridgeGuid;
-		private DateTime timeStamp;
+		private DateTime timeStamp; 
+		#endregion
 
+		#region Consructors
 		public FridgeViewModel() : this(null)
 		{
-
 		}
 
 		public FridgeViewModel(IFridgeDAL fridgeDal) : this(fridgeDal, null)
@@ -35,18 +37,17 @@ namespace FridgeApp.ViewModels
 			{
 				SetPropertiesInVM(fridge);
 			}
-			
+
 			SaveCommand = new Command(OnSave, ValidateSave);
 			CancelCommand = new Command(OnCancel);
+			AddPartitionCommand = new Command(OnAddPartition);
+
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
 		}
+		#endregion
 
-		private bool ValidateSave()
-		{
-			return !String.IsNullOrWhiteSpace(Name);
-		}
-
+		#region Properties
 
 		public string Name
 		{
@@ -86,7 +87,8 @@ namespace FridgeApp.ViewModels
 				}
 			}
 		}
-	
+
+		#endregion
 		private async void LoadItemId(Guid fridgeId)
 		{
 			try
@@ -102,6 +104,15 @@ namespace FridgeApp.ViewModels
 
 		public Command SaveCommand { get; }
 		public Command CancelCommand { get; }
+
+		public Command AddPartitionCommand { get; }
+
+		private void OnAddPartition()
+		{
+			var newPartition = new Fridge.Model.Partition();
+			newPartition.Name = Resources.NewPartition;
+			Partitions.Add(new PartitionViewModel(FridgeDal, newPartition));
+		}
 
 		private async void OnCancel()
 		{
@@ -156,6 +167,11 @@ namespace FridgeApp.ViewModels
 			}
 
 			return fridgeDataFromVM;
+		}
+
+		private bool ValidateSave()
+		{
+			return !String.IsNullOrWhiteSpace(Name);
 		}
 	}
 }

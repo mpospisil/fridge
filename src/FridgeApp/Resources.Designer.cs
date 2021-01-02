@@ -97,6 +97,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Partition.
+        /// </summary>
+        internal static string NewPartition {
+            get {
+                return ResourceManager.GetString("NewPartition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Partitions.
         /// </summary>
         internal static string Partitions {
