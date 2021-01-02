@@ -85,6 +85,7 @@ namespace FridgeApp.ViewModels
 				var item = await this.FridgeDal.GetFridgeAsync(fridgeId);
 				this.Fridge = item;
 				this.Name = item.Name;
+				this.FridgeId = item.FridgeId.ToString();
 			}
 			catch (Exception)
 			{
