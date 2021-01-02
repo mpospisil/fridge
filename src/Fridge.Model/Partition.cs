@@ -12,7 +12,6 @@ namespace Fridge.Model
 		{
 			PartitionId = Guid.NewGuid(); ;
 			TimeStamp = DateTime.UtcNow;
-			Items = new List<ItemInFridge>();
 		}
 
 		/// <summary>
@@ -29,10 +28,5 @@ namespace Fridge.Model
 		/// Time when the partition in the fridge  was modified
 		/// </summary>
 		public DateTime TimeStamp { get; set; }
-
-		/// <summary>
-		/// Items in the partition
-		/// </summary>
-		public List<ItemInFridge> Items { get; set; }
 	}
 }

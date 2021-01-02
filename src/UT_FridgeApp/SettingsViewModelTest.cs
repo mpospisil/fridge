@@ -3,7 +3,6 @@ using FridgeApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
 
 namespace UT_FridgeApp
