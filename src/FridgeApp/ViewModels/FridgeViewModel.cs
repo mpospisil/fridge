@@ -34,9 +34,7 @@ namespace FridgeApp.ViewModels
 		{
 			if (fridge != null)
 			{
-				this.Fridge = fridge;
-				this.name = fridge.Name;
-				this.fridge = fridge.FridgeId;
+				SetPropertiesInVM(fridge);
 			}
 
 			Description = string.Empty;
@@ -83,9 +81,7 @@ namespace FridgeApp.ViewModels
 			try
 			{
 				var item = await this.FridgeDal.GetFridgeAsync(fridgeId);
-				this.Fridge = item;
-				this.Name = item.Name;
-				this.FridgeId = item.FridgeId.ToString();
+				SetPropertiesInVM(item);
 			}
 			catch (Exception)
 			{
@@ -100,6 +96,12 @@ namespace FridgeApp.ViewModels
 		{
 			// This will pop the current page off the navigation stack
 			await Shell.Current.GoToAsync("..");
+		}
+		private void SetPropertiesInVM(Fridge.Model.Fridge fridge)
+		{
+			this.Fridge = fridge;
+			this.fridge = fridge.FridgeId;
+			this.Name = fridge.Name;
 		}
 
 		private async void OnSave()

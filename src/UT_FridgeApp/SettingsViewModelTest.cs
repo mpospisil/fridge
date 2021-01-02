@@ -11,6 +11,7 @@ namespace UT_FridgeApp
 	[TestClass]
 	public class SettingsViewModelTest
 	{
+
 		[TestMethod]
 		public void InitViewModelTest()
 		{
