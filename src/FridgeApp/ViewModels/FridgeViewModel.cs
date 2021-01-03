@@ -3,6 +3,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace FridgeApp.ViewModels
 {
@@ -32,7 +33,7 @@ namespace FridgeApp.ViewModels
 
 		public FridgeViewModel(IFridgeDAL fridgeDal, Fridge.Model.Fridge fridge) : base(fridgeDal)
 		{
-			Partitions = new ObservableCollection<PartitionViewModel>();
+			Partitions = new ObservableCollection<IPartitionViewModel>();
 			if (fridge != null)
 			{
 				SetPropertiesInVM(fridge);
@@ -62,7 +63,7 @@ namespace FridgeApp.ViewModels
 			set => SetProperty(ref timeStamp, value);
 		}
 
-		public ObservableCollection<PartitionViewModel> Partitions { get; }
+		public ObservableCollection<IPartitionViewModel> Partitions { get; }
 
 		/// <summary>
 		/// The unique identifier of the fridge
@@ -110,14 +111,30 @@ namespace FridgeApp.ViewModels
 
 		private void OnAddPartition()
 		{
-			var newPartition = new Fridge.Model.Partition();
-			newPartition.Name = Resources.NewPartition;
-			Partitions.Add(new PartitionViewModel(FridgeDal, newPartition));
+			try
+			{
+				var newPartition = new Fridge.Model.Partition();
+				newPartition.Name = Resources.NewPartition;
+				Partitions.Add(new PartitionViewModel(FridgeDal, newPartition));
+			}
+			catch(Exception e)
+			{
+				Debug.WriteLine($"Failed to add partition {e.Message}");
+			}
 		}
 
 		private void OnDeletePartition(object obj)
 		{
-
+			try
+			{
+				IPartitionViewModel partitionToDelete = obj as IPartitionViewModel;
+				var partitionIndexToDelete = Partitions.IndexOf(partitionToDelete);
+				Partitions.RemoveAt(partitionIndexToDelete);
+			}
+			catch(Exception e)
+			{
+				Debug.WriteLine($"Failed to delete partition {e.Message}");
+			}
 		}
 
 		private async void OnCancel()
