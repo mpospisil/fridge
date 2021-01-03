@@ -158,9 +158,9 @@ namespace FridgeApp.ViewModels
 			await Shell.Current.GoToAsync("..");
 		}
 
-		private async void OnSave()
+		public async Task SaveData()
 		{
-			if(fridgeGuid == Guid.Empty)
+			if (fridgeGuid == Guid.Empty)
 			{
 				// new fridge
 				var newFridge = FridgeFromVM();
@@ -173,6 +173,11 @@ namespace FridgeApp.ViewModels
 				var updatedFridge = FridgeFromVM();
 				await FridgeDal.UpdateFridge(updatedFridge);
 			}
+		}
+
+		private async void OnSave()
+		{
+			await SaveData();
 
 			// This will pop the current page off the navigation stack
 			await Shell.Current.GoToAsync("..");
@@ -192,7 +197,7 @@ namespace FridgeApp.ViewModels
 			}
 		}
 
-		private Fridge.Model.Fridge FridgeFromVM()
+		public Fridge.Model.Fridge FridgeFromVM()
 		{
 			var fridgeDataFromVM = new Fridge.Model.Fridge();
 			fridgeDataFromVM.FridgeId = fridgeGuid;
