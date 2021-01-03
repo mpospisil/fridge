@@ -10,7 +10,6 @@ namespace FridgeApp.ViewModels
 {
 	public class BaseViewModel : INotifyPropertyChanged
 	{
-		public static IDataStore<Item> DataStore = new Services.MockDataStore();
 		bool isBusy = false;
 		protected  IFridgeDAL FridgeDal { get; private set; }
 
