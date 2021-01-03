@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FridgeApp.Services
@@ -10,8 +11,12 @@ namespace FridgeApp.Services
 	{ 
 		Task<IEnumerable<Fridge.Model.Fridge>> GetFridgesAsync(bool forceRefresh = false);
 
-		void AddFridge(Fridge.Model.Fridge fridge);
+		Task<Fridge.Model.Fridge> GetFridgeAsync(Guid fridgeId);
 
-		void DeleteFridge(Fridge.Model.Fridge fridge);
+		Task AddFridge(Fridge.Model.Fridge newFridgeData);
+
+		Task UpdateFridge(Fridge.Model.Fridge modifiedFridge);
+
+		Task DeleteFridgeAsync(Guid fridgeId);
 	}
 }

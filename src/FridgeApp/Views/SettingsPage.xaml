@@ -4,29 +4,37 @@
              x:Class="FridgeApp.Views.SettingsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:FridgeApp.ViewModels"  
-             xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"  
+             xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"
+						 xmlns:res="clr-namespace:FridgeApp"
              x:Name="MySettingsPage">
-	<ContentPage.ToolbarItems>
-		<ToolbarItem Text="Add" Command="{Binding AddFridgeCommand}" />
-	</ContentPage.ToolbarItems>
-	<!--
-      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
-      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
-    -->
-	<RefreshView x:DataType="local:SettingsViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-		<CollectionView x:Name="FridgesView"
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="Add" Command="{Binding AddFridgeCommand}" />
+  </ContentPage.ToolbarItems>
+
+  <StackLayout Spacing="3" Padding="15">
+
+    <RefreshView x:DataType="local:SettingsViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+      <CollectionView x:Name="FridgesView"
                 ItemsSource="{Binding Fridges}"
-                SelectionMode="None">
-			<CollectionView.ItemTemplate>
-				<DataTemplate>
-					<StackLayout Padding="10" x:DataType="local:FridgeViewModel">
-						<Label Text="{Binding Name}" 
+                SelectionMode="Single">
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <StackLayout Padding="10" x:DataType="local:FridgeViewModel">
+              <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
-					</StackLayout>
-				</DataTemplate>
-			</CollectionView.ItemTemplate>
-		</CollectionView>
-	</RefreshView>
+              <StackLayout.GestureRecognizers>
+                <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:SettingsViewModel}}, Path=FridgeDetailsCommand}"		
+                                CommandParameter="{Binding .}">
+                </TapGestureRecognizer>
+              </StackLayout.GestureRecognizers>
+            </StackLayout>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </RefreshView>
+  </StackLayout>
 </ContentPage>
