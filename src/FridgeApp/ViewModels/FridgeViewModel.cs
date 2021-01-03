@@ -2,8 +2,8 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Xamarin.Forms;
-using System.Linq;
 
 namespace FridgeApp.ViewModels
 {
@@ -41,8 +41,9 @@ namespace FridgeApp.ViewModels
 
 			SaveCommand = new Command(OnSave, ValidateSave);
 			CancelCommand = new Command(OnCancel);
-			AddPartitionCommand = new Command(OnAddPartition);
-			DeletePartitionCommand = new Command(OnDeletePartition);
+			AddPartitionCommand = new Command(AddPartition);
+			DeletePartitionCommand = new Command(DeletePartition);
+			DeleteFridgeCommand = new Command(OnDeleteFridge);
 
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
@@ -108,8 +109,9 @@ namespace FridgeApp.ViewModels
 		public Command CancelCommand { get; }
 		public Command AddPartitionCommand { get; }
 		public Command DeletePartitionCommand { get; }
+		public Command DeleteFridgeCommand { get; }
 
-		private void OnAddPartition()
+		public void AddPartition()
 		{
 			try
 			{
@@ -123,7 +125,20 @@ namespace FridgeApp.ViewModels
 			}
 		}
 
-		private void OnDeletePartition(object obj)
+		public async Task DeleteFridgeAsync()
+		{
+			await FridgeDal.DeleteFridgeAsync(fridgeGuid);
+		}
+
+		private async void OnDeleteFridge()
+		{
+			await DeleteFridgeAsync();
+
+			// This will pop the current page off the navigation stack
+			await Shell.Current.GoToAsync("..");
+		}
+
+		public void DeletePartition(object obj)
 		{
 			try
 			{

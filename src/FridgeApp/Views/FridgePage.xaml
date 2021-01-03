@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 						 xmlns:local="clr-namespace:FridgeApp.ViewModels"
              x:Class="FridgeApp.Views.FridgePage">
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="Delete" Command="{Binding DeleteFridgeCommand}" />
+  </ContentPage.ToolbarItems>
 
   <ContentPage.Content>
     <StackLayout Spacing="3" Padding="15">
@@ -10,12 +13,15 @@
       <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium" />
 
       <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition></ColumnDefinition>
-          <ColumnDefinition Width="35"></ColumnDefinition>
+          <ColumnDefinition Width="60"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Text="Partitions" FontSize="Medium"></Label>
-        <Button Grid.Column="1" Text="+" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
+        <Button Grid.Column="1" Text="Add" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
       </Grid>
 
       <CollectionView x:Name="PartitionsView"
@@ -30,7 +36,7 @@
               </Grid.ColumnDefinitions>
               <Entry Grid.Column="0" Text="{Binding Name, Mode=TwoWay}" 
                             Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" />
+                            FontSize="Medium" />
               <Button Grid.Column="1" Text="D" FontSize="Medium" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=DeletePartitionCommand}" CommandParameter="{Binding}">
               </Button>
             </Grid>

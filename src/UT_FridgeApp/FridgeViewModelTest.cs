@@ -13,6 +13,11 @@ namespace UT_FridgeApp
 		[TestMethod]
 		public void InitViewModelTest()
 		{
+			// create mock
+			var fridgeDal = Substitute.For<IFridgeDAL>();
+			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
+			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
+
 
 		}
 	}

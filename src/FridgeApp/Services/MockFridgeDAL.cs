@@ -63,15 +63,22 @@ namespace FridgeApp.Services
 			await Task.CompletedTask;
 		}
 
-		public void DeleteFridge(Fridge.Model.Fridge fridge)
+		public async Task DeleteFridgeAsync(Guid fridgeId)
 		{
-			int index = fridges.FindIndex((item) => item.FridgeId == fridge.FridgeId);
+			if(fridgeId == Guid.Empty)
+			{
+				return;
+			}
+
+			int index = fridges.FindIndex((item) => item.FridgeId == fridgeId);
 			if(index < -1)
 			{
-				throw new Exception($"Fridge id = '{fridge.FridgeId}' doesn't exist");
+				throw new Exception($"Fridge id = '{fridgeId}' doesn't exist");
 			}
 
 			fridges.RemoveAt(index);
+
+			await Task.CompletedTask;
 		}
 	}
 }

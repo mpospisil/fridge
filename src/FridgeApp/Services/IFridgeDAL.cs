@@ -17,6 +17,6 @@ namespace FridgeApp.Services
 
 		Task UpdateFridge(Fridge.Model.Fridge modifiedFridge);
 
-		void DeleteFridge(Fridge.Model.Fridge fridge);
+		Task DeleteFridgeAsync(Guid fridgeId);
 	}
 }

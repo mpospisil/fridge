@@ -22,8 +22,7 @@ namespace FridgeApp.ViewModels
 			Fridges = new ObservableCollection<FridgeViewModel>();
 			LoadFridgesCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-			FridgeTapped = new Command<FridgeViewModel>(OnFridgeSelected);
-
+			FridgeDetailsCommand = new Command<FridgeViewModel>(OnShowFridgeDetails);
 			AddFridgeCommand = new Command(OnAddFridge);
 		}
 
@@ -33,7 +32,7 @@ namespace FridgeApp.ViewModels
 		public Command LoadFridgesCommand { get; }
 		public Command AddFridgeCommand { get; }
 
-		public Command<FridgeViewModel> FridgeTapped { get; }
+		public Command<FridgeViewModel> FridgeDetailsCommand { get; }
 
 		private SettingsViewModel()
 		{
@@ -76,7 +75,7 @@ namespace FridgeApp.ViewModels
 			set
 			{
 				SetProperty(ref selectedFridge, value);
-				OnFridgeSelected(value);
+				OnShowFridgeDetails(value);
 			}
 		}
 
@@ -85,7 +84,7 @@ namespace FridgeApp.ViewModels
 			await Shell.Current.GoToAsync($"{nameof(FridgePage)}?{nameof(FridgeViewModel.FridgeId)}={Guid.Empty.ToString()}");
 		}
 
-		async void OnFridgeSelected(FridgeViewModel item)
+		async void OnShowFridgeDetails(FridgeViewModel item)
 		{
 			if (item == null)
 				return;
