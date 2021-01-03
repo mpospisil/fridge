@@ -41,6 +41,7 @@ namespace FridgeApp.ViewModels
 			SaveCommand = new Command(OnSave, ValidateSave);
 			CancelCommand = new Command(OnCancel);
 			AddPartitionCommand = new Command(OnAddPartition);
+			DeletePartitionCommand = new Command(OnDeletePartition);
 
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
@@ -104,14 +105,19 @@ namespace FridgeApp.ViewModels
 
 		public Command SaveCommand { get; }
 		public Command CancelCommand { get; }
-
 		public Command AddPartitionCommand { get; }
+		public Command DeletePartitionCommand { get; }
 
 		private void OnAddPartition()
 		{
 			var newPartition = new Fridge.Model.Partition();
 			newPartition.Name = Resources.NewPartition;
 			Partitions.Add(new PartitionViewModel(FridgeDal, newPartition));
+		}
+
+		private void OnDeletePartition(object obj)
+		{
+
 		}
 
 		private async void OnCancel()

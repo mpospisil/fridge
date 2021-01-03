@@ -31,7 +31,7 @@
 							<Entry Grid.Column="0" Text="{Binding Name, Mode=TwoWay}" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
-							<Button Grid.Column="1" Text="D" FontSize="Medium"></Button>
+							<!--<Button Grid.Column="1" Text="D" FontSize="Medium" Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.CalculateConnectionCmd}"></Button>-->
 						</Grid>
 					</DataTemplate>
 				</CollectionView.ItemTemplate>
