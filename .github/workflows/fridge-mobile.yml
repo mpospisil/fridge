@@ -1,11 +1,11 @@
-name: .NET
+name: Mobile
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   build:
@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Restore dependencies
-      run: nuget restore
+      run: nuget restore Fridge-mobile.sln
     - name: Build
-      run: msbuild Fridge.sln /verbosity:normal /t:Rebuild /p:Configuration=Release
+      run: msbuild Fridge-mobile.sln /verbosity:normal /t:Rebuild /p:Configuration=Release
     - name: Test
       run: dotnet test src/UT_FridgeApp/UT_FridgeApp.csproj --no-build --verbosity normal --configuration Release
