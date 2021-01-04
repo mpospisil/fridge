@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: msbuild Fridge.sln /verbosity:normal /t:Rebuild /p:Configuration=Release
     - name: Test
-      run: msbuild.exe /t:test Fridge.sln
+      run: dotnet test ~/projects/test1/test1.csproj --no-build --verbosity normal --configuration Release
