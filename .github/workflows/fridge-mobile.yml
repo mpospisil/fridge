@@ -21,7 +21,7 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Restore dependencies
-      run: nuget restore
+      run: nuget restore Fridge-mobile.sln
     - name: Build
       run: msbuild Fridge-mobile.sln /verbosity:normal /t:Rebuild /p:Configuration=Release
     - name: Test
