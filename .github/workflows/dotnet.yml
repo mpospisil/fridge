@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: msbuild Fridge.sln /verbosity:normal /t:Rebuild /p:Configuration=Release
     - name: Test
-      run: dotnet test ~/src/UT_FridgeApp/UT_FridgeApp.csproj --no-build --verbosity normal --configuration Release
+      run: dotnet test src/UT_FridgeApp/UT_FridgeApp.csproj --no-build --verbosity normal --configuration Release
