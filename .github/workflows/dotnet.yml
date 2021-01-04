@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [ main ]
 
+
 jobs:
   build:
 
@@ -18,8 +19,8 @@ jobs:
       with:
         dotnet-version: 3.1.301
     - name: Restore dependencies
-      run: dotnet restore
+      run: nuget restore
     - name: Build
-      run: dotnet build --no-restore
+      run: msbuild Fridge.sln /verbosity:normal /t:Rebuild /p:Configuration=Release
     - name: Test
       run: dotnet test --no-build --verbosity normal
