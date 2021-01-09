@@ -1,0 +1,1 @@
+﻿For the documentation, open https://dev.azure.com/ideastatica/IdeaStatiCa/_wiki/wikis/Development.Wiki/54/Normalization-of-the-line-endings-for-the-files-in-the-git-repository
