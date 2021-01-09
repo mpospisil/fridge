@@ -8,6 +8,10 @@ namespace FridgeApp.Services
 {
 	public class MockFridgeDAL : IFridgeDAL
 	{
+		public static DateTime date1 = new DateTime(2021, 1, 9);
+		public static DateTime date2 = new DateTime(2021, 1, 8);
+		public static DateTime date3 = new DateTime(2021, 1, 8);
+
 		public static readonly Guid Fridge1Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
 		public static readonly Guid Partition1Id = Guid.Parse("4257558B-BC0A-43A8-A5A3-CB36B46D0DFC");
 		public static readonly Guid Partition2Id = Guid.Parse("B01D35D0-D6FC-4A30-80B9-6EA841FBF85B");
@@ -17,11 +21,78 @@ namespace FridgeApp.Services
 		public const string Partition2Name = "Middle partition";
 		public const string Partition3Name = "Lower partition";
 
+		public static readonly Guid Fr1Part1Item1Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public const string Fr1Part1Item1Name = "Pork meat";
+
+		public static readonly Guid Fr1Part1Item2Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public const string Fr1Part1Item2Name = "Trout";
+
+		public static readonly Guid Fr1Part1Item3Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public const string Fr1Part1Item3Name = "Goulash";
+
+		public static readonly Guid Fr1Part2Item1Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public const string Fr1Part2Item1Name = "Bread";
+
 		private readonly List<Fridge.Model.Fridge> fridges;
+
+		private readonly List<Fridge.Model.ItemInFridge> items;
 
 		public MockFridgeDAL()
 		{
 			fridges = CreateMockFridges();
+			items = CreateMockItems();
+		}
+
+		public static List<Fridge.Model.ItemInFridge> CreateMockItems()
+		{
+			var items = new List<Fridge.Model.ItemInFridge>();
+
+			items.Add(new Fridge.Model.ItemInFridge()
+			{
+				ItemId = Fr1Part1Item1Id,
+				Name = Fr1Part1Item1Name,
+				FridgeId = Fridge1Id,
+				PartitionId = Partition1Id,
+				TimeStamp = date1
+			});
+
+			items.Add(new Fridge.Model.ItemInFridge()
+			{
+				ItemId = Fr1Part1Item2Id,
+				Name = Fr1Part1Item2Name,
+				FridgeId = Fridge1Id,
+				PartitionId = Partition1Id,
+				TimeStamp = date1
+			});
+
+			items.Add(new Fridge.Model.ItemInFridge()
+			{
+				ItemId = Fr1Part1Item2Id,
+				Name = Fr1Part1Item2Name,
+				FridgeId = Fridge1Id,
+				PartitionId = Partition1Id,
+				TimeStamp = date1
+			});
+
+			items.Add(new Fridge.Model.ItemInFridge()
+			{
+				ItemId = Fr1Part1Item3Id,
+				Name = Fr1Part1Item3Name,
+				FridgeId = Fridge1Id,
+				PartitionId = Partition1Id,
+				TimeStamp = date1
+			});
+
+			items.Add(new Fridge.Model.ItemInFridge()
+			{
+				ItemId = Fr1Part2Item1Id,
+				Name = Fr1Part2Item1Name,
+				FridgeId = Fridge1Id,
+				PartitionId = Partition2Id,
+				TimeStamp = date2
+			});
+
+			return items;
 		}
 
 		public static List<Fridge.Model.Fridge> CreateMockFridges()
@@ -79,6 +150,26 @@ namespace FridgeApp.Services
 			fridges.RemoveAt(index);
 
 			await Task.CompletedTask;
+		}
+
+		public Task<IEnumerable<Fridge.Model.ItemInFridge>> GetItemsAsync(bool forceRefresh = false)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Fridge.Model.ItemInFridge> AddAsync(Fridge.Model.ItemInFridge newFridgeData)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Fridge.Model.ItemInFridge> TakeOutAsync(Guid itemInFridgeId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<Fridge.Model.ItemInFridge> DeleteAsync(Guid itemInFridgeId)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
