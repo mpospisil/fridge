@@ -20,17 +20,24 @@ namespace FridgeApp.ViewModels
 
 	public class ItemViewModel : BaseViewModel, IItemViewModel
 	{
+		Guid itemId;
 		string name;
 		string fridgeName;
 		int fridgeIndex;
 		string partitionName;
 		int partitionIndex;
 
-		public ItemViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
+		public ItemViewModel() : this(null)
 		{
 		}
 
-		Guid itemId;
+		public ItemViewModel(IFridgeDAL fridgeDal) : this(fridgeDal, null)
+		{
+		}
+
+		public ItemViewModel(IFridgeDAL fridgeDal, Fridge.Model.ItemInFridge item) : base(fridgeDal)
+		{
+		}
 
 		public Guid ItemId
 		{
