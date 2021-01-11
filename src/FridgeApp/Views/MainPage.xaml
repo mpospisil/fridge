@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FridgeApp.Views.MainPage"
+             xmlns:local="clr-namespace:FridgeApp.ViewModels"
              xmlns:vm="clr-namespace:FridgeApp.ViewModels"
              Title="{Binding Title}">
 
@@ -16,6 +17,25 @@
   </ContentPage.Resources>
 
   <StackLayout Spacing="3" Padding="15">
+    <RefreshView
+      x:DataType="local:MainViewModel"
+      Command="{Binding LoadItemsCommand}"
+      IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+      <CollectionView x:Name="ItemsView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="Single">
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <StackLayout Padding="10" x:DataType="local:ItemViewModel">
+              <Label Text="{Binding Name}" 
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="16" />
+            </StackLayout>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </RefreshView>
   </StackLayout>
 
 </ContentPage>

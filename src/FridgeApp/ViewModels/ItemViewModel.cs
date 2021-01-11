@@ -26,6 +26,7 @@ namespace FridgeApp.ViewModels
 		int fridgeIndex;
 		string partitionName;
 		int partitionIndex;
+		private DateTime timeStamp;
 
 		public ItemViewModel() : this(null)
 		{
@@ -37,6 +38,10 @@ namespace FridgeApp.ViewModels
 
 		public ItemViewModel(IFridgeDAL fridgeDal, Fridge.Model.ItemInFridge item) : base(fridgeDal)
 		{
+			if (item != null)
+			{
+				SetPropertiesInVM(item);
+			}
 		}
 
 		public Guid ItemId
@@ -74,5 +79,36 @@ namespace FridgeApp.ViewModels
 			get => partitionIndex;
 			set => SetProperty(ref partitionIndex, value);
 		}
+		public DateTime TimeStamp
+		{
+			get => timeStamp;
+			set => SetProperty(ref timeStamp, value);
+		}
+
+
+		private void SetPropertiesInVM(Fridge.Model.ItemInFridge item)
+		{
+			this.itemId = item.ItemId;
+			this.Name = item.Name;
+			this.TimeStamp = item.TimeStamp;
+
+
+		}
+
+		public Fridge.Model.ItemInFridge FridgeFromVM()
+		{
+			var fridgeDataFromVM = new Fridge.Model.ItemInFridge();
+			//fridgeDataFromVM.FridgeId = fridgeGuid;
+			//fridgeDataFromVM.Name = Name;
+			//fridgeDataFromVM.TimeStamp = TimeStamp;
+
+			//foreach (var partitionVM in Partitions)
+			//{
+			//	fridgeDataFromVM.Partitions.Add(partitionVM.PartitionFromVM());
+			//}
+
+			return fridgeDataFromVM;
+		}
+
 	}
 }

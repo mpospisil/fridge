@@ -43,8 +43,8 @@ namespace FridgeApp.ViewModels
 				var items = await FridgeDal.GetItemsAsync(true);
 				foreach (var item in items)
 				{
-					var fridgeVM = new ItemViewModel(FridgeDal, item);
-					Items.Add(fridgeVM);
+					var itemVM = new ItemViewModel(FridgeDal, item);
+					Items.Add(itemVM);
 				}
 			}
 			catch (Exception ex)

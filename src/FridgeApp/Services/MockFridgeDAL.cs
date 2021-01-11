@@ -21,18 +21,17 @@ namespace FridgeApp.Services
 		public const string Partition2Name = "Middle partition";
 		public const string Partition3Name = "Lower partition";
 
-		public static readonly Guid Fr1Part1Item1Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public static readonly Guid Fr1Part1Item1Id = Guid.Parse("59C7EDD9-E451-4D2C-852E-63A101241CBA");
 		public const string Fr1Part1Item1Name = "Pork meat";
 
-		public static readonly Guid Fr1Part1Item2Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public static readonly Guid Fr1Part1Item2Id = Guid.Parse("12E8F688-E710-4DE4-90A7-1D407D4975FC");
 		public const string Fr1Part1Item2Name = "Trout";
 
-		public static readonly Guid Fr1Part1Item3Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public static readonly Guid Fr1Part1Item3Id = Guid.Parse("1F7BB9D0-295E-4F3A-A268-DA35CD1DF5F6");
 		public const string Fr1Part1Item3Name = "Goulash";
 
-		public static readonly Guid Fr1Part2Item1Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public static readonly Guid Fr1Part2Item1Id = Guid.Parse("33C431C6-F838-4964-9585-A73039741D3D");
 		public const string Fr1Part2Item1Name = "Bread";
-
 		private readonly List<Fridge.Model.Fridge> fridges;
 
 		private readonly List<Fridge.Model.ItemInFridge> items;
@@ -62,16 +61,7 @@ namespace FridgeApp.Services
 				Name = Fr1Part1Item2Name,
 				FridgeId = Fridge1Id,
 				PartitionId = Partition1Id,
-				TimeStamp = date1
-			});
-
-			items.Add(new Fridge.Model.ItemInFridge()
-			{
-				ItemId = Fr1Part1Item2Id,
-				Name = Fr1Part1Item2Name,
-				FridgeId = Fridge1Id,
-				PartitionId = Partition1Id,
-				TimeStamp = date1
+				TimeStamp = date2
 			});
 
 			items.Add(new Fridge.Model.ItemInFridge()
@@ -89,7 +79,7 @@ namespace FridgeApp.Services
 				Name = Fr1Part2Item1Name,
 				FridgeId = Fridge1Id,
 				PartitionId = Partition2Id,
-				TimeStamp = date2
+				TimeStamp = date3
 			});
 
 			return items;
@@ -152,9 +142,9 @@ namespace FridgeApp.Services
 			await Task.CompletedTask;
 		}
 
-		public Task<IEnumerable<Fridge.Model.ItemInFridge>> GetItemsAsync(bool forceRefresh = false)
+		public async Task<IEnumerable<Fridge.Model.ItemInFridge>> GetItemsAsync(bool forceRefresh = false)
 		{
-			throw new NotImplementedException();
+			return await Task.FromResult(items); 
 		}
 
 		public Task<Fridge.Model.ItemInFridge> AddAsync(Fridge.Model.ItemInFridge newFridgeData)
