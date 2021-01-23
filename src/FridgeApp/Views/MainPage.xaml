@@ -16,26 +16,39 @@
     </ResourceDictionary>
   </ContentPage.Resources>
 
-  <StackLayout Spacing="3" Padding="15">
-    <RefreshView
-      x:DataType="local:MainViewModel"
-      Command="{Binding LoadItemsCommand}"
-      IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-      <CollectionView x:Name="ItemsView"
-                ItemsSource="{Binding Items}"
-                SelectionMode="Single">
+  <StackLayout  Spacing="3" Padding="15">
+
+    <RefreshView x:DataType="local:MainViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+      <CollectionView x:Name="FridgesView"
+                ItemsSource="{Binding Fridges}"
+                SelectionMode="None">
         <CollectionView.ItemTemplate>
           <DataTemplate>
-            <StackLayout Padding="10" x:DataType="local:ItemViewModel">
+            <StackLayout Padding="10" x:DataType="local:FridgeViewModel">
               <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
+
+              <CollectionView ItemsSource="{Binding Partitions}">
+                <CollectionView.ItemTemplate>
+                  <DataTemplate>
+                    <StackLayout x:DataType="local:PartitionViewModel">
+                      <Label Text="{Binding Name}" 
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="16" />
+                    </StackLayout>
+                  </DataTemplate>
+                </CollectionView.ItemTemplate>
+              </CollectionView>
+
             </StackLayout>
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
     </RefreshView>
+
   </StackLayout>
 
 </ContentPage>
