@@ -21,7 +21,8 @@
     <RefreshView x:DataType="local:MainViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
       <CollectionView x:Name="FridgesView"
                 ItemsSource="{Binding Fridges}"
-                SelectionMode="None">
+                ItemsLayout="VerticalList"
+                      >
         <CollectionView.ItemTemplate>
           <DataTemplate>
             <StackLayout Padding="10" x:DataType="local:FridgeViewModel">
@@ -30,7 +31,9 @@
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
 
-              <CollectionView ItemsSource="{Binding Partitions}">
+              <CollectionView
+                ItemsSource="{Binding Partitions}"
+                ItemsLayout="HorizontalList">
                 <CollectionView.ItemTemplate>
                   <DataTemplate>
                     <StackLayout x:DataType="local:PartitionViewModel">
