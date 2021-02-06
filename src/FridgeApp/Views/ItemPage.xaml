@@ -1,12 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:res="clr-namespace:FridgeApp"
              x:Class="FridgeApp.Views.ItemPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+  <ContentPage.ToolbarItems>
+  </ContentPage.ToolbarItems>
+
+  <ContentPage.Content>
+    <StackLayout>
+      <Label Text="Name" FontSize="Medium" />
+      <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium" />
+      <CollectionView>
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <Grid></Grid>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+      <StackLayout Orientation="Horizontal">
+        <Button Text="{x:Static res:Resources.Cancel}" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+        <Button Text="{x:Static res:Resources.Save}" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+      </StackLayout>
+    </StackLayout>
+  </ContentPage.Content>
 </ContentPage>
