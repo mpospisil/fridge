@@ -31,7 +31,7 @@
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
 
-              <StackLayout BackgroundColor="Blue" HorizontalOptions="FillAndExpand" HeightRequest="50">
+              <StackLayout BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" HeightRequest="50">
               <CollectionView
                 ItemsSource="{Binding Partitions}"
                 ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="White">
@@ -41,7 +41,7 @@
                       <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" Margin="3"/>
+                            FontSize="16" Margin="3" VerticalTextAlignment="Center"/>
                     </Grid>
                   </DataTemplate>
                 </CollectionView.ItemTemplate>
