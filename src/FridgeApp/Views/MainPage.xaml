@@ -25,27 +25,32 @@
                       >
         <CollectionView.ItemTemplate>
           <DataTemplate>
-            <StackLayout Padding="10" x:DataType="local:FridgeViewModel">
+            <StackLayout Padding="10" x:DataType="local:FridgeViewModel" >
               <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
 
+              <StackLayout BackgroundColor="Blue" HorizontalOptions="FillAndExpand" HeightRequest="60">
               <CollectionView
                 ItemsSource="{Binding Partitions}"
-                ItemsLayout="HorizontalList">
+                ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="LightGray">
                 <CollectionView.ItemTemplate>
                   <DataTemplate>
-                    <StackLayout x:DataType="local:PartitionViewModel">
+                      <Grid x:DataType="local:PartitionViewModel" BackgroundColor="LightGreen" Margin="2" Padding="2">
                       <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
-                    </StackLayout>
+                    </Grid>
                   </DataTemplate>
                 </CollectionView.ItemTemplate>
               </CollectionView>
+              </StackLayout>
 
+              <StackLayout>
+                <Label>Items</Label>
+              </StackLayout>
             </StackLayout>
           </DataTemplate>
         </CollectionView.ItemTemplate>
