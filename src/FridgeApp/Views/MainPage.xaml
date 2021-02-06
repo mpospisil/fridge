@@ -4,11 +4,12 @@
              x:Class="FridgeApp.Views.MainPage"
              xmlns:local="clr-namespace:FridgeApp.ViewModels"
              xmlns:vm="clr-namespace:FridgeApp.ViewModels"
+             xmlns:res="clr-namespace:FridgeApp"
              Title="{Binding Title}">
 
-  <!--<ContentPage.BindingContext>
-    <vm:AboutViewModel />
-  </ContentPage.BindingContext>-->
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="{x:Static res:Resources.AddItem}" Command="{Binding AddItemCommand}" />
+  </ContentPage.ToolbarItems>
 
   <ContentPage.Resources>
     <ResourceDictionary>

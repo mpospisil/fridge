@@ -9,6 +9,7 @@ namespace FridgeApp
 		{
 			InitializeComponent();
 			Routing.RegisterRoute(nameof(FridgePage), typeof(FridgePage));
+			Routing.RegisterRoute(nameof(ItemPage), typeof(ItemPage));
 		}
 
 		//private async void OnMenuItemClicked(object sender, EventArgs e)

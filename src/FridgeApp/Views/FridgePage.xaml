@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-						 xmlns:local="clr-namespace:FridgeApp.ViewModels"
+             xmlns:local="clr-namespace:FridgeApp.ViewModels"
+             xmlns:res="clr-namespace:FridgeApp"
              x:Class="FridgeApp.Views.FridgePage">
+  
   <ContentPage.ToolbarItems>
-    <ToolbarItem Text="Delete" Command="{Binding DeleteFridgeCommand}" />
+    <ToolbarItem Text="{x:Static res:Resources.Delete}" Command="{Binding DeleteFridgeCommand}" />
   </ContentPage.ToolbarItems>
 
   <ContentPage.Content>
@@ -21,7 +23,7 @@
           <ColumnDefinition Width="60"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Text="Partitions" FontSize="Medium"></Label>
-        <Button Grid.Column="1" Text="Add" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
+        <Button Grid.Column="1" Text="{x:Static res:Resources.Add}" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
       </Grid>
 
       <CollectionView x:Name="PartitionsView"
@@ -45,8 +47,8 @@
       </CollectionView>
 
       <StackLayout Orientation="Horizontal">
-        <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
-        <Button Text="Save" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+        <Button Text="{x:Static res:Resources.Cancel}" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+        <Button Text="{x:Static res:Resources.Save}" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
       </StackLayout>
     </StackLayout>
   </ContentPage.Content>

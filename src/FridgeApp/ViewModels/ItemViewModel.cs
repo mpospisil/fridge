@@ -5,7 +5,7 @@ namespace FridgeApp.ViewModels
 {
 	public interface IItemViewModel
 	{
-		Guid ItemId { get; }
+		string ItemId { get; }
 
 		string Name { get; }
 
@@ -20,7 +20,7 @@ namespace FridgeApp.ViewModels
 
 	public class ItemViewModel : BaseViewModel, IItemViewModel
 	{
-		Guid itemId;
+		string itemId;
 		string name;
 		string fridgeName;
 		int fridgeIndex;
@@ -44,7 +44,7 @@ namespace FridgeApp.ViewModels
 			}
 		}
 
-		public Guid ItemId
+		public string ItemId
 		{
 			get => itemId;
 			set => SetProperty(ref itemId, value);
@@ -88,7 +88,7 @@ namespace FridgeApp.ViewModels
 
 		private void SetPropertiesInVM(Fridge.Model.ItemInFridge item)
 		{
-			this.itemId = item.ItemId;
+			this.itemId = item.ItemId.ToString();
 			this.Name = item.Name;
 			this.TimeStamp = item.TimeStamp;
 

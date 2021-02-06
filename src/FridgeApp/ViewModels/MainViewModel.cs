@@ -1,4 +1,5 @@
 ﻿using FridgeApp.Services;
+using FridgeApp.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -27,6 +28,7 @@ namespace FridgeApp.ViewModels
 			Fridges = new ObservableCollection<IFridgeViewModel>();
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 			LoadFridgesCommand = new Command(async () => await ExecuteLoadFridges());
+			AddItemCommand = new Command(OnAddItem);
 		}
 
 		/// <summary>
@@ -42,6 +44,8 @@ namespace FridgeApp.ViewModels
 		public Command LoadItemsCommand { get; private set; }
 
 		public Command LoadFridgesCommand { get; private set; }
+
+		public Command AddItemCommand { get; }
 
 		public void OnAppearing()
 		{
@@ -102,6 +106,11 @@ namespace FridgeApp.ViewModels
 			{
 				IsBusy = false;
 			}
+		}
+
+		private async void OnAddItem(object obj)
+		{
+			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemId)}={Guid.Empty.ToString()}");
 		}
 	}
 }

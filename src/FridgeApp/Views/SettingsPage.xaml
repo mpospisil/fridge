@@ -7,6 +7,7 @@
              xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"
              xmlns:res="clr-namespace:FridgeApp"
              x:Name="MySettingsPage">
+  
   <ContentPage.ToolbarItems>
     <ToolbarItem Text="{x:Static res:Resources.Add}" Command="{Binding AddFridgeCommand}" />
   </ContentPage.ToolbarItems>
