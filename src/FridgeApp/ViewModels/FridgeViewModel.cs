@@ -212,7 +212,7 @@ namespace FridgeApp.ViewModels
 
 		private async void OnAddItem(object obj)
 		{
-			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.PartitionId)}={SelectedPartition.PartitionId.ToString()}");
+			await Shell.Current.GoToAsync($"{nameof(NewItemPage)}?{nameof(ItemViewModel.PartitionId)}={SelectedPartition.PartitionId.ToString()}");
 		}
 
 		private void SetPropertiesInVM(Fridge.Model.Fridge fridge)
