@@ -7,6 +7,8 @@ namespace FridgeApp.ViewModels
 	{
 		string ItemId { get; }
 
+		string PartitionId { get; }
+
 		string Name { get; }
 
 		string FridgeName { get; }
@@ -21,6 +23,7 @@ namespace FridgeApp.ViewModels
 	public class ItemViewModel : BaseViewModel, IItemViewModel
 	{
 		string itemId;
+		string partitionId;
 		string name;
 		string fridgeName;
 		int fridgeIndex;
@@ -48,6 +51,12 @@ namespace FridgeApp.ViewModels
 		{
 			get => itemId;
 			set => SetProperty(ref itemId, value);
+		}
+
+		public string PartitionId
+		{
+			get => partitionId;
+			set => SetProperty(ref partitionId, value);
 		}
 
 		public string Name
