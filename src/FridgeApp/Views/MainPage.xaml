@@ -7,10 +7,6 @@
              xmlns:res="clr-namespace:FridgeApp"
              Title="{Binding Title}">
 
-  <ContentPage.ToolbarItems>
-    <ToolbarItem Text="{x:Static res:Resources.AddItem}" Command="{Binding AddItemCommand}" />
-  </ContentPage.ToolbarItems>
-
   <ContentPage.Resources>
     <ResourceDictionary>
 
@@ -27,10 +23,18 @@
         <CollectionView.ItemTemplate>
           <DataTemplate>
             <StackLayout Padding="10" x:DataType="local:FridgeViewModel" >
-              <Label Text="{Binding Name}" 
-                            LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" />
+
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition></ColumnDefinition>
+                  <ColumnDefinition Width="100"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Text="{Binding Name}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" />
+                <Button Grid.Column="1" Text="{x:Static res:Resources.AddItem}" Command="{Binding AddItemCommand}"></Button>
+              </Grid>
 
               <StackLayout BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" HeightRequest="50">
               <CollectionView
@@ -38,6 +42,10 @@
                 ItemsSource="{Binding Partitions}"
                 SelectedItem="{Binding SelectedPartition}"
                 ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="White">
+                <CollectionView.Header>
+                    <Grid>
+</Grid>
+                </CollectionView.Header>
                 <CollectionView.ItemTemplate>
                   <DataTemplate>
                       <Grid x:DataType="local:PartitionViewModel" Margin="2">

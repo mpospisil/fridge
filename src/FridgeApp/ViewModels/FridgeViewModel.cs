@@ -1,4 +1,5 @@
 ﻿using FridgeApp.Services;
+using FridgeApp.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -48,6 +49,7 @@ namespace FridgeApp.ViewModels
 			AddPartitionCommand = new Command(AddPartition);
 			DeletePartitionCommand = new Command(DeletePartition);
 			DeleteFridgeCommand = new Command(OnDeleteFridge);
+			AddItemCommand = new Command(OnAddItem, CanAddItem);
 
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
@@ -105,6 +107,7 @@ namespace FridgeApp.ViewModels
 			{
 				SetProperty(ref selectedPartition, value);
 				value?.LoadItemsCommand?.Execute(null);
+				AddItemCommand.ChangeCanExecute();
 			}
 		}
 
@@ -127,6 +130,8 @@ namespace FridgeApp.ViewModels
 		public Command AddPartitionCommand { get; }
 		public Command DeletePartitionCommand { get; }
 		public Command DeleteFridgeCommand { get; }
+
+		public Command AddItemCommand { get; }
 
 		public void AddPartition()
 		{
@@ -198,6 +203,16 @@ namespace FridgeApp.ViewModels
 
 			// This will pop the current page off the navigation stack
 			await Shell.Current.GoToAsync("..");
+		}
+
+		private bool CanAddItem(object obj)
+		{
+			return SelectedPartition != null;
+		}
+
+		private async void OnAddItem(object obj)
+		{
+			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemId)}={Guid.Empty.ToString()}");
 		}
 
 		private void SetPropertiesInVM(Fridge.Model.Fridge fridge)
