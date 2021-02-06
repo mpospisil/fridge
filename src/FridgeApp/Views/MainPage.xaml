@@ -51,8 +51,8 @@
               </StackLayout>
 
               <StackLayout>
-                <Label>Selected partition</Label>
-                <CollectionView x:Name="SelectedPartitionView">
+                <Label Text="{Binding SelectedPartition.Name}"/>
+                <CollectionView ItemsSource="{Binding SelectedPartition.Items}" x:Name="SelectedPartitionView">
                   <CollectionView.ItemTemplate>
                     <DataTemplate>
                       <Grid x:DataType="local:PartitionViewModel" Margin="2">

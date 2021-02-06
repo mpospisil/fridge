@@ -104,6 +104,7 @@ namespace FridgeApp.ViewModels
 			set
 			{
 				SetProperty(ref selectedPartition, value);
+				value?.LoadItemsCommand?.Execute(null);
 			}
 		}
 

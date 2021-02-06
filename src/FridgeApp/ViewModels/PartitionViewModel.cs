@@ -16,8 +16,11 @@ namespace FridgeApp.ViewModels
 
 		Guid PartitionId { get; set; }
 
+		ObservableCollection<IItemViewModel> Items { get; }
+
 		void SetPropertiesInVM(Fridge.Model.Partition partition);
 		Fridge.Model.Partition PartitionFromVM();
+		Command LoadItemsCommand { get; }
 	}
 
 	public class PartitionViewModel : BaseViewModel, IPartitionViewModel
