@@ -31,17 +31,17 @@
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
 
-              <StackLayout BackgroundColor="Blue" HorizontalOptions="FillAndExpand" HeightRequest="60">
+              <StackLayout BackgroundColor="Blue" HorizontalOptions="FillAndExpand" HeightRequest="50">
               <CollectionView
                 ItemsSource="{Binding Partitions}"
-                ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="LightGray">
+                ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="White">
                 <CollectionView.ItemTemplate>
                   <DataTemplate>
-                      <Grid x:DataType="local:PartitionViewModel" BackgroundColor="LightGreen" Margin="2" Padding="2">
+                      <Grid x:DataType="local:PartitionViewModel" Margin="2">
                       <Label Text="{Binding Name}" 
-                            LineBreakMode="NoWrap" 
+                            LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" />
+                            FontSize="16" Margin="3"/>
                     </Grid>
                   </DataTemplate>
                 </CollectionView.ItemTemplate>
