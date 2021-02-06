@@ -51,11 +51,10 @@
               </StackLayout>
 
               <StackLayout>
-                <Label Text="{Binding SelectedPartition.Name}"/>
-                <CollectionView ItemsSource="{Binding SelectedPartition.Items}" x:Name="SelectedPartitionView">
+                <CollectionView ItemsSource="{Binding SelectedPartition.Items}" SelectionMode="Single" x:Name="SelectedPartitionView">
                   <CollectionView.ItemTemplate>
                     <DataTemplate>
-                      <Grid x:DataType="local:PartitionViewModel" Margin="2">
+                      <Grid x:DataType="local:ItemViewModel" Margin="2">
                         <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
