@@ -15,6 +15,9 @@ namespace FridgeApp.ViewModels
 		Command LoadItemsCommand { get; }
 	}
 
+	/// <summary>
+	/// The view model for the main screen
+	/// </summary>
 	public class MainViewModel : BaseViewModel, IMainViewModel
 	{
 		
@@ -26,8 +29,14 @@ namespace FridgeApp.ViewModels
 			LoadFridgesCommand = new Command(async () => await ExecuteLoadFridges());
 		}
 
+		/// <summary>
+		/// All fridges for the user
+		/// </summary>
 		public ObservableCollection<IItemViewModel> Items { get; private set; }
 
+		/// <summary>
+		/// All items for the user
+		/// </summary>
 		public ObservableCollection<IFridgeViewModel> Fridges { get; private set; }
 
 		public Command LoadItemsCommand { get; private set; }
@@ -39,6 +48,10 @@ namespace FridgeApp.ViewModels
 			IsBusy = true;
 		}
 
+		/// <summary>
+		/// Get all items and store them in the collection Items
+		/// </summary>
+		/// <returns></returns>
 		async Task ExecuteLoadItemsCommand()
 		{
 			IsBusy = true;
@@ -63,6 +76,10 @@ namespace FridgeApp.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Get all fridges and store them to the collection Fridges 
+		/// </summary>
+		/// <returns></returns>
 		async Task ExecuteLoadFridges()
 		{
 			IsBusy = true;

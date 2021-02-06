@@ -7,6 +7,9 @@ using Xamarin.Forms;
 
 namespace FridgeApp.ViewModels
 {
+	/// <summary>
+	/// The view model model for a fridge
+	/// </summary>
 	public interface IFridgeViewModel
 	{
 		string Name { get; set; }
@@ -19,7 +22,8 @@ namespace FridgeApp.ViewModels
 		#region Private fields
 		private string name;
 		private Guid fridgeGuid;
-		private DateTime timeStamp; 
+		private DateTime timeStamp;
+		private IPartitionViewModel selectedPartition;
 		#endregion
 
 		#region Consructors
@@ -91,6 +95,18 @@ namespace FridgeApp.ViewModels
 			}
 		}
 
+		/// <summary>
+		/// Selected partition in the fridge
+		/// </summary>
+		public IPartitionViewModel SelectedPartition
+		{
+			get => selectedPartition;
+			set
+			{
+				SetProperty(ref selectedPartition, value);
+			}
+		}
+
 		#endregion
 		private async void LoadItemId(Guid fridgeId)
 		{
@@ -119,7 +135,7 @@ namespace FridgeApp.ViewModels
 				newPartition.Name = Resources.NewPartition;
 				Partitions.Add(new PartitionViewModel(FridgeDal, newPartition));
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				Debug.WriteLine($"Failed to add partition {e.Message}");
 			}
@@ -146,7 +162,7 @@ namespace FridgeApp.ViewModels
 				var partitionIndexToDelete = Partitions.IndexOf(partitionToDelete);
 				Partitions.RemoveAt(partitionIndexToDelete);
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				Debug.WriteLine($"Failed to delete partition {e.Message}");
 			}
@@ -204,7 +220,7 @@ namespace FridgeApp.ViewModels
 			fridgeDataFromVM.Name = Name;
 			fridgeDataFromVM.TimeStamp = TimeStamp;
 
-			foreach(var partitionVM in Partitions)
+			foreach (var partitionVM in Partitions)
 			{
 				fridgeDataFromVM.Partitions.Add(partitionVM.PartitionFromVM());
 			}

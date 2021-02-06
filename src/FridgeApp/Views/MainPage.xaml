@@ -33,7 +33,9 @@
 
               <StackLayout BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" HeightRequest="50">
               <CollectionView
+                x:Name="PartitionsView"
                 ItemsSource="{Binding Partitions}"
+                SelectedItem="{Binding SelectedPartition}"
                 ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="White">
                 <CollectionView.ItemTemplate>
                   <DataTemplate>
@@ -49,7 +51,19 @@
               </StackLayout>
 
               <StackLayout>
-                <Label>Items</Label>
+                <Label>Selected partition</Label>
+                <CollectionView x:Name="SelectedPartitionView">
+                  <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                      <Grid x:DataType="local:PartitionViewModel" Margin="2">
+                        <Label Text="{Binding Name}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="16" Margin="3" VerticalTextAlignment="Center"/>
+                      </Grid>
+                    </DataTemplate>
+                  </CollectionView.ItemTemplate>
+                </CollectionView>
               </StackLayout>
             </StackLayout>
           </DataTemplate>
