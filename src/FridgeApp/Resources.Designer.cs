@@ -79,6 +79,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add new item.
+        /// </summary>
+        public static string AddNewItem {
+            get {
+                return ResourceManager.GetString("AddNewItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         public static string Cancel {
