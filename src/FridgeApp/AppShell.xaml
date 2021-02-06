@@ -2,6 +2,7 @@
 <Shell xmlns="http://xamarin.com/schemas/2014/forms" 
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:FridgeApp.Views"
+       xmlns:res="clr-namespace:FridgeApp"
        Title="FridgeApp"
        x:Class="FridgeApp.AppShell">
 
@@ -81,10 +82,10 @@
     -->
 
   <ShellContent x:Name="mainPage"
-                  Title="Fridges"
+                  Title="{x:Static res:Resources.Fridges}"
                   ContentTemplate="{DataTemplate local:MainPage}" />
 
-  <FlyoutItem Title="Settings" Icon="icon_about.png">
+  <FlyoutItem Title="{x:Static res:Resources.Settings}" Icon="setup.png">
     <ShellContent Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
   </FlyoutItem>
 

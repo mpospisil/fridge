@@ -5,10 +5,10 @@
              Title="{Binding Title}"
              xmlns:local="clr-namespace:FridgeApp.ViewModels"  
              xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"
-						 xmlns:res="clr-namespace:FridgeApp"
+             xmlns:res="clr-namespace:FridgeApp"
              x:Name="MySettingsPage">
   <ContentPage.ToolbarItems>
-    <ToolbarItem Text="Add" Command="{Binding AddFridgeCommand}" />
+    <ToolbarItem Text="{x:Static res:Resources.Add}" Command="{Binding AddFridgeCommand}" />
   </ContentPage.ToolbarItems>
 
   <StackLayout Spacing="3" Padding="15">
