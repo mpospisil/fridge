@@ -1,5 +1,6 @@
 ﻿using FridgeApp.Services;
 using System;
+using Xamarin.Forms;
 
 namespace FridgeApp.ViewModels
 {
@@ -20,6 +21,7 @@ namespace FridgeApp.ViewModels
 		int PartitionIndex { get; }
 	}
 
+	[QueryProperty(nameof(PartitionId), nameof(PartitionId))]
 	public class ItemViewModel : BaseViewModel, IItemViewModel
 	{
 		string itemId;
@@ -56,7 +58,10 @@ namespace FridgeApp.ViewModels
 		public string PartitionId
 		{
 			get => partitionId;
-			set => SetProperty(ref partitionId, value);
+			set
+			{
+				SetProperty(ref partitionId, value);
+			}
 		}
 
 		public string Name

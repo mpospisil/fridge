@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FridgeApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,12 @@ namespace FridgeApp.Views
 		public NewItemPage()
 		{
 			InitializeComponent();
+			BindingContext = DependencyService.Resolve<IItemViewModel>();
+		}
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
 		}
 	}
 }

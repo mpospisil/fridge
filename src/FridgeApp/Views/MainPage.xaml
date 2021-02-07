@@ -73,6 +73,7 @@
                   </CollectionView.ItemTemplate>
                 </CollectionView>
               </StackLayout>
+
             </StackLayout>
           </DataTemplate>
         </CollectionView.ItemTemplate>
