@@ -176,5 +176,14 @@ namespace FridgeApp {
                 return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Take out.
+        /// </summary>
+        public static string TakeOut {
+            get {
+                return ResourceManager.GetString("TakeOut", resourceCulture);
+            }
+        }
     }
 }

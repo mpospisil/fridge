@@ -22,8 +22,9 @@ namespace FridgeApp.ViewModels
 		int PartitionIndex { get; }
 	}
 
+	[QueryProperty(nameof(ItemId), nameof(ItemId))]
+	[QueryProperty(nameof(FridgeId), nameof(FridgeId))]
 	[QueryProperty(nameof(PartitionId), nameof(PartitionId))]
-	[QueryProperty("FridgeId", "FridgeId")]
 	public class ItemViewModel : BaseViewModel, IItemViewModel
 	{
 		string itemId;

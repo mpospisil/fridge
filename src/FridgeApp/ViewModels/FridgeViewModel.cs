@@ -25,6 +25,7 @@ namespace FridgeApp.ViewModels
 		private Guid fridgeGuid;
 		private DateTime timeStamp;
 		private IPartitionViewModel selectedPartition;
+		private IItemViewModel selectedItem;
 		#endregion
 
 		#region Consructors
@@ -50,6 +51,9 @@ namespace FridgeApp.ViewModels
 			DeletePartitionCommand = new Command(DeletePartition);
 			DeleteFridgeCommand = new Command(OnDeleteFridge);
 			AddItemCommand = new Command(OnAddItem, CanAddItem);
+			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
+			TakeOutCommand = new Command(OnTakeOutItem, IsItemSelected);
+			SelectItemCommand = new Command(OnSelectItem);
 
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
@@ -111,6 +115,17 @@ namespace FridgeApp.ViewModels
 			}
 		}
 
+		public IItemViewModel SelectedItem
+		{
+			get => selectedItem;
+			set
+			{
+				SetProperty(ref selectedItem, value);
+				ShowItemDetailsCommand.ChangeCanExecute();
+				TakeOutCommand.ChangeCanExecute();
+			}
+		}
+
 		#endregion
 		private async void LoadItemId(Guid fridgeId)
 		{
@@ -130,8 +145,10 @@ namespace FridgeApp.ViewModels
 		public Command AddPartitionCommand { get; }
 		public Command DeletePartitionCommand { get; }
 		public Command DeleteFridgeCommand { get; }
-
 		public Command AddItemCommand { get; }
+		public Command ShowItemDetailsCommand { get; }
+		public Command TakeOutCommand { get; }
+		public Command SelectItemCommand { get; }
 
 		public void AddPartition()
 		{
@@ -212,7 +229,31 @@ namespace FridgeApp.ViewModels
 
 		private async void OnAddItem(object obj)
 		{
-			await Shell.Current.GoToAsync($"{nameof(NewItemPage)}?{nameof(ItemViewModel.PartitionId)}={SelectedPartition.PartitionId.ToString()}&{nameof(ItemViewModel.FridgeId)}={FridgeId.ToString()}");
+			await Shell.Current.GoToAsync($"{nameof(NewItemPage)}?{nameof(ItemViewModel.ItemId)}={Guid.Empty.ToString()}&{nameof(ItemViewModel.FridgeId)}={FridgeId.ToString()}&{nameof(ItemViewModel.PartitionId)}={SelectedPartition.PartitionId.ToString()}");
+		}
+
+		private void OnShowItemDetails(object obj)
+		{
+
+		}
+
+		private async void OnTakeOutItem(object obj)
+		{
+			// ask user if he really wants to delete the selected item from the fridge
+			//var answer = await DisplayAlert("Question?", "Would you like to play a game", "Yes", "No");
+
+			//FridgeDal.
+
+		}
+
+		private void OnSelectItem(object obj)
+		{
+			SelectedItem = obj as IItemViewModel;
+		}
+
+		private bool IsItemSelected(object obj)
+		{
+			return SelectedItem != null;
 		}
 
 		private void SetPropertiesInVM(Fridge.Model.Fridge fridge)

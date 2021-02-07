@@ -31,9 +31,11 @@
                 <Grid.ColumnDefinitions>
                   <ColumnDefinition></ColumnDefinition>
                   <ColumnDefinition Width="100"></ColumnDefinition>
+                  <ColumnDefinition Width="60"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Text="{Binding Name}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="16" />
-                <Button Grid.Column="1" Text="{x:Static res:Resources.AddItem}" Command="{Binding AddItemCommand}"></Button>
+                <Button Grid.Column="1" Text="{x:Static res:Resources.TakeOut}" Command="{Binding TakeOutCommand}" CommandParameter="{Binding SelectedItem}"></Button>
+                <Button Grid.Column="2" Text="{x:Static res:Resources.New}" Command="{Binding AddItemCommand}"></Button>
               </Grid>
 
               <StackLayout BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" HeightRequest="50">
@@ -60,7 +62,7 @@
               </StackLayout>
 
               <StackLayout>
-                <CollectionView ItemsSource="{Binding SelectedPartition.Items}" SelectionMode="Single" x:Name="SelectedPartitionView">
+                <CollectionView ItemsSource="{Binding SelectedPartition.Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" SelectionMode="Single" x:Name="SelectedPartitionView">
                   <CollectionView.ItemTemplate>
                     <DataTemplate>
                       <Grid x:DataType="local:ItemViewModel" Margin="2">
@@ -68,6 +70,13 @@
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" Margin="3" VerticalTextAlignment="Center"/>
+
+                        <Grid.GestureRecognizers>
+                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=SelectItemCommand}"		
+                                CommandParameter="{Binding .}"/>
+                          <SwipeGestureRecognizer  Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                                CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
                       </Grid>
                     </DataTemplate>
                   </CollectionView.ItemTemplate>
