@@ -46,6 +46,8 @@ namespace FridgeApp.ViewModels
 
 		public ItemViewModel(IFridgeDAL fridgeDal, Fridge.Model.ItemInFridge item) : base(fridgeDal)
 		{
+			ItemId = Guid.Empty.ToString();
+
 			if (item != null)
 			{
 				SetPropertiesInVM(item);
@@ -119,6 +121,8 @@ namespace FridgeApp.ViewModels
 		private void SetPropertiesInVM(Fridge.Model.ItemInFridge item)
 		{
 			this.itemId = item.ItemId.ToString();
+			this.FridgeId = item.FridgeId.ToString();
+			this.PartitionId = item.PartitionId.ToString();
 			this.Name = item.Name;
 			this.TimeStamp = item.TimeStamp;
 		}
@@ -147,6 +151,19 @@ namespace FridgeApp.ViewModels
 
 		public async Task SaveData()
 		{
+			if(string.IsNullOrEmpty(itemId) || itemId.Equals(Guid.Empty.ToString()))
+			{
+				// new item
+				var newItem = ItemFromVM();
+				newItem.ItemId = Guid.NewGuid();
+				newItem.History.Add(new Fridge.Model.ItemChange() { TypeOfChange = Fridge.Model.ChangeTypes.Added, TimeOfChange = newItem.TimeStamp });
+				await FridgeDal.AddItemAsync(newItem);
+			}
+			else
+			{
+				// existing item
+			}
+
 			//if (fridgeGuid == Guid.Empty)
 			//{
 			//	// new fridge
@@ -160,6 +177,18 @@ namespace FridgeApp.ViewModels
 			//	var updatedFridge = FridgeFromVM();
 			//	await FridgeDal.UpdateFridge(updatedFridge);
 			//}
+		}
+
+		public Fridge.Model.ItemInFridge ItemFromVM()
+		{
+			var item = new Fridge.Model.ItemInFridge();
+			item.FridgeId = Guid.Parse(FridgeId);
+			item.PartitionId = Guid.Parse(PartitionId);
+			item.ItemId = Guid.Parse(ItemId);
+			item.Name = Name;
+			item.TimeStamp = TimeStamp;
+
+			return item;
 		}
 
 		private async void OnSave()

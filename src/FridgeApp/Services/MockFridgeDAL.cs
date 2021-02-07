@@ -147,9 +147,10 @@ namespace FridgeApp.Services
 			return await Task.FromResult(items); 
 		}
 
-		public Task<Fridge.Model.ItemInFridge> AddAsync(Fridge.Model.ItemInFridge newFridgeData)
+		public async Task AddItemAsync(Fridge.Model.ItemInFridge newItemInFridge)
 		{
-			throw new NotImplementedException();
+			items.Add(newItemInFridge);
+			await Task.CompletedTask;
 		}
 
 		public Task<Fridge.Model.ItemInFridge> TakeOutAsync(Guid itemInFridgeId)
