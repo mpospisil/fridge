@@ -1,5 +1,6 @@
 ﻿using FridgeApp.Services;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace FridgeApp.ViewModels
@@ -47,6 +48,12 @@ namespace FridgeApp.ViewModels
 			{
 				SetPropertiesInVM(item);
 			}
+
+			SaveCommand = new Command(OnSave, ValidateSave);
+			CancelCommand = new Command(OnCancel);
+
+			this.PropertyChanged +=
+					(_, __) => SaveCommand.ChangeCanExecute();
 		}
 
 		public string ItemId
@@ -98,15 +105,14 @@ namespace FridgeApp.ViewModels
 			get => timeStamp;
 			set => SetProperty(ref timeStamp, value);
 		}
-
+		public Command SaveCommand { get; }
+		public Command CancelCommand { get; }
 
 		private void SetPropertiesInVM(Fridge.Model.ItemInFridge item)
 		{
 			this.itemId = item.ItemId.ToString();
 			this.Name = item.Name;
 			this.TimeStamp = item.TimeStamp;
-
-
 		}
 
 		public Fridge.Model.ItemInFridge FridgeFromVM()
@@ -124,5 +130,41 @@ namespace FridgeApp.ViewModels
 			return fridgeDataFromVM;
 		}
 
+
+		private async void OnCancel()
+		{
+			// This will pop the current page off the navigation stack
+			await Shell.Current.GoToAsync("..");
+		}
+
+		public async Task SaveData()
+		{
+			//if (fridgeGuid == Guid.Empty)
+			//{
+			//	// new fridge
+			//	var newFridge = FridgeFromVM();
+			//	newFridge.FridgeId = Guid.NewGuid();
+			//	await FridgeDal.AddFridge(newFridge);
+			//}
+			//else
+			//{
+			//	// existing fridge
+			//	var updatedFridge = FridgeFromVM();
+			//	await FridgeDal.UpdateFridge(updatedFridge);
+			//}
+		}
+
+		private async void OnSave()
+		{
+			await SaveData();
+
+			// This will pop the current page off the navigation stack
+			await Shell.Current.GoToAsync("..");
+		}
+
+		private bool ValidateSave()
+		{
+			return !String.IsNullOrWhiteSpace(Name);
+		}
 	}
 }
