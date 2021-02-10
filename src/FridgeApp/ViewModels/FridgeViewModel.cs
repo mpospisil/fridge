@@ -16,6 +16,7 @@ namespace FridgeApp.ViewModels
 	{
 		string Name { get; set; }
 		string FridgeId { get; set; }
+		ObservableCollection<IPartitionViewModel> Partitions { get; }
 	}
 
 	[QueryProperty(nameof(FridgeId), nameof(FridgeId))]
