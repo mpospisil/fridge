@@ -151,11 +151,38 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Partitions.
         /// </summary>
         public static string Partitions {
             get {
                 return ResourceManager.GetString("Partitions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to remove &apos;{0}&apos; ?.
+        /// </summary>
+        public static string Question_Remove_Format {
+            get {
+                return ResourceManager.GetString("Question_Remove_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
             }
         }
         
@@ -178,11 +205,11 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Take out.
+        ///   Looks up a localized string similar to Yes.
         /// </summary>
-        public static string TakeOut {
+        public static string Yes {
             get {
-                return ResourceManager.GetString("TakeOut", resourceCulture);
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

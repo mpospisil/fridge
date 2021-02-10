@@ -13,6 +13,7 @@ namespace FridgeApp.Services
 		public static DateTime date3 = new DateTime(2021, 1, 8);
 
 		public static readonly Guid Fridge1Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
+		public static readonly Guid Fridge1RemovedItemsId = Guid.Parse("0CF37477-E479-4EA7-B825-4B1A25A3E1D9");
 		public static readonly Guid Partition1Id = Guid.Parse("4257558B-BC0A-43A8-A5A3-CB36B46D0DFC");
 		public static readonly Guid Partition2Id = Guid.Parse("B01D35D0-D6FC-4A30-80B9-6EA841FBF85B");
 		public static readonly Guid Partition3Id = Guid.Parse("7F79DE2A-13F8-4C20-932F-CFF6BD877D0C");
@@ -88,7 +89,7 @@ namespace FridgeApp.Services
 		public static List<Fridge.Model.Fridge> CreateMockFridges()
 		{
 			var fridges = new List<Fridge.Model.Fridge>();
-			var fridge1 = new Fridge.Model.Fridge() { Name = Fridge1Name, FridgeId = Fridge1Id };
+			var fridge1 = new Fridge.Model.Fridge() { Name = Fridge1Name, FridgeId = Fridge1Id, RemovedItemsIdentifier = Fridge1RemovedItemsId };
 			var partition1 = new Fridge.Model.Partition() { Name = Partition1Name, PartitionId = Partition1Id };
 			var partition2 = new Fridge.Model.Partition() { Name = Partition2Name, PartitionId = Partition2Id };
 			var partition3 = new Fridge.Model.Partition() { Name = Partition3Name, PartitionId = Partition3Id };
@@ -153,14 +154,35 @@ namespace FridgeApp.Services
 			await Task.CompletedTask;
 		}
 
-		public Task<Fridge.Model.ItemInFridge> TakeOutAsync(Guid itemInFridgeId)
+		public async Task<Fridge.Model.ItemInFridge> GetItemAsync(Guid itemId)
 		{
-			throw new NotImplementedException();
+			return await Task.FromResult(items.First(item => item.ItemId == itemId));
 		}
 
-		public Task<Fridge.Model.ItemInFridge> DeleteAsync(Guid itemInFridgeId)
+		public async Task UpdateItemAsync(Fridge.Model.ItemInFridge modifiedItem)
 		{
-			throw new NotImplementedException();
+			int index = items.FindIndex((item) => item.ItemId == modifiedItem.ItemId);
+			items.RemoveAt(index);
+			items.Insert(index, modifiedItem);
+			await Task.CompletedTask;
+		}
+
+		public async Task DeleteAsync(Guid itemInFridgeId)
+		{
+			if (itemInFridgeId == Guid.Empty)
+			{
+				return;
+			}
+
+			int index = items.FindIndex((item) => item.ItemId == itemInFridgeId);
+			if (index < -1)
+			{
+				throw new Exception($"Item id = '{itemInFridgeId}' doesn't exist");
+			}
+
+			items.RemoveAt(index);
+
+			await Task.CompletedTask;
 		}
 	}
 }

@@ -23,8 +23,10 @@ namespace FridgeApp.Services
 
 		Task AddItemAsync(Fridge.Model.ItemInFridge newFridgeData);
 
-		Task<Fridge.Model.ItemInFridge> TakeOutAsync(Guid itemInFridgeId);
+		Task<Fridge.Model.ItemInFridge> GetItemAsync(Guid itemId);
 
-		Task<Fridge.Model.ItemInFridge> DeleteAsync(Guid itemInFridgeId);
+		Task UpdateItemAsync(Fridge.Model.ItemInFridge modifiedItem);
+
+		Task DeleteAsync(Guid itemInFridgeId);
 	}
 }

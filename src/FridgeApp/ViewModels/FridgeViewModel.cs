@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace FridgeApp.ViewModels
 {
@@ -23,6 +24,7 @@ namespace FridgeApp.ViewModels
 		#region Private fields
 		private string name;
 		private Guid fridgeGuid;
+		private Guid removedItemsIdentifier;
 		private DateTime timeStamp;
 		private IPartitionViewModel selectedPartition;
 		private IItemViewModel selectedItem;
@@ -52,7 +54,7 @@ namespace FridgeApp.ViewModels
 			DeleteFridgeCommand = new Command(OnDeleteFridge);
 			AddItemCommand = new Command(OnAddItem, CanAddItem);
 			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
-			TakeOutCommand = new Command(OnTakeOutItem, IsItemSelected);
+			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
 			SelectItemCommand = new Command(OnSelectItem);
 
 			this.PropertyChanged +=
@@ -102,6 +104,18 @@ namespace FridgeApp.ViewModels
 		}
 
 		/// <summary>
+		/// The unique identifier of the items which were removed from this fridge
+		/// </summary>
+		public Guid RemovedItemsIdentifier
+		{
+			get => removedItemsIdentifier;
+			set
+			{
+				SetProperty(ref removedItemsIdentifier, value);
+			}
+		}
+
+		/// <summary>
 		/// Selected partition in the fridge
 		/// </summary>
 		public IPartitionViewModel SelectedPartition
@@ -122,7 +136,7 @@ namespace FridgeApp.ViewModels
 			{
 				SetProperty(ref selectedItem, value);
 				ShowItemDetailsCommand.ChangeCanExecute();
-				TakeOutCommand.ChangeCanExecute();
+				RemoveItemCommand.ChangeCanExecute();
 			}
 		}
 
@@ -147,7 +161,7 @@ namespace FridgeApp.ViewModels
 		public Command DeleteFridgeCommand { get; }
 		public Command AddItemCommand { get; }
 		public Command ShowItemDetailsCommand { get; }
-		public Command TakeOutCommand { get; }
+		public Command RemoveItemCommand { get; }
 		public Command SelectItemCommand { get; }
 
 		public void AddPartition()
@@ -237,13 +251,40 @@ namespace FridgeApp.ViewModels
 
 		}
 
-		private async void OnTakeOutItem(object obj)
+		/// <summary>
+		/// Event handler for removing  item from the fridge 
+		/// </summary>
+		/// <param name="obj"></param>
+		private async void OnRemoveItem(object obj)
 		{
+			IItemViewModel itemToRemoveVM = obj as IItemViewModel;
 			// ask user if he really wants to delete the selected item from the fridge
-			//var answer = await DisplayAlert("Question?", "Would you like to play a game", "Yes", "No");
+			var answer = await App.Current.MainPage.DisplayAlert("Question?", String.Format(Resources.Question_Remove_Format, itemToRemoveVM.Name), Resources.Yes, Resources.No);
 
-			//FridgeDal.
+			if (!answer)
+			{
+				// leave - the user doesn't want to remove the selected item
+				return;
+			}
 
+			// remove the selected item
+			Guid itemId = Guid.Parse(itemToRemoveVM.ItemId);
+			Guid partitionId = Guid.Parse(itemToRemoveVM.PartitionId);
+			await RemoveItemFromFridge(itemId);
+
+			Partitions.First(p => p.PartitionId == partitionId).Items.Remove(itemToRemoveVM);
+		}
+
+		public async Task RemoveItemFromFridge(Guid itemId)
+		{
+			var itemToRemove = await FridgeDal.GetItemAsync(itemId);
+			
+			// set FrigeId and PartitionId to value of RemovedItemsIdentifier for this fridge
+			itemToRemove.FridgeId = RemovedItemsIdentifier;
+			itemToRemove.PartitionId = RemovedItemsIdentifier;
+			itemToRemove.TimeStamp = DateTime.UtcNow;
+			itemToRemove.History.Add(new Fridge.Model.ItemChange() { TimeOfChange = itemToRemove.TimeStamp, TypeOfChange = Fridge.Model.ChangeTypes.Removed });
+			await FridgeDal.UpdateItemAsync(itemToRemove);
 		}
 
 		private void OnSelectItem(object obj)
@@ -259,6 +300,7 @@ namespace FridgeApp.ViewModels
 		private void SetPropertiesInVM(Fridge.Model.Fridge fridge)
 		{
 			this.fridgeGuid = fridge.FridgeId;
+			this.RemovedItemsIdentifier = fridge.RemovedItemsIdentifier;
 			this.Name = fridge.Name;
 			this.TimeStamp = fridge.TimeStamp;
 
@@ -274,7 +316,9 @@ namespace FridgeApp.ViewModels
 		{
 			var fridgeDataFromVM = new Fridge.Model.Fridge();
 			fridgeDataFromVM.FridgeId = fridgeGuid;
+			fridgeDataFromVM.RemovedItemsIdentifier = RemovedItemsIdentifier;
 			fridgeDataFromVM.Name = Name;
+
 			fridgeDataFromVM.TimeStamp = TimeStamp;
 
 			foreach (var partitionVM in Partitions)
