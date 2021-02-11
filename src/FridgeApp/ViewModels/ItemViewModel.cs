@@ -9,6 +9,8 @@ namespace FridgeApp.ViewModels
 	{
 		string ItemId { get; }
 
+		string FridgeId { get; }
+
 		string PartitionId { get; set; }
 
 		/// <summary>
@@ -191,6 +193,7 @@ namespace FridgeApp.ViewModels
 		private void SetPropertiesInVM(Fridge.Model.ItemInFridge item)
 		{
 			this.itemId = item.ItemId.ToString();
+			this.IsInFridge = item.IsInFridge;
 			this.FridgeId = item.FridgeId.ToString();
 			this.PartitionId = item.PartitionId.ToString();
 			this.Name = item.Name;

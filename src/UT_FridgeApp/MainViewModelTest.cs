@@ -2,6 +2,7 @@
 using FridgeApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -66,6 +67,13 @@ namespace UT_FridgeApp
 			Assert.IsTrue(firstPartition.Name == MockFridgeDAL.Partition1Name, "Invalid name of the first partition");
 			Assert.IsTrue(firstPartition.PartitionId == MockFridgeDAL.Partition1Id, "Invalid id of the first partition");
 			Assert.IsTrue(firstPartition.Items.Count == 3, "Expecting 3 items in the first partition");
+
+			var firstItemUnTheParition = firstPartition.Items[0];
+			Assert.IsTrue(firstItemUnTheParition.ItemId == MockFridgeDAL.Fr1Part1Item1Id.ToString(), "Invalid id of the item");
+			Assert.IsTrue(firstItemUnTheParition.Name == MockFridgeDAL.Fr1Part1Item1Name, "Invalid name of the item");
+			Assert.IsTrue(firstItemUnTheParition.IsInFridge == true, "The item should be in the fridge");
+			Assert.IsTrue(firstItemUnTheParition.PartitionId == MockFridgeDAL.Partition1Id.ToString(), "Incorrect partitionId");
+			Assert.IsTrue(firstItemUnTheParition.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Incorrect partitionId");
 
 			var secondPartition = firstFridgeVM.Partitions[1];
 			Assert.IsTrue(secondPartition.Name == MockFridgeDAL.Partition2Name, "Invalid name of the second partition");
