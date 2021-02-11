@@ -53,6 +53,7 @@ namespace FridgeApp.Services
 				Name = Fr1Part1Item1Name,
 				FridgeId = Fridge1Id,
 				PartitionId = Partition1Id,
+				IsInFridge = true,
 				TimeStamp = date1
 			});
 
@@ -62,6 +63,7 @@ namespace FridgeApp.Services
 				Name = Fr1Part1Item2Name,
 				FridgeId = Fridge1Id,
 				PartitionId = Partition1Id,
+				IsInFridge = true,
 				TimeStamp = date2
 			});
 
@@ -71,6 +73,7 @@ namespace FridgeApp.Services
 				Name = Fr1Part1Item3Name,
 				FridgeId = Fridge1Id,
 				PartitionId = Partition1Id,
+				IsInFridge = true,
 				TimeStamp = date1
 			});
 
@@ -80,6 +83,7 @@ namespace FridgeApp.Services
 				Name = Fr1Part2Item1Name,
 				FridgeId = Fridge1Id,
 				PartitionId = Partition2Id,
+				IsInFridge = true,
 				TimeStamp = date3
 			});
 

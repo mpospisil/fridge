@@ -205,6 +205,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verification.
+        /// </summary>
+        public static string Verification {
+            get {
+                return ResourceManager.GetString("Verification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         public static string Yes {

@@ -260,7 +260,7 @@ namespace FridgeApp.ViewModels
 		{
 			IItemViewModel itemToRemoveVM = obj as IItemViewModel;
 			// ask user if he really wants to delete the selected item from the fridge
-			var answer = await App.Current.MainPage.DisplayAlert("Question?", String.Format(Resources.Question_Remove_Format, itemToRemoveVM.Name), Resources.Yes, Resources.No);
+			var answer = await App.Current.MainPage.DisplayAlert(Resources.Verification, String.Format(Resources.Question_Remove_Format, itemToRemoveVM.Name), Resources.Yes, Resources.No);
 
 			if (!answer)
 			{
@@ -271,22 +271,12 @@ namespace FridgeApp.ViewModels
 			// remove the selected item
 			Guid itemId = Guid.Parse(itemToRemoveVM.ItemId);
 			Guid partitionId = Guid.Parse(itemToRemoveVM.PartitionId);
-			await RemoveItemFromFridge(itemId);
+			await itemToRemoveVM.RemoveItemFromFridge(itemId, RemovedItemsIdentifier);
 
 			Partitions.First(p => p.PartitionId == partitionId).Items.Remove(itemToRemoveVM);
 		}
 
-		public async Task RemoveItemFromFridge(Guid itemId)
-		{
-			var itemToRemove = await FridgeDal.GetItemAsync(itemId);
-			
-			// set FrigeId and PartitionId to value of RemovedItemsIdentifier for this fridge
-			itemToRemove.FridgeId = RemovedItemsIdentifier;
-			itemToRemove.PartitionId = RemovedItemsIdentifier;
-			itemToRemove.TimeStamp = DateTime.UtcNow;
-			itemToRemove.History.Add(new Fridge.Model.ItemChange() { TimeOfChange = itemToRemove.TimeStamp, TypeOfChange = Fridge.Model.ChangeTypes.Removed });
-			await FridgeDal.UpdateItemAsync(itemToRemove);
-		}
+
 
 		private void OnSelectItem(object obj)
 		{

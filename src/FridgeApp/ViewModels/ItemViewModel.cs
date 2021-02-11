@@ -9,9 +9,14 @@ namespace FridgeApp.ViewModels
 	{
 		string ItemId { get; }
 
-		string PartitionId { get; }
+		string PartitionId { get; set; }
 
-		string Name { get; }
+		/// <summary>
+		/// True if this item is currently in a fridge
+		/// </summary>
+		bool IsInFridge { get; set; }
+
+		string Name { get; set; }
 
 		string FridgeName { get; }
 
@@ -20,6 +25,14 @@ namespace FridgeApp.ViewModels
 		string PartitionName { get; }
 
 		int PartitionIndex { get; }
+
+		/// <summary>
+		/// Remove item from fridge. 
+		/// </summary>
+		/// <param name="itemId">Id of the item which will be removed</param>
+		/// <param name="removedItemIdentifier">The id which will be set to properties ItemId and PartitionId</param>
+		/// <returns>Task</returns>
+		Task RemoveItemFromFridge(Guid itemId, Guid removedItemIdentifier);
 	}
 
 	[QueryProperty(nameof(ItemId), nameof(ItemId))]
@@ -36,6 +49,7 @@ namespace FridgeApp.ViewModels
 		string partitionName;
 		int partitionIndex;
 		private DateTime timeStamp;
+		private bool isInFridge;
 
 		public ItemViewModel() : this(null)
 		{
@@ -88,6 +102,12 @@ namespace FridgeApp.ViewModels
 			set => SetProperty(ref name, value);
 		}
 
+		public bool IsInFridge
+		{
+			get => isInFridge;
+			set => SetProperty(ref isInFridge, value);
+		}
+
 		public string FridgeName
 		{
 			get => fridgeName;
@@ -119,6 +139,19 @@ namespace FridgeApp.ViewModels
 		public Command SaveCommand { get; }
 		public Command CancelCommand { get; }
 
+		public async Task RemoveItemFromFridge(Guid itemId, Guid removedItemIdentifier)
+		{
+			var itemToRemove = await FridgeDal.GetItemAsync(itemId);
+
+			// set FrigeId and PartitionId to value of RemovedItemsIdentifier for this fridge
+			itemToRemove.FridgeId = removedItemIdentifier;
+			itemToRemove.PartitionId = removedItemIdentifier;
+			itemToRemove.IsInFridge = false;
+			itemToRemove.TimeStamp = DateTime.UtcNow;
+			itemToRemove.History.Add(new Fridge.Model.ItemChange() { TimeOfChange = itemToRemove.TimeStamp, TypeOfChange = Fridge.Model.ChangeTypes.Removed });
+			await FridgeDal.UpdateItemAsync(itemToRemove);
+		}
+
 		private void SetPropertiesInVM(Fridge.Model.ItemInFridge item)
 		{
 			this.itemId = item.ItemId.ToString();
@@ -127,22 +160,6 @@ namespace FridgeApp.ViewModels
 			this.Name = item.Name;
 			this.TimeStamp = item.TimeStamp;
 		}
-
-		public Fridge.Model.ItemInFridge FridgeFromVM()
-		{
-			var fridgeDataFromVM = new Fridge.Model.ItemInFridge();
-			//fridgeDataFromVM.FridgeId = fridgeGuid;
-			//fridgeDataFromVM.Name = Name;
-			//fridgeDataFromVM.TimeStamp = TimeStamp;
-
-			//foreach (var partitionVM in Partitions)
-			//{
-			//	fridgeDataFromVM.Partitions.Add(partitionVM.PartitionFromVM());
-			//}
-
-			return fridgeDataFromVM;
-		}
-
 
 		private async void OnCancel()
 		{
@@ -157,27 +174,16 @@ namespace FridgeApp.ViewModels
 				// new item
 				var newItem = ItemFromVM();
 				newItem.ItemId = Guid.NewGuid();
+				newItem.IsInFridge = true;
 				newItem.History.Add(new Fridge.Model.ItemChange() { TypeOfChange = Fridge.Model.ChangeTypes.Added, TimeOfChange = newItem.TimeStamp });
 				await FridgeDal.AddItemAsync(newItem);
 			}
 			else
 			{
 				// existing item
+				var updatedItem = ItemFromVM();
+				await FridgeDal.UpdateItemAsync(updatedItem);
 			}
-
-			//if (fridgeGuid == Guid.Empty)
-			//{
-			//	// new fridge
-			//	var newFridge = FridgeFromVM();
-			//	newFridge.FridgeId = Guid.NewGuid();
-			//	await FridgeDal.AddFridge(newFridge);
-			//}
-			//else
-			//{
-			//	// existing fridge
-			//	var updatedFridge = FridgeFromVM();
-			//	await FridgeDal.UpdateFridge(updatedFridge);
-			//}
 		}
 
 		public Fridge.Model.ItemInFridge ItemFromVM()
@@ -187,6 +193,7 @@ namespace FridgeApp.ViewModels
 			item.PartitionId = Guid.Parse(PartitionId);
 			item.ItemId = Guid.Parse(ItemId);
 			item.Name = Name;
+			item.IsInFridge = IsInFridge;
 			item.TimeStamp = TimeStamp;
 
 			return item;
