@@ -244,13 +244,13 @@ namespace FridgeApp.ViewModels
 
 		private async void OnAddItem(object obj)
 		{
-			await Shell.Current.GoToAsync($"{nameof(NewItemPage)}?{nameof(ItemViewModel.ItemId)}={Guid.Empty.ToString()}&{nameof(ItemViewModel.FridgeId)}={FridgeId.ToString()}&{nameof(ItemViewModel.PartitionId)}={SelectedPartition.PartitionId.ToString()}");
+			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemId)}={Guid.Empty.ToString()}&{nameof(ItemViewModel.FridgeId)}={FridgeId.ToString()}&{nameof(ItemViewModel.PartitionId)}={SelectedPartition.PartitionId.ToString()}");
 		}
 
 		private async void OnShowItemDetails(object obj)
 		{
 			IItemViewModel selectedItemVM = obj as IItemViewModel;
-			await Shell.Current.GoToAsync($"{nameof(NewItemPage)}?{nameof(ItemViewModel.ItemFromRepositoryId)}={SelectedItem.ItemId}");
+			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemFromRepositoryId)}={SelectedItem.ItemId}");
 		}
 
 		/// <summary>

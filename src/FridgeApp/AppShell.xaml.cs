@@ -9,7 +9,7 @@ namespace FridgeApp
 		{
 			InitializeComponent();
 			Routing.RegisterRoute(nameof(FridgePage), typeof(FridgePage));
-			Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+			Routing.RegisterRoute(nameof(ItemPage), typeof(ItemPage));
 		}
 	}
 }
