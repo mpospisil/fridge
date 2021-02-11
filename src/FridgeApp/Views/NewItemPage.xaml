@@ -19,7 +19,7 @@
       </CollectionView>
       <StackLayout Orientation="Horizontal">
         <Button Text="{x:Static res:Resources.Cancel}" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
-        <Button Text="{x:Static res:Resources.AddNewItem}" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+        <Button Text="{x:Static res:Resources.Save}" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
       </StackLayout>
     </StackLayout>
   </ContentPage.Content>

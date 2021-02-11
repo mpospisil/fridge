@@ -27,6 +27,11 @@ namespace FridgeApp.ViewModels
 		int PartitionIndex { get; }
 
 		/// <summary>
+		/// Method set read data from repository and sets them into properties ov VM
+		/// </summary>
+		string ItemFromRepositoryId { get; set; }
+
+		/// <summary>
 		/// Remove item from fridge. 
 		/// </summary>
 		/// <param name="itemId">Id of the item which will be removed</param>
@@ -38,6 +43,7 @@ namespace FridgeApp.ViewModels
 	[QueryProperty(nameof(ItemId), nameof(ItemId))]
 	[QueryProperty(nameof(FridgeId), nameof(FridgeId))]
 	[QueryProperty(nameof(PartitionId), nameof(PartitionId))]
+	[QueryProperty(nameof(ItemFromRepositoryId), nameof(ItemFromRepositoryId))]
 	public class ItemViewModel : BaseViewModel, IItemViewModel
 	{
 		string itemId;
@@ -61,7 +67,7 @@ namespace FridgeApp.ViewModels
 
 		public ItemViewModel(IFridgeDAL fridgeDal, Fridge.Model.ItemInFridge item) : base(fridgeDal)
 		{
-			ItemId = Guid.Empty.ToString();
+			itemId = Guid.Empty.ToString();
 
 			if (item != null)
 			{
@@ -78,7 +84,37 @@ namespace FridgeApp.ViewModels
 		public string ItemId
 		{
 			get => itemId;
-			set => SetProperty(ref itemId, value);
+			set
+			{
+				var previousPropValue = itemId;
+				SetProperty(ref itemId, value);
+
+				if (!string.IsNullOrEmpty(itemId) && !itemId.Equals(Guid.Empty.ToString()) && !previousPropValue.Equals(itemId))
+				{
+					LoadValuesFromRepository(Guid.Parse(itemId));
+				}
+			}
+		}
+
+		/// <summary>
+		/// the method set of this property reads data from repository and sets them into properties ov VM
+		/// </summary>
+		public string ItemFromRepositoryId
+		{
+			get => ItemId;
+			set
+			{
+				if (!string.IsNullOrEmpty(value) && !value.Equals(Guid.Empty.ToString()))
+				{
+					LoadValuesFromRepository(Guid.Parse(value));
+				}
+			}
+		}
+
+		private async void LoadValuesFromRepository(Guid itemId)
+		{
+			var itemData = await FridgeDal.GetItemAsync(itemId);
+			SetPropertiesInVM(itemData);
 		}
 
 		public string PartitionId
