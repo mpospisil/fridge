@@ -8,9 +8,9 @@ namespace FridgeApp.Services
 {
 	public class MockFridgeDAL : IFridgeDAL
 	{
-		public static DateTime date1 = new DateTime(2021, 1, 9);
-		public static DateTime date2 = new DateTime(2021, 1, 8);
-		public static DateTime date3 = new DateTime(2021, 1, 8);
+		public static readonly DateTime Date1 = new DateTime(2021, 1, 9);
+		public static readonly DateTime Date2 = new DateTime(2021, 1, 8);
+		public static readonly DateTime Date3 = new DateTime(2021, 1, 8);
 
 		public static readonly Guid Fridge1Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
 		public static readonly Guid Fridge1RemovedItemsId = Guid.Parse("0CF37477-E479-4EA7-B825-4B1A25A3E1D9");
@@ -54,7 +54,7 @@ namespace FridgeApp.Services
 				FridgeId = Fridge1Id,
 				PartitionId = Partition1Id,
 				IsInFridge = true,
-				TimeStamp = date1
+				TimeStamp = Date1
 			});
 
 			items.Add(new Fridge.Model.ItemInFridge()
@@ -64,7 +64,7 @@ namespace FridgeApp.Services
 				FridgeId = Fridge1Id,
 				PartitionId = Partition1Id,
 				IsInFridge = true,
-				TimeStamp = date2
+				TimeStamp = Date2
 			});
 
 			items.Add(new Fridge.Model.ItemInFridge()
@@ -74,7 +74,7 @@ namespace FridgeApp.Services
 				FridgeId = Fridge1Id,
 				PartitionId = Partition1Id,
 				IsInFridge = true,
-				TimeStamp = date1
+				TimeStamp = Date1
 			});
 
 			items.Add(new Fridge.Model.ItemInFridge()
@@ -84,7 +84,7 @@ namespace FridgeApp.Services
 				FridgeId = Fridge1Id,
 				PartitionId = Partition2Id,
 				IsInFridge = true,
-				TimeStamp = date3
+				TimeStamp = Date3
 			});
 
 			return items;

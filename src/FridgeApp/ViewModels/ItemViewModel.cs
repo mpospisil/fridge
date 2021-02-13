@@ -77,7 +77,7 @@ namespace FridgeApp.ViewModels
 			}
 			else
 			{
-
+				TimeStamp = DateTime.UtcNow;
 			}
 
 			SaveCommand = new Command(OnSave, ValidateSave);
