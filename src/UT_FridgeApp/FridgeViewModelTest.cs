@@ -67,5 +67,27 @@ namespace UT_FridgeApp
 			Assert.AreEqual(fridgeVM.Partitions.Count, 2);
 			Assert.AreEqual(fridgeVM.Partitions[0].Name, MockFridgeDAL.Partition2Name);
 		}
+
+		[TestMethod]
+		public void CanAddItemTest()
+		{
+			// create mock
+			var fridgeDal = Substitute.For<IFridgeDAL>();
+			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
+			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
+
+			var originalFrigeData = fridges[0];
+			var fridgeVM = new FridgeViewModel(fridgeDal, originalFrigeData);
+
+			Assert.AreEqual(fridgeVM.Partitions.Count, 3);
+
+			var canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedPartition);
+			Assert.IsFalse(canAddItemRes, "When no partitions is selected the user can not add item");
+			
+			// select the first partition
+			fridgeVM.SelectedPartition = fridgeVM.Partitions[0];
+			canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedPartition);
+			Assert.IsTrue(canAddItemRes, "When a partitions is selected the user can add item");
+		}
 	}
 }
