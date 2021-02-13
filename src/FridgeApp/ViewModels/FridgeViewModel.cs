@@ -52,7 +52,7 @@ namespace FridgeApp.ViewModels
 			CancelCommand = new Command(OnCancel);
 			AddPartitionCommand = new Command(AddPartition);
 			DeletePartitionCommand = new Command(DeletePartition);
-			DeleteFridgeCommand = new Command(OnDeleteFridge);
+			DeleteFridgeCommand = new Command(OnDeleteFridge, CanDeleteFridge);
 			AddItemCommand = new Command(OnAddItem, CanAddItem);
 			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
 			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
@@ -60,6 +60,15 @@ namespace FridgeApp.ViewModels
 
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
+
+			this.PropertyChanged +=
+					(_, __) => DeletePartitionCommand.ChangeCanExecute();
+
+			this.PropertyChanged +=
+					(_, __) => DeleteFridgeCommand.ChangeCanExecute();
+
+			this.PropertyChanged +=
+					(_, __) => AddItemCommand.ChangeCanExecute();
 		}
 		#endregion
 
@@ -184,8 +193,22 @@ namespace FridgeApp.ViewModels
 			await FridgeDal.DeleteFridgeAsync(fridgeGuid);
 		}
 
+		private bool CanDeleteFridge()
+		{
+			return true;
+		}
+
 		private async void OnDeleteFridge()
 		{
+			// ask user if he really wants to delete the selected item from the fridge
+			var answer = await App.Current.MainPage.DisplayAlert(Resources.Verification, String.Format(Resources.Question_Remove_Format, Name), Resources.Yes, Resources.No);
+
+			if (!answer)
+			{
+				// leave - the user doesn't want to remove the selected item
+				return;
+			}
+
 			await DeleteFridgeAsync();
 
 			// This will pop the current page off the navigation stack
