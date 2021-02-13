@@ -56,8 +56,8 @@ namespace UT_FridgeApp
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 
-			var originalFrigeData = fridges[0];
-			var fridgeVM = new FridgeViewModel(fridgeDal, originalFrigeData);
+			var frigeData = fridges[0];
+			var fridgeVM = new FridgeViewModel(fridgeDal, frigeData);
 
 			Assert.AreEqual(fridgeVM.Partitions.Count, 3);
 
@@ -69,6 +69,48 @@ namespace UT_FridgeApp
 		}
 
 		[TestMethod]
+		public void ItemsInFridgeTest()
+		{
+			// create mock
+			var fridgeDal = Substitute.For<IFridgeDAL>();
+			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
+			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
+
+			List<Fridge.Model.ItemInFridge> itemsInFridge = MockFridgeDAL.CreateMockItems();
+			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(itemsInFridge.AsEnumerable()));
+			fridgeDal.GetItemsAsync(false).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(itemsInFridge.AsEnumerable()));
+
+			var frigeData = fridges[0];
+			var fridgeVM = new FridgeViewModel(fridgeDal, frigeData);
+
+			Assert.IsTrue(fridgeVM.Name == MockFridgeDAL.Fridge1Name, $"Invalid name of the fridge '{fridgeVM.Name}' !='{MockFridgeDAL.Fridge1Name}'");
+
+			Assert.IsTrue(fridgeVM.Partitions.Count == 3, "Expecting 3 partitions");
+
+			var firstPartition = fridgeVM.Partitions[0];
+			Assert.IsTrue(firstPartition.Name == MockFridgeDAL.Partition1Name, "Invalid name of the first partition");
+			Assert.IsTrue(firstPartition.PartitionId == MockFridgeDAL.Partition1Id, "Invalid id of the first partition");
+			Assert.IsTrue(firstPartition.Items.Count == 3, "Expecting 3 items in the first partition");
+
+			var firstItemInPart1 = firstPartition.Items[0];
+			Assert.IsTrue(firstItemInPart1.ItemId == MockFridgeDAL.Fr1Part1Item1Id.ToString(), "Invalid id of the item");
+			Assert.IsTrue(firstItemInPart1.Name == MockFridgeDAL.Fr1Part1Item1Name, "Invalid name of the item");
+			Assert.IsTrue(firstItemInPart1.IsInFridge == true, "The item should be in the fridge");
+			Assert.IsTrue(firstItemInPart1.PartitionId == MockFridgeDAL.Partition1Id.ToString(), "Incorrect partitionId");
+			Assert.IsTrue(firstItemInPart1.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Incorrect partitionId");
+
+			var secondPartition = fridgeVM.Partitions[1];
+			Assert.IsTrue(secondPartition.Name == MockFridgeDAL.Partition2Name, "Invalid name of the second partition");
+			Assert.IsTrue(secondPartition.PartitionId == MockFridgeDAL.Partition2Id, "Invalid id of the second partition");
+			Assert.IsTrue(secondPartition.Items.Count == 1, "Expecting 1 items in the second partition");
+
+			var thirdPartition = fridgeVM.Partitions[2];
+			Assert.IsTrue(thirdPartition.Name == MockFridgeDAL.Partition3Name, "Invalid name of the third partition");
+			Assert.IsTrue(thirdPartition.PartitionId == MockFridgeDAL.Partition3Id, "Invalid id of the third partition");
+			Assert.IsTrue(thirdPartition.Items.Count == 0, "Expecting no items in the third partition");
+		}
+
+			[TestMethod]
 		public void CanAddItemTest()
 		{
 			// create mock

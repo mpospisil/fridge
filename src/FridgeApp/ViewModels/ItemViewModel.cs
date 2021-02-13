@@ -75,6 +75,10 @@ namespace FridgeApp.ViewModels
 			{
 				SetPropertiesInVM(item);
 			}
+			else
+			{
+
+			}
 
 			SaveCommand = new Command(OnSave, ValidateSave);
 			CancelCommand = new Command(OnCancel);
