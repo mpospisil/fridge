@@ -47,17 +47,20 @@ namespace FridgeApp.Services
 		{
 			var items = new List<Fridge.Model.ItemInFridge>();
 
-			items.Add(new Fridge.Model.ItemInFridge()
+			var item1 = new Fridge.Model.ItemInFridge()
 			{
 				ItemId = Fr1Part1Item1Id,
 				Name = Fr1Part1Item1Name,
 				FridgeId = Fridge1Id,
 				PartitionId = Partition1Id,
 				IsInFridge = true,
-				TimeStamp = Date1
-			});
+				TimeStamp = Date1,
+			};
 
-			items.Add(new Fridge.Model.ItemInFridge()
+			item1.History.Add(new Fridge.Model.ItemChange() { TypeOfChange = Fridge.Model.ChangeTypes.Added, TimeOfChange = Date1 });
+			items.Add(item1);
+
+			var item2 = new Fridge.Model.ItemInFridge()
 			{
 				ItemId = Fr1Part1Item2Id,
 				Name = Fr1Part1Item2Name,
@@ -65,9 +68,12 @@ namespace FridgeApp.Services
 				PartitionId = Partition1Id,
 				IsInFridge = true,
 				TimeStamp = Date2
-			});
+			};
 
-			items.Add(new Fridge.Model.ItemInFridge()
+			item2.History.Add(new Fridge.Model.ItemChange() { TypeOfChange = Fridge.Model.ChangeTypes.Added, TimeOfChange = Date2 });
+			items.Add(item2);
+
+			var item3 = new Fridge.Model.ItemInFridge()
 			{
 				ItemId = Fr1Part1Item3Id,
 				Name = Fr1Part1Item3Name,
@@ -75,9 +81,12 @@ namespace FridgeApp.Services
 				PartitionId = Partition1Id,
 				IsInFridge = true,
 				TimeStamp = Date1
-			});
+			};
 
-			items.Add(new Fridge.Model.ItemInFridge()
+			item3.History.Add(new Fridge.Model.ItemChange() { TypeOfChange = Fridge.Model.ChangeTypes.Added, TimeOfChange = Date1 });
+			items.Add(item3);
+
+			var item4 = new Fridge.Model.ItemInFridge()
 			{
 				ItemId = Fr1Part2Item1Id,
 				Name = Fr1Part2Item1Name,
@@ -85,7 +94,10 @@ namespace FridgeApp.Services
 				PartitionId = Partition2Id,
 				IsInFridge = true,
 				TimeStamp = Date3
-			});
+			};
+
+			item4.History.Add(new Fridge.Model.ItemChange() { TypeOfChange = Fridge.Model.ChangeTypes.Added, TimeOfChange = Date3 });
+			items.Add(item4);
 
 			return items;
 		}
