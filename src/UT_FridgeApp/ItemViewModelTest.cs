@@ -24,7 +24,8 @@ namespace UT_FridgeApp
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(allItems));
 
-			fridgeDal.When(x => x.AddItemAsync(Arg.Any<ItemInFridge>())).Do(param1 => {
+			fridgeDal.When(x => x.AddItemAsync(Arg.Any<ItemInFridge>())).Do(param1 =>
+			{
 				addedItem = param1.ArgAt<ItemInFridge>(0);
 			});
 
@@ -82,17 +83,67 @@ namespace UT_FridgeApp
 			Assert.IsTrue(troutItem.ItemId == MockFridgeDAL.Fr1Part1Item2Id);
 			fridgeDal.GetItemAsync(MockFridgeDAL.Fr1Part1Item2Id).Returns(troutItem);
 
-			var newItemVM = new ItemViewModel(fridgeDal);
+			var itemVM = new ItemViewModel(fridgeDal);
 
 			// it will initialize view model
-			newItemVM.ItemFromRepositoryId = troutItem.ItemId.ToString(); // id of the Trout
+			itemVM.ItemFromRepositoryId = troutItem.ItemId.ToString(); // id of the Trout
 
-			Assert.IsTrue(newItemVM.ItemId.Equals(troutItem.ItemId.ToString()));
-			Assert.IsTrue(newItemVM.FridgeId.Equals(troutItem.FridgeId.ToString()));
-			Assert.IsTrue(newItemVM.PartitionId.Equals(troutItem.PartitionId.ToString()));
-			Assert.IsTrue(newItemVM.Name == troutItem.Name);
-			Assert.IsTrue(newItemVM.IsInFridge == troutItem.IsInFridge);
-			Assert.IsTrue(newItemVM.TimeStamp == troutItem.TimeStamp);
+			Assert.IsTrue(itemVM.ItemId.Equals(troutItem.ItemId.ToString()));
+			Assert.IsTrue(itemVM.FridgeId.Equals(troutItem.FridgeId.ToString()));
+			Assert.IsTrue(itemVM.PartitionId.Equals(troutItem.PartitionId.ToString()));
+			Assert.IsTrue(itemVM.Name == troutItem.Name);
+			Assert.IsTrue(itemVM.IsInFridge == troutItem.IsInFridge);
+			Assert.IsTrue(itemVM.TimeStamp == troutItem.TimeStamp);
+		}
+
+		[TestMethod]
+		public async Task RemoveItemTest()
+		{
+			var fridgeDal = Substitute.For<IFridgeDAL>();
+			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
+			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
+
+			List<Fridge.Model.ItemInFridge> itemsInFridge = MockFridgeDAL.CreateMockItems();
+			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(itemsInFridge.AsEnumerable()));
+			fridgeDal.GetItemsAsync(false).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(itemsInFridge.AsEnumerable()));
+
+			ItemInFridge removedItem = null;
+
+			fridgeDal.When(x => x.UpdateItemAsync(Arg.Any<ItemInFridge>())).Do(param1 =>
+			{
+				removedItem = param1.ArgAt<ItemInFridge>(0);
+			});
+
+			var firstFridge = fridges[0];
+
+			var troutItem = itemsInFridge[1];
+			Assert.IsTrue(troutItem.ItemId == MockFridgeDAL.Fr1Part1Item2Id);
+			fridgeDal.GetItemAsync(MockFridgeDAL.Fr1Part1Item2Id).Returns(troutItem);
+			Assert.IsTrue(troutItem.TimeStamp == MockFridgeDAL.Date2);
+			Assert.IsTrue(troutItem.History.Count == 1);
+			Assert.IsTrue(troutItem.IsInFridge);
+
+			var itemVM = new ItemViewModel(fridgeDal);
+
+			// it will initialize view model
+			itemVM.ItemFromRepositoryId = troutItem.ItemId.ToString(); // id of the Trout
+
+			Assert.IsTrue(removedItem == null);
+			await itemVM.RemoveItemFromFridge(troutItem.ItemId, firstFridge.RemovedItemsIdentifier);
+
+			Assert.IsTrue(removedItem != null);
+			Assert.IsTrue(removedItem.ItemId == MockFridgeDAL.Fr1Part1Item2Id);
+			Assert.IsTrue(removedItem.Name == MockFridgeDAL.Fr1Part1Item2Name);
+			Assert.IsTrue(removedItem.FridgeId == firstFridge.RemovedItemsIdentifier);
+			Assert.IsTrue(removedItem.PartitionId == firstFridge.RemovedItemsIdentifier);
+			Assert.IsFalse(removedItem.IsInFridge);
+			Assert.IsFalse(removedItem.TimeStamp == MockFridgeDAL.Date2);
+
+			Assert.IsTrue(troutItem.History.Count == 2);
+			var histItemRemove = troutItem.History[1];
+			Assert.IsTrue(histItemRemove.TypeOfChange == ChangeTypes.Removed);
+			Assert.IsTrue(histItemRemove.TimeOfChange == removedItem.TimeStamp);
 		}
 	}
 }
+
