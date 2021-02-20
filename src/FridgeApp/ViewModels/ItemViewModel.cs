@@ -1,5 +1,6 @@
 ﻿using FridgeApp.Services;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -34,6 +35,11 @@ namespace FridgeApp.ViewModels
 		string ItemFromRepositoryId { get; set; }
 
 		/// <summary>
+		/// The date when item was added to the fridge
+		/// </summary>
+		DateTime AddToFridgeTime { get; set; }
+
+		/// <summary>
 		/// Remove item from fridge. 
 		/// </summary>
 		/// <param name="itemId">Id of the item which will be removed</param>
@@ -58,6 +64,7 @@ namespace FridgeApp.ViewModels
 		int partitionIndex;
 		private DateTime timeStamp;
 		private bool isInFridge;
+		DateTime addToFridgeTime;
 
 		public ItemViewModel() : this(null)
 		{
@@ -178,6 +185,16 @@ namespace FridgeApp.ViewModels
 			get => timeStamp;
 			set => SetProperty(ref timeStamp, value);
 		}
+
+		/// <summary>
+		/// The date when item was added to the fridge
+		/// </summary>
+		public DateTime AddToFridgeTime
+		{
+			get => addToFridgeTime;
+			set => SetProperty(ref addToFridgeTime, value);
+		}
+
 		public Command SaveCommand { get; }
 		public Command CancelCommand { get; }
 
@@ -202,6 +219,11 @@ namespace FridgeApp.ViewModels
 			this.PartitionId = item.PartitionId.ToString();
 			this.Name = item.Name;
 			this.TimeStamp = item.TimeStamp;
+
+			if (item?.History?.Any() == true)
+			{
+				AddToFridgeTime = item.History.First().TimeOfChange;
+			}
 		}
 
 		private async void OnCancel()

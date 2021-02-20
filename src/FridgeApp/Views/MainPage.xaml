@@ -39,57 +39,67 @@
               </Grid>
 
               <StackLayout BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" HeightRequest="50">
-              <CollectionView
+                <CollectionView
                 x:Name="PartitionsView"
                 ItemsSource="{Binding Partitions}"
                 SelectedItem="{Binding SelectedPartition}"
                 ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="White">
 
-                <CollectionView.ItemTemplate>
-                  <DataTemplate>
+                  <CollectionView.ItemTemplate>
+                    <DataTemplate>
                       <Grid x:DataType="local:PartitionViewModel" Margin="2">
-                      <Label Text="{Binding Name}" 
+                        <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" Margin="3" VerticalTextAlignment="Center"/>
-                    </Grid>
-                  </DataTemplate>
-                </CollectionView.ItemTemplate>
-              </CollectionView>
+                      </Grid>
+                    </DataTemplate>
+                  </CollectionView.ItemTemplate>
+                </CollectionView>
               </StackLayout>
 
               <FlexLayout  BindableLayout.ItemsSource="{Binding SelectedPartition.Items}" Wrap="Wrap" Direction="Row" JustifyContent="Start" AlignItems="Start" AlignContent="Start">
                 <BindableLayout.ItemTemplate>
                   <DataTemplate>
                     <Frame Margin="2" Padding="2">
-                    <Grid x:DataType="local:ItemViewModel">
-                      <Label Text="{Binding Name}" 
+                      <Grid x:DataType="local:ItemViewModel">
+                        <Grid.RowDefinitions>
+                          <RowDefinition></RowDefinition>
+                          <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" Margin="3" VerticalTextAlignment="Center"/>
+                            FontSize="Body" Margin="3" VerticalTextAlignment="Center"/>
 
-                      <Grid.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=SelectItemCommand}"		
+                        <Label Grid.Row="1"  Text="{Binding AddToFridgeTime, StringFormat='{0:MM.dd.yyyy}' }" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
+
+                        <Grid.GestureRecognizers>
+                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=SelectItemCommand}"		
                                 CommandParameter="{Binding .}"/>
-                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
                                 CommandParameter="{Binding .}" NumberOfTapsRequired="2"/>
-                        <SwipeGestureRecognizer Direction="Left" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                          <SwipeGestureRecognizer Direction="Left" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
                                 CommandParameter="{Binding .}"/>
-                      </Grid.GestureRecognizers>
-                    </Grid>
+                        </Grid.GestureRecognizers>
+                      </Grid>
                     </Frame>
-                    
+
                   </DataTemplate>
                 </BindableLayout.ItemTemplate>
               </FlexLayout>
 
-              
+
             </StackLayout>
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
     </RefreshView>
-    
+
   </StackLayout>
 
 </ContentPage>
