@@ -1,4 +1,5 @@
 ﻿using FridgeApp.Services;
+using FridgeApp.Views;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,6 +35,8 @@ namespace FridgeApp.ViewModels
 		/// </summary>
 		string ItemFromRepositoryId { get; set; }
 
+		bool IsSelected { get; set; }
+
 		/// <summary>
 		/// The date when item was added to the fridge
 		/// </summary>
@@ -65,6 +68,7 @@ namespace FridgeApp.ViewModels
 		private DateTime timeStamp;
 		private bool isInFridge;
 		DateTime addToFridgeTime;
+		bool isSelected;
 
 		public ItemViewModel() : this(null)
 		{
@@ -89,6 +93,8 @@ namespace FridgeApp.ViewModels
 
 			SaveCommand = new Command(OnSave, ValidateSave);
 			CancelCommand = new Command(OnCancel);
+			ShowItemDetailsCommand = new Command(OnShowItemDetails);
+			SelectItemCommand = new Command(OnSelectItem);
 
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
@@ -195,8 +201,20 @@ namespace FridgeApp.ViewModels
 			set => SetProperty(ref addToFridgeTime, value);
 		}
 
+		/// <summary>
+		/// True if the item is selected in a view
+		/// </summary>
+		public bool IsSelected
+		{
+			get => isSelected;
+			set => SetProperty(ref isSelected, value);
+		}
+
 		public Command SaveCommand { get; }
 		public Command CancelCommand { get; }
+		public Command ShowItemDetailsCommand { get; }
+		public Command SelectItemCommand { get; }
+
 
 		public async Task RemoveItemFromFridge(Guid itemId, Guid removedItemIdentifier)
 		{
@@ -275,6 +293,17 @@ namespace FridgeApp.ViewModels
 		private bool ValidateSave()
 		{
 			return !String.IsNullOrWhiteSpace(Name);
+		}
+
+		private void OnSelectItem(object obj)
+		{
+			IsSelected = !isSelected;
+		}
+
+		private async void OnShowItemDetails(object obj)
+		{
+			IItemViewModel selectedItemVM = obj as IItemViewModel;
+			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemFromRepositoryId)}={ItemId}");
 		}
 	}
 }

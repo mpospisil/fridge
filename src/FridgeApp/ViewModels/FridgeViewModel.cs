@@ -300,8 +300,6 @@ namespace FridgeApp.ViewModels
 			Partitions.First(p => p.PartitionId == partitionId).Items.Remove(itemToRemoveVM);
 		}
 
-
-
 		private void OnSelectItem(object obj)
 		{
 			SelectedItem = obj as IItemViewModel;
