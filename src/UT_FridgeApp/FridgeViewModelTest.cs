@@ -123,6 +123,8 @@ namespace UT_FridgeApp
 
 			Assert.AreEqual(fridgeVM.Partitions.Count, 3);
 
+			fridgeVM.SelectedPartition = null;
+
 			var canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedPartition);
 			Assert.IsFalse(canAddItemRes, "When no partitions is selected the user can not add item");
 			
