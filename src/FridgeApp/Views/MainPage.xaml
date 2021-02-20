@@ -58,7 +58,10 @@
                 </CollectionView>
               </StackLayout>
 
-              <FlexLayout  BindableLayout.ItemsSource="{Binding SelectedPartition.Items}" Wrap="Wrap" Direction="Row" JustifyContent="Start" AlignItems="Start" AlignContent="Start">
+              <FlexLayout  BindableLayout.ItemsSource="{Binding SelectedPartition.Items}"
+                           Wrap="Wrap" 
+                           Direction="Row" JustifyContent="Start"
+                           AlignItems="Start" AlignContent="Start">
                 <BindableLayout.ItemTemplate>
                   <DataTemplate>
                     <Frame Margin="2" Padding="2">
@@ -73,7 +76,7 @@
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Body" Margin="3" VerticalTextAlignment="Center"/>
 
-                        <Label Grid.Row="1"  Text="{Binding AddToFridgeTime, StringFormat='{0:MM.dd.yyyy}' }" 
+                        <Label Grid.Row="1"  Text="{Binding AddToFridgeTime, StringFormat={x:Static res:Resources.DateFormat} }" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
