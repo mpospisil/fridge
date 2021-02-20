@@ -135,7 +135,7 @@ namespace FridgeApp.ViewModels
 			{
 				SetProperty(ref selectedPartition, value);
 				value?.LoadItemsCommand?.Execute(null);
-				AddItemCommand.ChangeCanExecute();
+				AddItemCommand?.ChangeCanExecute();
 			}
 		}
 
@@ -324,6 +324,11 @@ namespace FridgeApp.ViewModels
 			foreach (var partition in fridge.Partitions)
 			{
 				Partitions.Add(new PartitionViewModel(FridgeDal, partition));
+			}
+
+			if(SelectedPartition == null)
+			{
+				SelectedPartition = Partitions?.FirstOrDefault();
 			}
 		}
 
