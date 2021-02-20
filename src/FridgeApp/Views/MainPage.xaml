@@ -13,16 +13,16 @@
     </ResourceDictionary>
   </ContentPage.Resources>
 
-  <StackLayout  Spacing="3" Padding="15">
+  <StackLayout  Spacing="3" Padding="15" VerticalOptions="FillAndExpand">
 
     <RefreshView x:DataType="local:MainViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
       <CollectionView x:Name="FridgesView"
                 ItemsSource="{Binding Fridges}"
-                ItemsLayout="VerticalList"
-                      >
+                ItemsLayout="VerticalList" VerticalOptions="Start" ItemSizingStrategy="MeasureAllItems">
+
         <CollectionView.ItemTemplate>
           <DataTemplate>
-            <StackLayout Padding="10" x:DataType="local:FridgeViewModel" >
+            <StackLayout Padding="10" x:DataType="local:FridgeViewModel" VerticalOptions="Start">
 
               <Grid>
                 <Grid.RowDefinitions>
@@ -44,10 +44,7 @@
                 ItemsSource="{Binding Partitions}"
                 SelectedItem="{Binding SelectedPartition}"
                 ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="White">
-                <CollectionView.Header>
-                    <Grid>
-</Grid>
-                </CollectionView.Header>
+
                 <CollectionView.ItemTemplate>
                   <DataTemplate>
                       <Grid x:DataType="local:PartitionViewModel" Margin="2">
@@ -61,36 +58,40 @@
               </CollectionView>
               </StackLayout>
 
-              <StackLayout>
-                <CollectionView ItemsSource="{Binding SelectedPartition.Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" SelectionMode="Single" x:Name="SelectedPartitionView">
-                  <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                      <Grid x:DataType="local:ItemViewModel" Margin="2">
-                        <Label Text="{Binding Name}" 
+
+              <CollectionView ItemsSource="{Binding SelectedPartition.Items}"
+                                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                                SelectionMode="Single" x:Name="SelectedPartitionView"
+                                BackgroundColor="Green"
+                                VerticalOptions="Start" ItemSizingStrategy="MeasureAllItems">
+
+                <CollectionView.ItemTemplate>
+                  <DataTemplate>
+                    <Grid x:DataType="local:ItemViewModel" Margin="2" BackgroundColor="Red">
+                      <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" Margin="3" VerticalTextAlignment="Center"/>
 
-                        <Grid.GestureRecognizers>
-                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=SelectItemCommand}"		
+                      <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=SelectItemCommand}"		
                                 CommandParameter="{Binding .}"/>
-                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
                                 CommandParameter="{Binding .}" NumberOfTapsRequired="2"/>
-                          <SwipeGestureRecognizer Direction="Left" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                        <SwipeGestureRecognizer Direction="Left" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
                                 CommandParameter="{Binding .}"/>
-                        </Grid.GestureRecognizers>
-                      </Grid>
-                    </DataTemplate>
-                  </CollectionView.ItemTemplate>
-                </CollectionView>
-              </StackLayout>
+                      </Grid.GestureRecognizers>
+                    </Grid>
+                  </DataTemplate>
+                </CollectionView.ItemTemplate>
 
+              </CollectionView>
             </StackLayout>
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
     </RefreshView>
-
+    
   </StackLayout>
 
 </ContentPage>
