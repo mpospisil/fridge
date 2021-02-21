@@ -141,6 +141,9 @@
   <data name="Fridges" xml:space="preserve">
     <value>Fridges</value>
   </data>
+  <data name="Items" xml:space="preserve">
+    <value>Items</value>
+  </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
