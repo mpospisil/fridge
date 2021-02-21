@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:FridgeApp.ViewModels"
              xmlns:res="clr-namespace:FridgeApp"
-             x:Class="FridgeApp.Views.FridgePage">
+             x:Class="FridgeApp.Views.FridgeEditPage">
   
   <ContentPage.ToolbarItems>
     <ToolbarItem Text="{x:Static res:Resources.Delete}" Command="{Binding DeleteFridgeCommand}" />

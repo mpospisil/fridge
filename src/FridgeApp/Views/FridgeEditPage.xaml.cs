@@ -11,9 +11,9 @@ using Xamarin.Forms.Xaml;
 namespace FridgeApp.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class FridgePage : ContentPage
+	public partial class FridgeEditPage : ContentPage
 	{
-		public FridgePage()
+		public FridgeEditPage()
 		{
 			InitializeComponent();
 			BindingContext = DependencyService.Resolve<IFridgeViewModel>();

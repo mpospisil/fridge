@@ -21,6 +21,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Views\FridgeEditPage.xaml.cs">
+      <DependentUpon>FridgeEditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
@@ -31,7 +34,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\FridgePage.xaml">
+    <EmbeddedResource Update="Views\FridgeEditPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ItemPage.xaml">
