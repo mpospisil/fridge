@@ -81,9 +81,18 @@
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
 
-  <ShellContent x:Name="mainPage"
+  <FlyoutItem Title="{x:Static res:Resources.Items}">
+    <Tab Title="{x:Static res:Resources.Fridges}">
+      <ShellContent x:Name="mainPage"
                   Title="{x:Static res:Resources.Fridges}"
                   ContentTemplate="{DataTemplate local:MainPage}" />
+    </Tab>
+    <Tab Title="{x:Static res:Resources.Items}">
+      <ShellContent x:Name="itemsPage"
+                  Title="{x:Static res:Resources.Items}"
+                  ContentTemplate="{DataTemplate local:ItemsPage}" />
+    </Tab>
+  </FlyoutItem>
 
   <FlyoutItem Title="{x:Static res:Resources.Settings}" Icon="setup.png">
     <ShellContent Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
