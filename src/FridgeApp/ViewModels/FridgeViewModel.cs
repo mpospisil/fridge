@@ -302,7 +302,29 @@ namespace FridgeApp.ViewModels
 
 		private void OnSelectItem(object obj)
 		{
-			SelectedItem = obj as IItemViewModel;
+			IItemViewModel newItemVM = obj as IItemViewModel;
+
+			if (SelectedItem == newItemVM)
+			{
+				// same item - deselect it
+				SelectedItem.IsSelected = false;
+				SelectedItem = null;
+			}
+			else
+			{
+				// different item
+				if(SelectedItem != null)
+				{
+					SelectedItem.IsSelected = false;
+					newItemVM.IsSelected = true;
+					SelectedItem = newItemVM;
+				}
+				else
+				{
+					newItemVM.IsSelected = true;
+					SelectedItem = newItemVM;
+				}
+			}
 		}
 
 		private bool IsItemSelected(object obj)

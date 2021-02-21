@@ -82,9 +82,9 @@
                             FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
 
                         <Grid.GestureRecognizers>
-                          <TapGestureRecognizer Command="{Binding SelectItemCommand}"		
+                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=SelectItemCommand}"		
                                 CommandParameter="{Binding .}"/>
-                          <TapGestureRecognizer Command="{Binding ShowItemDetailsCommand}"		
+                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
                                 CommandParameter="{Binding .}" NumberOfTapsRequired="2"/>
                           <SwipeGestureRecognizer Direction="Left" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
                                 CommandParameter="{Binding .}"/>

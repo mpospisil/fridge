@@ -93,8 +93,6 @@ namespace FridgeApp.ViewModels
 
 			SaveCommand = new Command(OnSave, ValidateSave);
 			CancelCommand = new Command(OnCancel);
-			ShowItemDetailsCommand = new Command(OnShowItemDetails);
-			SelectItemCommand = new Command(OnSelectItem);
 
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
@@ -212,9 +210,6 @@ namespace FridgeApp.ViewModels
 
 		public Command SaveCommand { get; }
 		public Command CancelCommand { get; }
-		public Command ShowItemDetailsCommand { get; }
-		public Command SelectItemCommand { get; }
-
 
 		public async Task RemoveItemFromFridge(Guid itemId, Guid removedItemIdentifier)
 		{
@@ -293,17 +288,6 @@ namespace FridgeApp.ViewModels
 		private bool ValidateSave()
 		{
 			return !String.IsNullOrWhiteSpace(Name);
-		}
-
-		private void OnSelectItem(object obj)
-		{
-			IsSelected = !isSelected;
-		}
-
-		private async void OnShowItemDetails(object obj)
-		{
-			IItemViewModel selectedItemVM = obj as IItemViewModel;
-			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemFromRepositoryId)}={ItemId}");
 		}
 	}
 }
