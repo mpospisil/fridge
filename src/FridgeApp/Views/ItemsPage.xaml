@@ -7,7 +7,7 @@
              xmlns:res="clr-namespace:FridgeApp"
              Title="{Binding Title}">
     <ContentPage.Content>
-    <RefreshView x:DataType="local:MainViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+    <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
 
       <FlexLayout  BindableLayout.ItemsSource="{Binding Items}"
                            Wrap="Wrap" 
@@ -49,6 +49,14 @@
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
                 
+                <Grid.GestureRecognizers>
+                  <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=SelectItemCommand}"		
+                                CommandParameter="{Binding .}"/>
+                  <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                                CommandParameter="{Binding .}" NumberOfTapsRequired="2"/>
+                  <SwipeGestureRecognizer Direction="Left" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                                CommandParameter="{Binding .}"/>
+                </Grid.GestureRecognizers>
               </Grid>
             </Frame>
 
