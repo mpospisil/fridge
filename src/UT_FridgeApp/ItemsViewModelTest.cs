@@ -22,23 +22,23 @@ namespace UT_FridgeApp
 			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(items.AsEnumerable()));
 
 			// tested view model
-			var mainViewModel = new MainViewModel(fridgeDal);
+			var itemsViewModel = new ItemsViewModel(fridgeDal);
 
-			Assert.IsFalse(mainViewModel.IsBusy, "Initially IsBusy == false");
-			Assert.IsTrue(mainViewModel.Items.Count == 0, "InitiallyExpecting no items");
+			Assert.IsFalse(itemsViewModel.IsBusy, "Initially IsBusy == false");
+			Assert.IsTrue(itemsViewModel.Items.Count == 0, "InitiallyExpecting no items");
 
-			mainViewModel.OnAppearing();
+			itemsViewModel.OnAppearing();
 
-			Assert.IsTrue(mainViewModel.IsBusy, "Expecting IsBusy == true");
+			Assert.IsTrue(itemsViewModel.IsBusy, "Expecting IsBusy == true");
 
-			mainViewModel.LoadItemsCommand.Execute(null);
+			itemsViewModel.LoadItemsCommand.Execute(null);
 
-			Assert.IsFalse(mainViewModel.IsBusy, "IsBusy should equal to 'false'");
-			Assert.IsTrue(mainViewModel.Items.Count == 4, "Expecting 4 items");
+			Assert.IsFalse(itemsViewModel.IsBusy, "IsBusy should equal to 'false'");
+			Assert.IsTrue(itemsViewModel.Items.Count == 4, "Expecting 4 items");
 
 			{
 				// the first item in the fridge 1 , partition 1
-				var itemInFridge = mainViewModel.Items[0];
+				var itemInFridge = itemsViewModel.Items[0];
 				Assert.IsTrue(itemInFridge.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Invalid Id of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeName == MockFridgeDAL.Fridge1Name, "Invalid name of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeIndex == 0, "Invalid index of fridge");
@@ -54,7 +54,7 @@ namespace UT_FridgeApp
 
 			{
 				// the third item in the fridge 1, partition 1
-				var itemInFridge = mainViewModel.Items[2];
+				var itemInFridge = itemsViewModel.Items[2];
 				Assert.IsTrue(itemInFridge.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Invalid Id of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeName == MockFridgeDAL.Fridge1Name, "Invalid name of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeIndex == 0, "Invalid index of fridge");
@@ -70,7 +70,7 @@ namespace UT_FridgeApp
 
 			{
 				// the third item in the fridge 1, partition 2
-				var itemInFridge = mainViewModel.Items[3];
+				var itemInFridge = itemsViewModel.Items[3];
 				Assert.IsTrue(itemInFridge.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Invalid Id of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeName == MockFridgeDAL.Fridge1Name, "Invalid name of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeIndex == 0, "Invalid index of fridge");
