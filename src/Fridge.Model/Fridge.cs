@@ -13,12 +13,18 @@ namespace Fridge.Model
 			Partitions = new List<Partition>();
 			TimeStamp = DateTime.UtcNow;
 			FridgeId = Guid.NewGuid();
+			RemovedItemsIdentifier = Guid.NewGuid();
 		}
 
 		/// <summary>
 		/// The unique identifier of the fridge
 		/// </summary>
 		public Guid FridgeId { get; set; }
+
+		/// <summary>
+		/// The unique identifier of the items which were removed from this fridge
+		/// </summary>
+		public Guid RemovedItemsIdentifier { get; set; }
 
 		/// <summary>
 		/// User friendly name of the fridge

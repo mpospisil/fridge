@@ -22,7 +22,7 @@ namespace FridgeApp {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace FridgeApp {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FridgeApp.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace FridgeApp {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,25 +63,88 @@ namespace FridgeApp {
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
-        internal static string Add {
+        public static string Add {
             get {
                 return ResourceManager.GetString("Add", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Item.
+        /// </summary>
+        public static string AddItem {
+            get {
+                return ResourceManager.GetString("AddItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new item.
+        /// </summary>
+        public static string AddNewItem {
+            get {
+                return ResourceManager.GetString("AddNewItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0:dd.MM.yyyy}.
+        /// </summary>
+        public static string DateFormat {
+            get {
+                return ResourceManager.GetString("DateFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fridge.
         /// </summary>
-        internal static string Fridge {
+        public static string Fridge {
             get {
                 return ResourceManager.GetString("Fridge", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fridges.
+        /// </summary>
+        public static string Fridges {
+            get {
+                return ResourceManager.GetString("Fridges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items.
+        /// </summary>
+        public static string Items {
+            get {
+                return ResourceManager.GetString("Items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
-        internal static string New {
+        public static string New {
             get {
                 return ResourceManager.GetString("New", resourceCulture);
             }
@@ -90,7 +153,7 @@ namespace FridgeApp {
         /// <summary>
         ///   Looks up a localized string similar to New Fridge.
         /// </summary>
-        internal static string NewFridge {
+        public static string NewFridge {
             get {
                 return ResourceManager.GetString("NewFridge", resourceCulture);
             }
@@ -99,27 +162,81 @@ namespace FridgeApp {
         /// <summary>
         ///   Looks up a localized string similar to New Partition.
         /// </summary>
-        internal static string NewPartition {
+        public static string NewPartition {
             get {
                 return ResourceManager.GetString("NewPartition", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Partitions.
         /// </summary>
-        internal static string Partitions {
+        public static string Partitions {
             get {
                 return ResourceManager.GetString("Partitions", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to remove &apos;{0}&apos; ?.
+        /// </summary>
+        public static string Question_Remove_Format {
+            get {
+                return ResourceManager.GetString("Question_Remove_Format", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Save {
+            get {
+                return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
-        internal static string Settings {
+        public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verification.
+        /// </summary>
+        public static string Verification {
+            get {
+                return ResourceManager.GetString("Verification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

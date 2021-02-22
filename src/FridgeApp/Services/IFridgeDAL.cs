@@ -18,5 +18,15 @@ namespace FridgeApp.Services
 		Task UpdateFridge(Fridge.Model.Fridge modifiedFridge);
 
 		Task DeleteFridgeAsync(Guid fridgeId);
+
+		Task<IEnumerable<Fridge.Model.ItemInFridge>> GetItemsAsync(bool forceRefresh = false);
+
+		Task AddItemAsync(Fridge.Model.ItemInFridge newFridgeData);
+
+		Task<Fridge.Model.ItemInFridge> GetItemAsync(Guid itemId);
+
+		Task UpdateItemAsync(Fridge.Model.ItemInFridge modifiedItem);
+
+		Task DeleteAsync(Guid itemInFridgeId);
 	}
 }

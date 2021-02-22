@@ -81,7 +81,7 @@ namespace FridgeApp.ViewModels
 
 		private async void OnAddFridge(object obj)
 		{
-			await Shell.Current.GoToAsync($"{nameof(FridgePage)}?{nameof(FridgeViewModel.FridgeId)}={Guid.Empty.ToString()}");
+			await Shell.Current.GoToAsync($"{nameof(FridgeEditPage)}?{nameof(FridgeViewModel.FridgeId)}={Guid.Empty.ToString()}");
 		}
 
 		async void OnShowFridgeDetails(FridgeViewModel item)
@@ -90,7 +90,7 @@ namespace FridgeApp.ViewModels
 				return;
 
 			// This will push the ItemDetailPage onto the navigation stack
-			await Shell.Current.GoToAsync($"{nameof(FridgePage)}?{nameof(FridgeViewModel.FridgeId)}={item.FridgeId}");
+			await Shell.Current.GoToAsync($"{nameof(FridgeEditPage)}?{nameof(FridgeViewModel.FridgeId)}={item.FridgeId}");
 		}
 	}
 }

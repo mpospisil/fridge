@@ -2,12 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FridgeApp.Views.MainPage"
+             xmlns:local="clr-namespace:FridgeApp.ViewModels"
              xmlns:vm="clr-namespace:FridgeApp.ViewModels"
+             xmlns:res="clr-namespace:FridgeApp"
              Title="{Binding Title}">
-
-  <!--<ContentPage.BindingContext>
-    <vm:AboutViewModel />
-  </ContentPage.BindingContext>-->
 
   <ContentPage.Resources>
     <ResourceDictionary>
@@ -15,7 +13,101 @@
     </ResourceDictionary>
   </ContentPage.Resources>
 
-  <StackLayout Spacing="3" Padding="15">
+  <StackLayout  Spacing="3" Padding="15" VerticalOptions="FillAndExpand">
+
+    <RefreshView x:DataType="local:MainViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+      <CollectionView x:Name="FridgesView"
+                ItemsSource="{Binding Fridges}"
+                ItemsLayout="VerticalList" VerticalOptions="Start" ItemSizingStrategy="MeasureAllItems">
+
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <StackLayout Padding="10" x:DataType="local:FridgeViewModel" VerticalOptions="Start">
+
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition></ColumnDefinition>
+                  <ColumnDefinition Width="100"></ColumnDefinition>
+                  <ColumnDefinition Width="60"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Text="{Binding Name}" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="Title" />
+                <Button Grid.Column="1" Text="{x:Static res:Resources.Remove}" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItem}"></Button>
+                <Button Grid.Column="2" Text="{x:Static res:Resources.New}" Command="{Binding AddItemCommand}"></Button>
+              </Grid>
+
+              <StackLayout BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" HeightRequest="50">
+                <CollectionView
+                x:Name="PartitionsView"
+                ItemsSource="{Binding Partitions}"
+                SelectedItem="{Binding SelectedPartition}"
+                ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="White">
+
+                  <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                      <Grid x:DataType="local:PartitionViewModel" Margin="2">
+                        <Label Text="{Binding Name}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Body" Margin="3" VerticalTextAlignment="Center"/>
+                      </Grid>
+                    </DataTemplate>
+                  </CollectionView.ItemTemplate>
+                </CollectionView>
+              </StackLayout>
+
+              <FlexLayout  BindableLayout.ItemsSource="{Binding SelectedPartition.Items}"
+                           Wrap="Wrap" 
+                           Direction="Row" JustifyContent="Start"
+                           AlignItems="Start" AlignContent="Start">
+                <BindableLayout.ItemTemplate>
+                  <DataTemplate>
+                    <Frame Margin="2" Padding="2">
+                      <Grid x:DataType="local:ItemViewModel">
+                        <Grid.Triggers>
+                          <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="true">
+                            <Setter Property="BackgroundColor" Value="Orange"/>
+                          </DataTrigger>
+                        </Grid.Triggers>
+                        <Grid.RowDefinitions>
+                          <RowDefinition></RowDefinition>
+                          <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label Text="{Binding Name}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Body" Margin="3" VerticalTextAlignment="Center"/>
+
+                        <Label Grid.Row="1"  Text="{Binding AddToFridgeTime, StringFormat={x:Static res:Resources.DateFormat} }" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
+
+                        <Grid.GestureRecognizers>
+                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=SelectItemCommand}"		
+                                CommandParameter="{Binding .}"/>
+                          <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                                CommandParameter="{Binding .}" NumberOfTapsRequired="2"/>
+                          <SwipeGestureRecognizer Direction="Left" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=ShowItemDetailsCommand}"		
+                                CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
+                      </Grid>
+                    </Frame>
+
+                  </DataTemplate>
+                </BindableLayout.ItemTemplate>
+              </FlexLayout>
+
+
+            </StackLayout>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </RefreshView>
+
   </StackLayout>
 
 </ContentPage>

@@ -8,12 +8,8 @@ namespace FridgeApp
 		public AppShell()
 		{
 			InitializeComponent();
-			Routing.RegisterRoute(nameof(FridgePage), typeof(FridgePage));
+			Routing.RegisterRoute(nameof(FridgeEditPage), typeof(FridgeEditPage));
+			Routing.RegisterRoute(nameof(ItemPage), typeof(ItemPage));
 		}
-
-		//private async void OnMenuItemClicked(object sender, EventArgs e)
-		//{
-		//	await Shell.Current.GoToAsync("//LoginPage");
-		//}
 	}
 }

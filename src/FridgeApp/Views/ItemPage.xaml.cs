@@ -1,24 +1,27 @@
 ﻿using FridgeApp.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace FridgeApp.Views
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class MainPage : ContentPage
+	public partial class ItemPage : ContentPage
 	{
-		IMainViewModel viewModel;
-
-		public MainPage()
+		public ItemPage()
 		{
 			InitializeComponent();
-			BindingContext = viewModel = DependencyService.Resolve<IMainViewModel>();
+			BindingContext = DependencyService.Resolve<IItemViewModel>();
 		}
 
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
-			viewModel.OnAppearing();
 		}
 	}
 }

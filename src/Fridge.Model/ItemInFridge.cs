@@ -12,6 +12,7 @@ namespace Fridge.Model
 		{
 			TimeStamp = DateTime.UtcNow;
 			History = new List<ItemChange>();
+			IsInFridge = false;
 		}
 
 		/// <summary>
@@ -28,6 +29,11 @@ namespace Fridge.Model
 		/// The identifier of the partition where item is stored
 		/// </summary>
 		public Guid PartitionId { get; set; }
+
+		/// <summary>
+		/// True if this item is currently in a fridge
+		/// </summary>
+		public bool IsInFridge { get; set; }
 
 		/// <summary>
 		/// Time when the partition in the fridge  was modified

@@ -1,5 +1,11 @@
 ﻿using FridgeApp.Services;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Linq;
+using Xamarin.Forms;
+using System.Diagnostics;
 
 namespace FridgeApp.ViewModels
 {
@@ -10,8 +16,11 @@ namespace FridgeApp.ViewModels
 
 		Guid PartitionId { get; set; }
 
+		ObservableCollection<IItemViewModel> Items { get; }
+
 		void SetPropertiesInVM(Fridge.Model.Partition partition);
 		Fridge.Model.Partition PartitionFromVM();
+		Command LoadItemsCommand { get; }
 	}
 
 	public class PartitionViewModel : BaseViewModel, IPartitionViewModel
@@ -22,10 +31,14 @@ namespace FridgeApp.ViewModels
 
 		public PartitionViewModel(IFridgeDAL fridgeDal, Fridge.Model.Partition partition) : base(fridgeDal)
 		{
+			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+			Items = new ObservableCollection<IItemViewModel>();
 			if (partition != null)
 			{
 				SetPropertiesInVM(partition);
 			}
+
+			LoadItemsCommand.Execute(null);
 		}
 
 		public Guid PartitionId
@@ -46,6 +59,10 @@ namespace FridgeApp.ViewModels
 			set => SetProperty(ref timeStamp, value);
 		}
 
+		public Command LoadItemsCommand { get; }
+
+		public ObservableCollection<IItemViewModel> Items { get; }
+
 		/// <summary>
 		/// Write data to the view model
 		/// </summary>
@@ -55,6 +72,32 @@ namespace FridgeApp.ViewModels
 			this.PartitionId = partition.PartitionId;
 			this.Name = partition.Name;
 			this.TimeStamp = partition.TimeStamp;
+		}
+
+		async Task ExecuteLoadItemsCommand()
+		{
+			IsBusy = true;
+
+			try
+			{
+				Items.Clear();
+				var allItems = await FridgeDal.GetItemsAsync();
+				var itemsInPartition = allItems.Where(i => i.PartitionId == this.PartitionId);
+
+				foreach (var item in itemsInPartition)
+				{
+					var itemVM = new ItemViewModel(FridgeDal, item);
+					Items.Add(itemVM);
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine(ex);
+			}
+			finally
+			{
+				IsBusy = false;
+			}
 		}
 
 		/// <summary>

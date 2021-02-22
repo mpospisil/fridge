@@ -16,6 +16,7 @@ namespace UT_FridgeApp
 
 			var deepCopy = firdge.DeepCopy();
 			Assert.IsTrue(firdge.FridgeId == deepCopy.FridgeId);
+			Assert.IsTrue(firdge.RemovedItemsIdentifier == deepCopy.RemovedItemsIdentifier);
 			Assert.IsTrue(firdge.Name == deepCopy.Name);
 			Assert.IsTrue(firdge.TimeStamp == deepCopy.TimeStamp);
 			Assert.IsTrue(firdge.Partitions.Count == deepCopy.Partitions.Count);

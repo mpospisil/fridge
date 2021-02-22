@@ -33,7 +33,7 @@ namespace UT_FridgeApp
 			settingsViewModel.LoadFridgesCommand.Execute(null);
 
 			Assert.IsFalse(settingsViewModel.IsBusy, "IsBusy should equal to 'false'");
-			Assert.IsTrue(settingsViewModel.Fridges.Count == 1, "InitiallyExpecting no fridge");
+			Assert.IsTrue(settingsViewModel.Fridges.Count == 1, "Expecting 1 fridge");
 
 			// get the middle partition
 			var fridgeVM = settingsViewModel.Fridges[0];

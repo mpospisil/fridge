@@ -120,8 +120,29 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AddItem" xml:space="preserve">
+    <value>Add Item</value>
+  </data>
+  <data name="AddNewItem" xml:space="preserve">
+    <value>Add new item</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DateFormat" xml:space="preserve">
+    <value>{0:dd.MM.yyyy}</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="Fridge" xml:space="preserve">
     <value>Fridge</value>
+  </data>
+  <data name="Fridges" xml:space="preserve">
+    <value>Fridges</value>
+  </data>
+  <data name="Items" xml:space="preserve">
+    <value>Items</value>
   </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
@@ -132,10 +153,28 @@
   <data name="NewPartition" xml:space="preserve">
     <value>New Partition</value>
   </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="Partitions" xml:space="preserve">
     <value>Partitions</value>
   </data>
+  <data name="Question_Remove_Format" xml:space="preserve">
+    <value>Do you really want to remove '{0}' ?</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="Verification" xml:space="preserve">
+    <value>Verification</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
   </data>
 </root>
