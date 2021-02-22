@@ -61,15 +61,25 @@ namespace FridgeApp.ViewModels
 
 			var fridges = await FridgeDal.GetFridgesAsync(true);
 
-			// TODO - move to functionality to DAL
-			Dictionary<Guid, Fridge.Model.Fridge> fridgeDict = fridges.ToDictionary(f => f.FridgeId);
-			Dictionary<Guid, Tuple<Guid, Fridge.Model.Partition>> partitionDict = new Dictionary<Guid, Tuple<Guid, Fridge.Model.Partition>>();
+
+			Dictionary<Guid, PartitionDescriptor> partitionDescriptorDict = new Dictionary<Guid, PartitionDescriptor>();
+
+			int fridgeInx = 0;
 			foreach(var fridge in fridges)
 			{
+				int partitionInx = 0;
 				foreach(var partition in fridge.Partitions)
 				{
-					partitionDict.Add(partition.PartitionId, new Tuple<Guid, Fridge.Model.Partition>(fridge.FridgeId, partition));
+					partitionDescriptorDict.Add(partition.PartitionId, new PartitionDescriptor() {
+						FridgeInx = fridgeInx,
+						PartitionInx = partitionInx,
+						Fridge = fridge,
+						Partition = partition,
+					});
+
+					partitionInx++;
 				}
+				fridgeInx++;
 			}
 
 			try
@@ -78,10 +88,19 @@ namespace FridgeApp.ViewModels
 				var items = await FridgeDal.GetItemsAsync(true);
 				foreach (var item in items)
 				{
+					PartitionDescriptor partitionDescriptor = null;
+					if(!partitionDescriptorDict.TryGetValue(item.PartitionId, out partitionDescriptor))
+					{
+						// partition doesn't exist
+						continue;
+					}
+
 					var itemVM = new ItemViewModel(FridgeDal, item);
-					itemVM.FridgeName = fridgeDict[item.FridgeId].Name;
-					var partTuple = partitionDict[item.PartitionId];
-					itemVM.PartitionName = partTuple.Item2.Name;
+
+					itemVM.PartitionIndex = partitionDescriptor.PartitionInx;
+					itemVM.FridgeIndex = partitionDescriptor.FridgeInx;
+					itemVM.FridgeName = partitionDescriptor.Fridge.Name;
+					itemVM.PartitionName = partitionDescriptor.Partition.Name;
 					Items.Add(itemVM);
 				}
 			}
