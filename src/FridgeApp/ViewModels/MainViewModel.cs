@@ -1,10 +1,12 @@
 ﻿using FridgeApp.Services;
 using FridgeApp.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace FridgeApp.ViewModels
 {
@@ -57,13 +59,48 @@ namespace FridgeApp.ViewModels
 		{
 			IsBusy = true;
 
+			var fridges = await FridgeDal.GetFridgesAsync(true);
+
+
+			Dictionary<Guid, PartitionDescriptor> partitionDescriptorDict = new Dictionary<Guid, PartitionDescriptor>();
+
+			int fridgeInx = 0;
+			foreach(var fridge in fridges)
+			{
+				int partitionInx = 0;
+				foreach(var partition in fridge.Partitions)
+				{
+					partitionDescriptorDict.Add(partition.PartitionId, new PartitionDescriptor() {
+						FridgeInx = fridgeInx,
+						PartitionInx = partitionInx,
+						Fridge = fridge,
+						Partition = partition,
+					});
+
+					partitionInx++;
+				}
+				fridgeInx++;
+			}
+
 			try
 			{
 				Items.Clear();
 				var items = await FridgeDal.GetItemsAsync(true);
 				foreach (var item in items)
 				{
+					PartitionDescriptor partitionDescriptor = null;
+					if(!partitionDescriptorDict.TryGetValue(item.PartitionId, out partitionDescriptor))
+					{
+						// partition doesn't exist
+						continue;
+					}
+
 					var itemVM = new ItemViewModel(FridgeDal, item);
+
+					itemVM.PartitionIndex = partitionDescriptor.PartitionInx;
+					itemVM.FridgeIndex = partitionDescriptor.FridgeInx;
+					itemVM.FridgeName = partitionDescriptor.Fridge.Name;
+					itemVM.PartitionName = partitionDescriptor.Partition.Name;
 					Items.Add(itemVM);
 				}
 			}

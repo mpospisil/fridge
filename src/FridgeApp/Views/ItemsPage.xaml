@@ -7,10 +7,55 @@
              xmlns:res="clr-namespace:FridgeApp"
              Title="{Binding Title}">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+    <RefreshView x:DataType="local:MainViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+
+      <FlexLayout  BindableLayout.ItemsSource="{Binding Items}"
+                           Wrap="Wrap" 
+                           Direction="Row" JustifyContent="Start"
+                           AlignItems="Start" AlignContent="Start">
+        <BindableLayout.ItemTemplate>
+          <DataTemplate>
+            <Frame Margin="2" Padding="2">
+              <Grid x:DataType="local:ItemViewModel">
+                <Grid.Triggers>
+                  <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="true">
+                    <Setter Property="BackgroundColor" Value="Orange"/>
+                  </DataTrigger>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                  <RowDefinition></RowDefinition>
+                  <RowDefinition></RowDefinition>
+                  <RowDefinition></RowDefinition>
+                  <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Name}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Body" Margin="3" VerticalTextAlignment="Center"/>
+
+                <Label Grid.Column="0" Grid.Row="1" Text="{Binding FridgeName}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
+
+                <Label Grid.Column="0" Grid.Row="2" Text="{Binding PartitionName}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
+
+                <Label Grid.Column="0" Grid.Row="3"  Text="{Binding AddToFridgeTime, StringFormat={x:Static res:Resources.DateFormat} }" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
+                
+              </Grid>
+            </Frame>
+
+          </DataTemplate>
+        </BindableLayout.ItemTemplate>
+      </FlexLayout>
+
+    </RefreshView>
+  </ContentPage.Content>
 </ContentPage>

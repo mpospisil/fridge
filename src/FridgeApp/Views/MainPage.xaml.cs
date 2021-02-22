@@ -18,6 +18,7 @@ namespace FridgeApp.Views
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
+			Shell.SetTabBarIsVisible(this, true);
 			viewModel.OnAppearing();
 		}
 	}
