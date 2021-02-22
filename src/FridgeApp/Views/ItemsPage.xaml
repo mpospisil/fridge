@@ -25,19 +25,30 @@
                 <Grid.RowDefinitions>
                   <RowDefinition></RowDefinition>
                   <RowDefinition></RowDefinition>
+                  <RowDefinition></RowDefinition>
+                  <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Label Text="{Binding Name}" 
+                <Label Grid.Column="0" Grid.Row="0" Text="{Binding Name}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Body" Margin="3" VerticalTextAlignment="Center"/>
 
-                <Label Grid.Row="1"  Text="{Binding AddToFridgeTime, StringFormat={x:Static res:Resources.DateFormat} }" 
+                <Label Grid.Column="0" Grid.Row="1" Text="{Binding FridgeName}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
 
+                <Label Grid.Column="0" Grid.Row="2" Text="{Binding PartitionName}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
 
+                <Label Grid.Column="0" Grid.Row="3"  Text="{Binding AddToFridgeTime, StringFormat={x:Static res:Resources.DateFormat} }" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
+                
               </Grid>
             </Frame>
 
