@@ -1,4 +1,5 @@
 ﻿using FridgeApp.Services;
+using FridgeApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,21 +18,76 @@ namespace FridgeApp.ViewModels
 
 	public class ItemsViewModel : BaseViewModel, IItemsViewModel
 	{
+		private IItemViewModel selectedItem;
+
 		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
 			Items = new ObservableCollection<IItemViewModel>();
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
+			SelectItemCommand = new Command(OnSelectItem);
 		}
 		/// <summary>
 		/// All items for the user
 		/// </summary>
 		public ObservableCollection<IItemViewModel> Items { get; private set; }
 
+		public IItemViewModel SelectedItem
+		{
+			get => selectedItem;
+			set
+			{
+				SetProperty(ref selectedItem, value);
+				ShowItemDetailsCommand.ChangeCanExecute();
+				//RemoveItemCommand.ChangeCanExecute();
+			}
+		}
+
 		public Command LoadItemsCommand { get; private set; }
+		public Command ShowItemDetailsCommand { get; }
+		public Command SelectItemCommand { get; }
 
 		public void OnAppearing()
 		{
 			IsBusy = true;
+		}
+
+		private async void OnShowItemDetails(object obj)
+		{
+			IItemViewModel selectedItemVM = obj as IItemViewModel;
+			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemFromRepositoryId)}={SelectedItem.ItemId}");
+		}
+
+		private bool IsItemSelected(object obj)
+		{
+			return SelectedItem != null;
+		}
+
+		private void OnSelectItem(object obj)
+		{
+			IItemViewModel newItemVM = obj as IItemViewModel;
+
+			if (SelectedItem == newItemVM)
+			{
+				// same item - deselect it
+				SelectedItem.IsSelected = false;
+				SelectedItem = null;
+			}
+			else
+			{
+				// different item
+				if (SelectedItem != null)
+				{
+					SelectedItem.IsSelected = false;
+					newItemVM.IsSelected = true;
+					SelectedItem = newItemVM;
+				}
+				else
+				{
+					newItemVM.IsSelected = true;
+					SelectedItem = newItemVM;
+				}
+			}
 		}
 
 		/// <summary>
@@ -43,7 +99,6 @@ namespace FridgeApp.ViewModels
 			IsBusy = true;
 
 			var fridges = await FridgeDal.GetFridgesAsync(true);
-
 
 			Dictionary<Guid, PartitionDescriptor> partitionDescriptorDict = new Dictionary<Guid, PartitionDescriptor>();
 
