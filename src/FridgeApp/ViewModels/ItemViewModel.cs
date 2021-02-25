@@ -37,6 +37,8 @@ namespace FridgeApp.ViewModels
 
 		bool IsSelected { get; set; }
 
+		bool IsVisible { get; set; }
+
 		/// <summary>
 		/// The date when item was added to the fridge
 		/// </summary>
@@ -69,6 +71,7 @@ namespace FridgeApp.ViewModels
 		private bool isInFridge;
 		DateTime addToFridgeTime;
 		bool isSelected;
+		bool isVisible;
 
 		public ItemViewModel() : this(null)
 		{
@@ -206,6 +209,12 @@ namespace FridgeApp.ViewModels
 		{
 			get => isSelected;
 			set => SetProperty(ref isSelected, value);
+		}
+
+		public bool IsVisible
+		{
+			get => isVisible;
+			set => SetProperty(ref isVisible, value);
 		}
 
 		public Command SaveCommand { get; }

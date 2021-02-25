@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -20,6 +19,7 @@ namespace FridgeApp.ViewModels
 	public class ItemsViewModel : BaseViewModel, IItemsViewModel
 	{
 		private IItemViewModel selectedItem;
+		private string query;
 
 		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
@@ -45,6 +45,15 @@ namespace FridgeApp.ViewModels
 				SetProperty(ref selectedItem, value);
 				ShowItemDetailsCommand.ChangeCanExecute();
 				RemoveItemCommand.ChangeCanExecute();
+			}
+		}
+
+		public string Query
+		{
+			get => query;
+			set
+			{
+				SetProperty(ref query, value);
 			}
 		}
 
