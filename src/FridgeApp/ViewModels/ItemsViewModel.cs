@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -24,8 +25,12 @@ namespace FridgeApp.ViewModels
 		{
 			Items = new ObservableCollection<IItemViewModel>();
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
 			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
 			SelectItemCommand = new Command(OnSelectItem);
+
+			this.PropertyChanged +=
+					(_, __) => RemoveItemCommand.ChangeCanExecute();
 		}
 		/// <summary>
 		/// All items for the user
@@ -39,17 +44,19 @@ namespace FridgeApp.ViewModels
 			{
 				SetProperty(ref selectedItem, value);
 				ShowItemDetailsCommand.ChangeCanExecute();
-				//RemoveItemCommand.ChangeCanExecute();
+				RemoveItemCommand.ChangeCanExecute();
 			}
 		}
 
 		public Command LoadItemsCommand { get; private set; }
 		public Command ShowItemDetailsCommand { get; }
 		public Command SelectItemCommand { get; }
+		public Command RemoveItemCommand { get; }
 
 		public void OnAppearing()
 		{
 			IsBusy = true;
+			SelectedItem = null;
 		}
 
 		private async void OnShowItemDetails(object obj)
@@ -88,6 +95,31 @@ namespace FridgeApp.ViewModels
 					SelectedItem = newItemVM;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Event handler for removing  item from the fridge 
+		/// </summary>
+		private async void OnRemoveItem(object obj)
+		{
+			IItemViewModel itemToRemoveVM = SelectedItem;
+			// ask user if he really wants to delete the selected item from the fridge
+			var answer = await App.Current.MainPage.DisplayAlert(Resources.Verification, String.Format(Resources.Question_Remove_Format, itemToRemoveVM.Name), Resources.Yes, Resources.No);
+
+			if (!answer)
+			{
+				// leave - the user doesn't want to remove the selected item
+				return;
+			}
+
+			// remove the selected item
+			var fridge = await FridgeDal.GetFridgeAsync(Guid.Parse(itemToRemoveVM.FridgeId));
+			Guid itemId = Guid.Parse(itemToRemoveVM.ItemId);
+			Guid partitionId = Guid.Parse(itemToRemoveVM.PartitionId);
+			await itemToRemoveVM.RemoveItemFromFridge(itemId, fridge.RemovedItemsIdentifier);
+
+			Items.Remove(itemToRemoveVM);
+			SelectedItem = null;
 		}
 
 		/// <summary>
