@@ -54,8 +54,8 @@ namespace FridgeApp.ViewModels
 			DeletePartitionCommand = new Command(DeletePartition);
 			DeleteFridgeCommand = new Command(OnDeleteFridge, CanDeleteFridge);
 			AddItemCommand = new Command(OnAddItem, CanAddItem);
-			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
 			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
+			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
 			SelectItemCommand = new Command(OnSelectItem);
 
 			this.PropertyChanged +=
@@ -170,8 +170,8 @@ namespace FridgeApp.ViewModels
 		public Command DeletePartitionCommand { get; }
 		public Command DeleteFridgeCommand { get; }
 		public Command AddItemCommand { get; }
-		public Command ShowItemDetailsCommand { get; }
 		public Command RemoveItemCommand { get; }
+		public Command ShowItemDetailsCommand { get; }
 		public Command SelectItemCommand { get; }
 
 		public void AddPartition()
@@ -313,7 +313,7 @@ namespace FridgeApp.ViewModels
 			else
 			{
 				// different item
-				if(SelectedItem != null)
+				if (SelectedItem != null)
 				{
 					SelectedItem.IsSelected = false;
 					newItemVM.IsSelected = true;
