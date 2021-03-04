@@ -13,6 +13,7 @@ namespace FridgeApp.ViewModels
 	{
 		void OnAppearing();
 		ObservableCollection<IItemViewModel> Items { get; }
+		string Query { get; }
 		Command LoadItemsCommand { get; }
 	}
 
@@ -20,6 +21,10 @@ namespace FridgeApp.ViewModels
 	{
 		private IItemViewModel selectedItem;
 		private string query;
+		private bool isSearching;
+		private bool queryIsChanged;
+		private bool searchAgain;
+		private Task searchTask;
 
 		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
@@ -54,6 +59,23 @@ namespace FridgeApp.ViewModels
 			set
 			{
 				SetProperty(ref query, value);
+				if (isSearching)
+				{
+					searchAgain = true;
+					return;
+				}
+
+				isSearching = true;
+
+				SetFilter(Query, Items);
+
+				if (searchAgain)
+				{
+					SetFilter(Query, Items);
+				}
+
+				searchAgain = false;
+				isSearching = false;
 			}
 		}
 
@@ -66,6 +88,41 @@ namespace FridgeApp.ViewModels
 		{
 			IsBusy = true;
 			SelectedItem = null;
+			Query = string.Empty;
+		}
+
+		private async static void SetFilter(string userQuery, IList<IItemViewModel> allItems)
+		{
+			Debug.WriteLine($"Query = '{userQuery}'");
+
+			var foundItems = await GetSearchTask(userQuery, allItems);
+
+			Debug.Assert(allItems.Count == foundItems.Count);
+
+			for(int i = 0; i < allItems.Count; i++)
+			{
+				var item = allItems[i];
+				item.IsVisible = foundItems[i];
+			}
+		}
+
+		private static Task<List<bool>> GetSearchTask(string query , IList<IItemViewModel> itemsToSearch)
+		{
+			return Task.Run<List<bool>>(() =>
+			{
+
+				List<bool> res = new List<bool>(itemsToSearch.Count);
+				var capitalisedQuery = query.ToLower();
+
+				foreach(var item in itemsToSearch)
+				{
+					var capItemName = item.Name.ToLower();
+					bool searchRes = capItemName.Contains(capitalisedQuery);
+					res.Add(searchRes);
+				}
+				
+				return res;
+			});
 		}
 
 		private async void OnShowItemDetails(object obj)

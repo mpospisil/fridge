@@ -21,7 +21,12 @@
                            AlignItems="Start" AlignContent="Start">
         <BindableLayout.ItemTemplate>
           <DataTemplate>
-            <Frame Margin="2" Padding="2">
+            <Frame Margin="2" Padding="2" x:DataType="local:ItemViewModel">
+              <Frame.Triggers>
+                <DataTrigger TargetType="Frame" Binding="{Binding IsVisible}" Value="false">
+                  <Setter Property="IsVisible" Value="false"/>
+                </DataTrigger>
+              </Frame.Triggers>
               <Grid x:DataType="local:ItemViewModel">
                 <Grid.Triggers>
                   <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="true">
