@@ -6,13 +6,15 @@
              xmlns:vm="clr-namespace:FridgeApp.ViewModels"
              xmlns:res="clr-namespace:FridgeApp"
              Title="{Binding Title}">
-
+ 
   <ContentPage.ToolbarItems>
     <ToolbarItem Text="{x:Static res:Resources.Remove}" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItem}"/>
   </ContentPage.ToolbarItems>
+      
   <Shell.SearchHandler>
     <SearchHandler Placeholder="{x:Static res:Resources.SearchPlaceHolder}" Query="{Binding Query}"/>
   </Shell.SearchHandler>
+      
   <ContentPage.Content>
     <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
       <FlexLayout  BindableLayout.ItemsSource="{Binding Items}"

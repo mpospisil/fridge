@@ -22,9 +22,7 @@ namespace FridgeApp.ViewModels
 		private IItemViewModel selectedItem;
 		private string query;
 		private bool isSearching;
-		private bool queryIsChanged;
 		private bool searchAgain;
-		private Task searchTask;
 
 		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
