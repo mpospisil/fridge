@@ -6,16 +6,29 @@
              xmlns:vm="clr-namespace:FridgeApp.ViewModels"
              xmlns:res="clr-namespace:FridgeApp"
              Title="{Binding Title}">
-    <ContentPage.Content>
+ 
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="{x:Static res:Resources.Remove}" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItem}"/>
+  </ContentPage.ToolbarItems>
+      
+  <Shell.SearchHandler>
+    <SearchHandler Placeholder="{x:Static res:Resources.SearchPlaceHolder}" Query="{Binding Query}"/>
+  </Shell.SearchHandler>
+      
+  <ContentPage.Content>
     <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-
       <FlexLayout  BindableLayout.ItemsSource="{Binding Items}"
                            Wrap="Wrap" 
                            Direction="Row" JustifyContent="Start"
                            AlignItems="Start" AlignContent="Start">
         <BindableLayout.ItemTemplate>
           <DataTemplate>
-            <Frame Margin="2" Padding="2">
+            <Frame Margin="2" Padding="2" x:DataType="local:ItemViewModel">
+              <Frame.Triggers>
+                <DataTrigger TargetType="Frame" Binding="{Binding IsVisible}" Value="false">
+                  <Setter Property="IsVisible" Value="false"/>
+                </DataTrigger>
+              </Frame.Triggers>
               <Grid x:DataType="local:ItemViewModel">
                 <Grid.Triggers>
                   <DataTrigger TargetType="Grid" Binding="{Binding IsSelected}" Value="true">
@@ -48,7 +61,7 @@
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
-                
+
                 <Grid.GestureRecognizers>
                   <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=SelectItemCommand}"
                                 CommandParameter="{Binding .}"/>
@@ -63,7 +76,6 @@
           </DataTemplate>
         </BindableLayout.ItemTemplate>
       </FlexLayout>
-
     </RefreshView>
   </ContentPage.Content>
 </ContentPage>

@@ -13,19 +13,27 @@ namespace FridgeApp.ViewModels
 	{
 		void OnAppearing();
 		ObservableCollection<IItemViewModel> Items { get; }
+		string Query { get; }
 		Command LoadItemsCommand { get; }
 	}
 
 	public class ItemsViewModel : BaseViewModel, IItemsViewModel
 	{
 		private IItemViewModel selectedItem;
+		private string query;
+		private bool isSearching;
+		private bool searchAgain;
 
 		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
 			Items = new ObservableCollection<IItemViewModel>();
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
+			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
 			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
 			SelectItemCommand = new Command(OnSelectItem);
+
+			this.PropertyChanged +=
+					(_, __) => RemoveItemCommand.ChangeCanExecute();
 		}
 		/// <summary>
 		/// All items for the user
@@ -39,17 +47,80 @@ namespace FridgeApp.ViewModels
 			{
 				SetProperty(ref selectedItem, value);
 				ShowItemDetailsCommand.ChangeCanExecute();
-				//RemoveItemCommand.ChangeCanExecute();
+				RemoveItemCommand.ChangeCanExecute();
+			}
+		}
+
+		public string Query
+		{
+			get => query;
+			set
+			{
+				SetProperty(ref query, value);
+				if (isSearching)
+				{
+					searchAgain = true;
+					return;
+				}
+
+				isSearching = true;
+
+				SetFilter(Query, Items);
+
+				if (searchAgain)
+				{
+					SetFilter(Query, Items);
+				}
+
+				searchAgain = false;
+				isSearching = false;
 			}
 		}
 
 		public Command LoadItemsCommand { get; private set; }
 		public Command ShowItemDetailsCommand { get; }
 		public Command SelectItemCommand { get; }
+		public Command RemoveItemCommand { get; }
 
 		public void OnAppearing()
 		{
 			IsBusy = true;
+			SelectedItem = null;
+			Query = string.Empty;
+		}
+
+		private async static void SetFilter(string userQuery, IList<IItemViewModel> allItems)
+		{
+			Debug.WriteLine($"Query = '{userQuery}'");
+
+			var foundItems = await GetSearchTask(userQuery, allItems);
+
+			Debug.Assert(allItems.Count == foundItems.Count);
+
+			for(int i = 0; i < allItems.Count; i++)
+			{
+				var item = allItems[i];
+				item.IsVisible = foundItems[i];
+			}
+		}
+
+		private static Task<List<bool>> GetSearchTask(string query , IList<IItemViewModel> itemsToSearch)
+		{
+			return Task.Run<List<bool>>(() =>
+			{
+
+				List<bool> res = new List<bool>(itemsToSearch.Count);
+				var capitalisedQuery = query.ToLower();
+
+				foreach(var item in itemsToSearch)
+				{
+					var capItemName = item.Name.ToLower();
+					bool searchRes = capItemName.Contains(capitalisedQuery);
+					res.Add(searchRes);
+				}
+				
+				return res;
+			});
 		}
 
 		private async void OnShowItemDetails(object obj)
@@ -88,6 +159,31 @@ namespace FridgeApp.ViewModels
 					SelectedItem = newItemVM;
 				}
 			}
+		}
+
+		/// <summary>
+		/// Event handler for removing  item from the fridge 
+		/// </summary>
+		private async void OnRemoveItem(object obj)
+		{
+			IItemViewModel itemToRemoveVM = SelectedItem;
+			// ask user if he really wants to delete the selected item from the fridge
+			var answer = await App.Current.MainPage.DisplayAlert(Resources.Verification, String.Format(Resources.Question_Remove_Format, itemToRemoveVM.Name), Resources.Yes, Resources.No);
+
+			if (!answer)
+			{
+				// leave - the user doesn't want to remove the selected item
+				return;
+			}
+
+			// remove the selected item
+			var fridge = await FridgeDal.GetFridgeAsync(Guid.Parse(itemToRemoveVM.FridgeId));
+			Guid itemId = Guid.Parse(itemToRemoveVM.ItemId);
+			Guid partitionId = Guid.Parse(itemToRemoveVM.PartitionId);
+			await itemToRemoveVM.RemoveItemFromFridge(itemId, fridge.RemovedItemsIdentifier);
+
+			Items.Remove(itemToRemoveVM);
+			SelectedItem = null;
 		}
 
 		/// <summary>
