@@ -24,6 +24,8 @@ namespace FridgeApp.ViewModels
 		private bool isSearching;
 		private bool searchAgain;
 
+		public event EventHandler ItemFilterEvent;
+
 		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
 			Items = new ObservableCollection<IItemViewModel>();
@@ -57,23 +59,33 @@ namespace FridgeApp.ViewModels
 			set
 			{
 				SetProperty(ref query, value);
-				if (isSearching)
-				{
-					searchAgain = true;
-					return;
-				}
+				OnQueryChanged();
+			}
+		}
 
-				isSearching = true;
+		async void OnQueryChanged()
+		{
+			if (isSearching)
+			{
+				searchAgain = true;
+				return;
+			}
 
-				SetFilter(Query, Items);
+			isSearching = true;
 
-				if (searchAgain)
-				{
-					SetFilter(Query, Items);
-				}
+			await SetFilter(Query, Items);
 
-				searchAgain = false;
-				isSearching = false;
+			if (searchAgain)
+			{
+				await SetFilter(Query, Items);
+			}
+
+			searchAgain = false;
+			isSearching = false;
+
+			if(ItemFilterEvent != null)
+			{
+				ItemFilterEvent.Invoke(this, new EventArgs());
 			}
 		}
 
@@ -89,7 +101,7 @@ namespace FridgeApp.ViewModels
 			Query = string.Empty;
 		}
 
-		private async static void SetFilter(string userQuery, IList<IItemViewModel> allItems)
+		private async static Task SetFilter(string userQuery, IList<IItemViewModel> allItems)
 		{
 			Debug.WriteLine($"Query = '{userQuery}'");
 
