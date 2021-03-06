@@ -99,7 +99,6 @@ namespace UT_FridgeApp
 			List<Fridge.Model.ItemInFridge> items = MockFridgeDAL.CreateMockItems();
 			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(items.AsEnumerable()));
 
-
 			using (ManualResetEvent mre = new ManualResetEvent(false))
 			{
 				EventHandler handler = (s, e) =>
