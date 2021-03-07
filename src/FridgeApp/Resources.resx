@@ -172,7 +172,16 @@
     <value>Save</value>
   </data>
   <data name="SearchPlaceHolder" xml:space="preserve">
-    <value>Enter search term</value>
+    <value>Product</value>
+  </data>
+  <data name="SortAlphabetical" xml:space="preserve">
+    <value>Alphabetical</value>
+  </data>
+  <data name="SortByDate" xml:space="preserve">
+    <value>By date</value>
+  </data>
+  <data name="SortByFridge" xml:space="preserve">
+    <value>By fridge</value>
   </data>
   <data name="Verification" xml:space="preserve">
     <value>Verification</value>

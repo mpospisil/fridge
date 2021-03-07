@@ -8,6 +8,11 @@
              Title="{Binding Title}">
  
   <ContentPage.ToolbarItems>
+    <ToolbarItem Order="Secondary" Priority="1" Name="{x:Static res:Resources.SortByFridge}"/>
+    <ToolbarItem Order="Secondary" Priority="1" Name="{x:Static res:Resources.SortByDate}" />    
+    <ToolbarItem Order="Secondary" Priority="1" Name="{x:Static res:Resources.SortAlphabetical}" />
+    <ToolbarItem Order="Primary" Priority="1" IconImageSource="filter32.png" />
+    
     <ToolbarItem IconImageSource="eat32.png" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItem}"/>
   </ContentPage.ToolbarItems>
       

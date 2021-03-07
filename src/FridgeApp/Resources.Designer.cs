@@ -223,11 +223,38 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enter search term.
+        ///   Looks up a localized string similar to Product.
         /// </summary>
         public static string SearchPlaceHolder {
             get {
                 return ResourceManager.GetString("SearchPlaceHolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alphabetical.
+        /// </summary>
+        public static string SortAlphabetical {
+            get {
+                return ResourceManager.GetString("SortAlphabetical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By date.
+        /// </summary>
+        public static string SortByDate {
+            get {
+                return ResourceManager.GetString("SortByDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By fridge.
+        /// </summary>
+        public static string SortByFridge {
+            get {
+                return ResourceManager.GetString("SortByFridge", resourceCulture);
             }
         }
         
