@@ -8,7 +8,7 @@
              Title="{Binding Title}">
  
   <ContentPage.ToolbarItems>
-    <ToolbarItem Text="{x:Static res:Resources.Remove}" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItem}"/>
+    <ToolbarItem IconImageSource="eat32.png" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItem}"/>
   </ContentPage.ToolbarItems>
       
   <Shell.SearchHandler>

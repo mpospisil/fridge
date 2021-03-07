@@ -6,7 +6,7 @@
              x:Class="FridgeApp.Views.FridgeEditPage">
   
   <ContentPage.ToolbarItems>
-    <ToolbarItem Text="{x:Static res:Resources.Delete}" Command="{Binding DeleteFridgeCommand}" />
+    <ToolbarItem IconImageSource="delete32.png" Command="{Binding DeleteFridgeCommand}" />
   </ContentPage.ToolbarItems>
 
   <ContentPage.Content>
@@ -20,10 +20,10 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
           <ColumnDefinition></ColumnDefinition>
-          <ColumnDefinition Width="60"></ColumnDefinition>
+          <ColumnDefinition Width="40"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Text="Partitions" FontSize="Medium"></Label>
-        <Button Grid.Column="1" Text="{x:Static res:Resources.Add}" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
+        <Button Grid.Column="1" ImageSource="plus32.png" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
       </Grid>
 
       <CollectionView x:Name="PartitionsView"
@@ -39,7 +39,7 @@
               <Entry Grid.Column="0" Text="{Binding Name, Mode=TwoWay}" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Medium" />
-              <Button Grid.Column="1" Text="D" FontSize="Medium" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=DeletePartitionCommand}" CommandParameter="{Binding}">
+              <Button Grid.Column="1" ImageSource="delete32.png" FontSize="Medium" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=DeletePartitionCommand}" CommandParameter="{Binding}">
               </Button>
             </Grid>
           </DataTemplate>
