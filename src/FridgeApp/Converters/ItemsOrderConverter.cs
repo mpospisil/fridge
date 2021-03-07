@@ -25,7 +25,7 @@ namespace FridgeApp.Converters
 					return Resources.NotSorted;
 			}
 
-			return "Unknown"; ;
+			return "Unknown";
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

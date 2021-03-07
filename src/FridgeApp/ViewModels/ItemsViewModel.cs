@@ -1,4 +1,5 @@
 ﻿using Fridge.Model;
+using FridgeApp.Comparers;
 using FridgeApp.Services;
 using FridgeApp.Views;
 using System;
@@ -165,8 +166,39 @@ namespace FridgeApp.ViewModels
 		private void OnSortItems(object obj)
 		{
 			ItemsOrder itemsOrder = (ItemsOrder)obj;
+
+			if(SortMethod == itemsOrder)
+			{
+				// nothing is changed - leave
+				return;
+			}
+
+			List<IItemViewModel> listToSort = new List<IItemViewModel>(Items);
+
+			var comparer = GetComparer(itemsOrder);
+			listToSort.Sort(comparer);
+
+			Items = new ObservableCollection<IItemViewModel>(listToSort);
 			SortMethod = itemsOrder;
 		}
+
+		private static IComparer<IItemViewModel> GetComparer(ItemsOrder itemsOrder)
+		{
+			switch (itemsOrder)
+			{
+				case ItemsOrder.ByDate:
+					return new ItemDateComparer();
+
+				case ItemsOrder.ByName:
+					return new ItemNameComparer();
+
+				case ItemsOrder.ByFridge:
+					return new ItemInFridgeComparer();
+			}
+
+			return null;
+		}
+
 
 		private void OnSelectItem(object obj)
 		{
