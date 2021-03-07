@@ -133,11 +133,11 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Items.
+        ///   Looks up a localized string similar to Fridge Settings.
         /// </summary>
-        public static string Items {
+        public static string FridgeSettings {
             get {
-                return ResourceManager.GetString("Items", resourceCulture);
+                return ResourceManager.GetString("FridgeSettings", resourceCulture);
             }
         }
         
@@ -187,6 +187,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Products.
+        /// </summary>
+        public static string Products {
+            get {
+                return ResourceManager.GetString("Products", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to remove &apos;{0}&apos; ?.
         /// </summary>
         public static string Question_Remove_Format {
@@ -219,15 +228,6 @@ namespace FridgeApp {
         public static string SearchPlaceHolder {
             get {
                 return ResourceManager.GetString("SearchPlaceHolder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        public static string Settings {
-            get {
-                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         
