@@ -97,6 +97,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:dd.MM.yyyy}.
         /// </summary>
         public static string DateFormat {
@@ -142,6 +151,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
         public static string New {
@@ -174,6 +192,15 @@ namespace FridgeApp {
         public static string No {
             get {
                 return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsorted.
+        /// </summary>
+        public static string NotSorted {
+            get {
+                return ResourceManager.GetString("NotSorted", resourceCulture);
             }
         }
         
@@ -232,15 +259,6 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Alphabetical.
-        /// </summary>
-        public static string SortAlphabetical {
-            get {
-                return ResourceManager.GetString("SortAlphabetical", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to By date.
         /// </summary>
         public static string SortByDate {
@@ -255,6 +273,15 @@ namespace FridgeApp {
         public static string SortByFridge {
             get {
                 return ResourceManager.GetString("SortByFridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By name.
+        /// </summary>
+        public static string SortByName {
+            get {
+                return ResourceManager.GetString("SortByName", resourceCulture);
             }
         }
         

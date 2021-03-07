@@ -129,6 +129,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
   <data name="DateFormat" xml:space="preserve">
     <value>{0:dd.MM.yyyy}</value>
   </data>
@@ -144,6 +147,9 @@
   <data name="FridgeSettings" xml:space="preserve">
     <value>Fridge Settings</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
@@ -155,6 +161,9 @@
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="NotSorted" xml:space="preserve">
+    <value>Unsorted</value>
   </data>
   <data name="Partitions" xml:space="preserve">
     <value>Partitions</value>
@@ -174,14 +183,14 @@
   <data name="SearchPlaceHolder" xml:space="preserve">
     <value>Product</value>
   </data>
-  <data name="SortAlphabetical" xml:space="preserve">
-    <value>Alphabetical</value>
-  </data>
   <data name="SortByDate" xml:space="preserve">
     <value>By date</value>
   </data>
   <data name="SortByFridge" xml:space="preserve">
     <value>By fridge</value>
+  </data>
+  <data name="SortByName" xml:space="preserve">
+    <value>By name</value>
   </data>
   <data name="Verification" xml:space="preserve">
     <value>Verification</value>

@@ -1,4 +1,5 @@
-﻿using FridgeApp.Services;
+﻿using Fridge.Model;
+using FridgeApp.Services;
 using FridgeApp.Views;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace FridgeApp.ViewModels
 		private string query;
 		private bool isSearching;
 		private bool searchAgain;
+		private ItemsOrder sortMethod;
 
 		public event EventHandler ItemFilterEvent;
 
@@ -33,6 +35,7 @@ namespace FridgeApp.ViewModels
 			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
 			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
 			SelectItemCommand = new Command(OnSelectItem);
+			SortItemsCommand = new Command(OnSortItems);
 
 			this.PropertyChanged +=
 					(_, __) => RemoveItemCommand.ChangeCanExecute();
@@ -62,6 +65,17 @@ namespace FridgeApp.ViewModels
 				OnQueryChanged();
 			}
 		}
+
+		public ItemsOrder SortMethod
+		{
+			get => sortMethod;
+			set
+			{
+				SetProperty(ref sortMethod, value);
+				OnQueryChanged();
+			}
+		}
+
 
 		async void OnQueryChanged()
 		{
@@ -93,6 +107,8 @@ namespace FridgeApp.ViewModels
 		public Command ShowItemDetailsCommand { get; }
 		public Command SelectItemCommand { get; }
 		public Command RemoveItemCommand { get; }
+
+		public Command SortItemsCommand { get; }
 
 		public void OnAppearing()
 		{
@@ -144,6 +160,12 @@ namespace FridgeApp.ViewModels
 		private bool IsItemSelected(object obj)
 		{
 			return SelectedItem != null;
+		}
+
+		private void OnSortItems(object obj)
+		{
+			ItemsOrder itemsOrder = (ItemsOrder)obj;
+			SortMethod = itemsOrder;
 		}
 
 		private void OnSelectItem(object obj)
