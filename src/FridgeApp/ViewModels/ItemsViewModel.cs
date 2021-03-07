@@ -26,6 +26,7 @@ namespace FridgeApp.ViewModels
 		private bool isSearching;
 		private bool searchAgain;
 		private ItemsOrder sortMethod;
+		private ObservableCollection<IItemViewModel> allItems;
 
 		public event EventHandler ItemFilterEvent;
 
@@ -44,7 +45,14 @@ namespace FridgeApp.ViewModels
 		/// <summary>
 		/// All items for the user
 		/// </summary>
-		public ObservableCollection<IItemViewModel> Items { get; private set; }
+		public ObservableCollection<IItemViewModel> Items
+		{
+			get => allItems;
+			set
+			{
+				SetProperty(ref allItems, value);
+			}
+		}
 
 		public IItemViewModel SelectedItem
 		{
@@ -167,12 +175,17 @@ namespace FridgeApp.ViewModels
 		{
 			ItemsOrder itemsOrder = (ItemsOrder)obj;
 
-			if(SortMethod == itemsOrder)
+			if (SortMethod == itemsOrder)
 			{
 				// nothing is changed - leave
 				return;
 			}
 
+			SetSortedItems(itemsOrder);
+		}
+
+		private void SetSortedItems(ItemsOrder itemsOrder)
+		{
 			List<IItemViewModel> listToSort = new List<IItemViewModel>(Items);
 
 			var comparer = GetComparer(itemsOrder);
@@ -304,6 +317,8 @@ namespace FridgeApp.ViewModels
 					itemVM.PartitionName = partitionDescriptor.Partition.Name;
 					Items.Add(itemVM);
 				}
+
+				SetSortedItems(SortMethod);
 			}
 			catch (Exception ex)
 			{
