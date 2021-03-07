@@ -81,15 +81,15 @@
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
 
-  <FlyoutItem Title="{x:Static res:Resources.Items}" Icon="fridge32.png">
+  <FlyoutItem Title="{x:Static res:Resources.Products}" Icon="fridge32.png">
     <Tab Title="{x:Static res:Resources.Fridges}">
       <ShellContent x:Name="mainPage"
                   Title="{x:Static res:Resources.Fridges}"
                   ContentTemplate="{DataTemplate local:MainPage}" />
     </Tab>
-    <Tab Title="{x:Static res:Resources.Items}">
+    <Tab Title="{x:Static res:Resources.Products}">
       <ShellContent x:Name="itemsPage"
-                  Title="{x:Static res:Resources.Items}"
+                  Title="{x:Static res:Resources.Products}"
                   ContentTemplate="{DataTemplate local:ItemsPage}" />
     </Tab>
   </FlyoutItem>

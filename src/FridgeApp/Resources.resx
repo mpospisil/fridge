@@ -144,9 +144,6 @@
   <data name="FridgeSettings" xml:space="preserve">
     <value>Fridge Settings</value>
   </data>
-  <data name="Items" xml:space="preserve">
-    <value>Items</value>
-  </data>
   <data name="New" xml:space="preserve">
     <value>New</value>
   </data>
@@ -161,6 +158,9 @@
   </data>
   <data name="Partitions" xml:space="preserve">
     <value>Partitions</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
   </data>
   <data name="Question_Remove_Format" xml:space="preserve">
     <value>Do you really want to remove '{0}' ?</value>
