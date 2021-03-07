@@ -81,7 +81,7 @@
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
 
-  <FlyoutItem Title="{x:Static res:Resources.Items}">
+  <FlyoutItem Title="{x:Static res:Resources.Items}" Icon="fridge32.png">
     <Tab Title="{x:Static res:Resources.Fridges}">
       <ShellContent x:Name="mainPage"
                   Title="{x:Static res:Resources.Fridges}"
@@ -94,7 +94,7 @@
     </Tab>
   </FlyoutItem>
 
-  <FlyoutItem Title="{x:Static res:Resources.Settings}" Icon="setup.png">
+  <FlyoutItem Title="{x:Static res:Resources.Settings}" Icon="settings32.png">
     <ShellContent Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
   </FlyoutItem>
 
