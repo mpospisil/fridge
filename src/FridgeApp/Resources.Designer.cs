@@ -133,6 +133,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fridge Settings.
+        /// </summary>
+        public static string FridgeSettings {
+            get {
+                return ResourceManager.GetString("FridgeSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items.
         /// </summary>
         public static string Items {
@@ -219,15 +228,6 @@ namespace FridgeApp {
         public static string SearchPlaceHolder {
             get {
                 return ResourceManager.GetString("SearchPlaceHolder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Settings.
-        /// </summary>
-        public static string Settings {
-            get {
-                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         

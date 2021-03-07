@@ -18,7 +18,7 @@ namespace FridgeApp.ViewModels
 	{
 		public SettingsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
-			Title = Resources.Settings;
+			Title = Resources.FridgeSettings;
 			Fridges = new ObservableCollection<FridgeViewModel>();
 			LoadFridgesCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
