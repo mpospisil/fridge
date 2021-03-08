@@ -5,9 +5,22 @@
              xmlns:local="clr-namespace:FridgeApp.ViewModels"
              xmlns:vm="clr-namespace:FridgeApp.ViewModels"
              xmlns:res="clr-namespace:FridgeApp"
+             xmlns:conv="clr-namespace:FridgeApp.Converters"
+             xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"
              Title="{Binding Title}">
- 
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <conv:ItemsOrderConverter x:Key="orderToString" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
   <ContentPage.ToolbarItems>
+    <ToolbarItem Order="Secondary" Priority="1" Command="{Binding SortItemsCommand}" CommandParameter="{x:Static model:ItemsOrder.ByFridge}" Name="{x:Static res:Resources.SortByFridge}" />
+    <ToolbarItem Order="Secondary" Priority="1" Command="{Binding SortItemsCommand}" CommandParameter="{x:Static model:ItemsOrder.ByDate}" Name="{x:Static res:Resources.SortByDate}"/>
+    <ToolbarItem Order="Secondary" Priority="1" Command="{Binding SortItemsCommand}" CommandParameter="{x:Static model:ItemsOrder.ByName}" Name="{x:Static res:Resources.SortByName}" />
+    <ToolbarItem Order="Primary" Priority="1" Text="{Binding Path = SortMethod, Converter={StaticResource  orderToString}}" />
+    
     <ToolbarItem IconImageSource="eat32.png" Command="{Binding RemoveItemCommand}" CommandParameter="{Binding SelectedItem}"/>
   </ContentPage.ToolbarItems>
       

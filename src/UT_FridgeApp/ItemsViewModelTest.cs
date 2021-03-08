@@ -1,4 +1,5 @@
-﻿using FridgeApp.Services;
+﻿using Fridge.Model;
+using FridgeApp.Services;
 using FridgeApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -6,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace UT_FridgeApp
 {
@@ -13,7 +15,7 @@ namespace UT_FridgeApp
 	public class ItemsViewModelTest
 	{
 		[TestMethod]
-		public void LoadItemsCommandTest()
+		public async Task LoadItemsCommandTest()
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
@@ -25,6 +27,7 @@ namespace UT_FridgeApp
 
 			// tested view model
 			var itemsViewModel = new ItemsViewModel(fridgeDal);
+			itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
 
 			Assert.IsFalse(itemsViewModel.IsBusy, "Initially IsBusy == false");
 			Assert.IsTrue(itemsViewModel.Items.Count == 0, "InitiallyExpecting no items");
@@ -33,7 +36,7 @@ namespace UT_FridgeApp
 
 			Assert.IsTrue(itemsViewModel.IsBusy, "Expecting IsBusy == true");
 
-			itemsViewModel.LoadItemsCommand.Execute(null);
+			await itemsViewModel.ExecuteLoadItemsCommand();
 
 			Assert.IsFalse(itemsViewModel.IsBusy, "IsBusy should equal to 'false'");
 			Assert.IsTrue(itemsViewModel.Items.Count == 4, "Expecting 4 items");
@@ -99,7 +102,6 @@ namespace UT_FridgeApp
 			List<Fridge.Model.ItemInFridge> items = MockFridgeDAL.CreateMockItems();
 			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(items.AsEnumerable()));
 
-
 			using (ManualResetEvent mre = new ManualResetEvent(false))
 			{
 				EventHandler handler = (s, e) =>
@@ -109,7 +111,10 @@ namespace UT_FridgeApp
 
 				// tested view model
 				var itemsViewModel = new ItemsViewModel(fridgeDal);
+
+
 				itemsViewModel.ItemFilterEvent += handler;
+				itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
 
 				itemsViewModel.LoadItemsCommand.Execute(null);
 
@@ -190,6 +195,73 @@ namespace UT_FridgeApp
 					var item2 = itemsViewModel.Items[2];
 					Assert.IsFalse(item2.IsVisible, $"Item '{item0.Name}' should NOT be visible");
 					Assert.IsTrue(item2.Name == MockFridgeDAL.Fr1Part1Item3Name);
+				}
+
+				itemsViewModel.ItemFilterEvent -= handler;
+			}
+		}
+
+		[TestMethod]
+		[Timeout(2000)]
+		public async Task SortItemsTest()
+		{
+			// create mock
+			var fridgeDal = Substitute.For<IFridgeDAL>();
+			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
+			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
+
+			List<Fridge.Model.ItemInFridge> items = MockFridgeDAL.CreateMockItems();
+			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(items.AsEnumerable()));
+
+			using (ManualResetEvent mre = new ManualResetEvent(false))
+			{
+				EventHandler handler = (s, e) =>
+				{
+					mre.Set();
+				};
+
+				// tested view model
+				var itemsViewModel = new ItemsViewModel(fridgeDal);
+
+				itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
+
+				Assert.IsFalse(itemsViewModel.IsBusy, "Initially IsBusy == false");
+				Assert.IsTrue(itemsViewModel.Items.Count == 0, "InitiallyExpecting no items");
+
+				itemsViewModel.OnAppearing();
+
+				Assert.IsTrue(itemsViewModel.IsBusy, "Expecting IsBusy == true");
+
+				await itemsViewModel.ExecuteLoadItemsCommand();
+
+				{
+					// unsorted items
+					var item = itemsViewModel.Items[0];
+					Assert.IsTrue(item.Name == MockFridgeDAL.Fr1Part1Item1Name, $"The first item should be '{MockFridgeDAL.Fr1Part1Item1Name}'");
+				}
+
+				await itemsViewModel.SetSortedItems(ItemsOrder.ByFridge, itemsViewModel.Items);
+
+				{
+					// sorted be fridge
+					var item = itemsViewModel.Items[0];
+					Assert.IsTrue(item.Name == MockFridgeDAL.Fr1Part1Item3Name, $"The first item should be '{MockFridgeDAL.Fr1Part1Item3Name}'");
+				}
+
+				await itemsViewModel.SetSortedItems(ItemsOrder.ByDate, itemsViewModel.Items);
+
+				{
+					// sorted be fridge
+					var item = itemsViewModel.Items[0];
+					Assert.IsTrue(item.Name == MockFridgeDAL.Fr1Part1Item2Name, $"The first item should be '{MockFridgeDAL.Fr1Part1Item2Name}'");
+				}
+
+				await itemsViewModel.SetSortedItems(ItemsOrder.ByName, itemsViewModel.Items);
+
+				{
+					// sorted be fridge
+					var item = itemsViewModel.Items[0];
+					Assert.IsTrue(item.Name == MockFridgeDAL.Fr1Part2Item1Name, $"The first item should be '{MockFridgeDAL.Fr1Part2Item1Name}'");
 				}
 
 				itemsViewModel.ItemFilterEvent -= handler;

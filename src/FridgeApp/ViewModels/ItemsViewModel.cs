@@ -1,4 +1,6 @@
-﻿using FridgeApp.Services;
+﻿using Fridge.Model;
+using FridgeApp.Comparers;
+using FridgeApp.Services;
 using FridgeApp.Views;
 using System;
 using System.Collections.Generic;
@@ -6,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace FridgeApp.ViewModels
 {
@@ -23,16 +26,20 @@ namespace FridgeApp.ViewModels
 		private string query;
 		private bool isSearching;
 		private bool searchAgain;
+		private ItemsOrder sortMethod;
+		private ObservableCollection<IItemViewModel> allItems;
 
 		public event EventHandler ItemFilterEvent;
 
 		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
-			Items = new ObservableCollection<IItemViewModel>();
+			sortMethod = ItemsOrder.ByFridge;
+			allItems = new ObservableCollection<IItemViewModel>();
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
 			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
 			SelectItemCommand = new Command(OnSelectItem);
+			SortItemsCommand = new Command(OnSortItems);
 
 			this.PropertyChanged +=
 					(_, __) => RemoveItemCommand.ChangeCanExecute();
@@ -40,7 +47,14 @@ namespace FridgeApp.ViewModels
 		/// <summary>
 		/// All items for the user
 		/// </summary>
-		public ObservableCollection<IItemViewModel> Items { get; private set; }
+		public ObservableCollection<IItemViewModel> Items
+		{
+			get => allItems;
+			set
+			{
+				SetProperty(ref allItems, value);
+			}
+		}
 
 		public IItemViewModel SelectedItem
 		{
@@ -62,6 +76,16 @@ namespace FridgeApp.ViewModels
 				OnQueryChanged();
 			}
 		}
+
+		public ItemsOrder SortMethod
+		{
+			get => sortMethod;
+			set
+			{
+				SetProperty(ref sortMethod, value);
+			}
+		}
+
 
 		async void OnQueryChanged()
 		{
@@ -93,6 +117,8 @@ namespace FridgeApp.ViewModels
 		public Command ShowItemDetailsCommand { get; }
 		public Command SelectItemCommand { get; }
 		public Command RemoveItemCommand { get; }
+
+		public Command SortItemsCommand { get; }
 
 		public void OnAppearing()
 		{
@@ -145,6 +171,62 @@ namespace FridgeApp.ViewModels
 		{
 			return SelectedItem != null;
 		}
+
+		private async void OnSortItems(object obj)
+		{
+			ItemsOrder itemsOrder = (ItemsOrder)obj;
+
+			if (SortMethod == itemsOrder)
+			{
+				// nothing is changed - leave
+				return;
+			}
+
+			await SetSortedItems(itemsOrder, Items);
+		}
+
+		public async Task SetSortedItems(ItemsOrder itemsOrder, IEnumerable<IItemViewModel> itemsToSort)
+		{
+			var sortedItems = await SortItemsAsync(itemsOrder, itemsToSort);
+			Items = new ObservableCollection<IItemViewModel>(sortedItems);
+			SortMethod = itemsOrder;
+		}
+
+		private async static Task<List<IItemViewModel>> SortItemsAsync(ItemsOrder itemsOrder, IEnumerable<IItemViewModel> itemsToSort)
+		{
+			return await Task.Run(() =>
+			{
+				List<IItemViewModel> sortedItems = new List<IItemViewModel>(itemsToSort);
+
+				var comparer = GetComparer(itemsOrder);
+				if(comparer == null)
+				{
+					return itemsToSort.ToList();
+				}
+
+				sortedItems.Sort(comparer);
+
+				return sortedItems;
+			});
+		}
+
+		private static IComparer<IItemViewModel> GetComparer(ItemsOrder itemsOrder)
+		{
+			switch (itemsOrder)
+			{
+				case ItemsOrder.ByDate:
+					return new ItemDateComparer();
+
+				case ItemsOrder.ByName:
+					return new ItemNameComparer();
+
+				case ItemsOrder.ByFridge:
+					return new ItemInFridgeComparer();
+			}
+
+			return null;
+		}
+
 
 		private void OnSelectItem(object obj)
 		{
@@ -202,7 +284,7 @@ namespace FridgeApp.ViewModels
 		/// Get all items and store them in the collection Items
 		/// </summary>
 		/// <returns></returns>
-		async Task ExecuteLoadItemsCommand()
+		public async Task ExecuteLoadItemsCommand()
 		{
 			IsBusy = true;
 
@@ -233,6 +315,7 @@ namespace FridgeApp.ViewModels
 			{
 				Items.Clear();
 				var items = await FridgeDal.GetItemsAsync(true);
+
 				foreach (var item in items)
 				{
 					PartitionDescriptor partitionDescriptor = null;
@@ -250,6 +333,8 @@ namespace FridgeApp.ViewModels
 					itemVM.PartitionName = partitionDescriptor.Partition.Name;
 					Items.Add(itemVM);
 				}
+
+				await SetSortedItems(SortMethod, Items);
 			}
 			catch (Exception ex)
 			{
