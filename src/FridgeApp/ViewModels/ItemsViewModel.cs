@@ -185,7 +185,7 @@ namespace FridgeApp.ViewModels
 			await SetSortedItems(itemsOrder, Items);
 		}
 
-		private async Task SetSortedItems(ItemsOrder itemsOrder, IEnumerable<IItemViewModel> itemsToSort)
+		public async Task SetSortedItems(ItemsOrder itemsOrder, IEnumerable<IItemViewModel> itemsToSort)
 		{
 			var sortedItems = await SortItemsAsync(itemsOrder, itemsToSort);
 			Items = new ObservableCollection<IItemViewModel>(sortedItems);
