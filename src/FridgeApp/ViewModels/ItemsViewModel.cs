@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace FridgeApp.ViewModels
 {
@@ -32,7 +33,8 @@ namespace FridgeApp.ViewModels
 
 		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
-			Items = new ObservableCollection<IItemViewModel>();
+			sortMethod = ItemsOrder.ByFridge;
+			allItems = new ObservableCollection<IItemViewModel>();
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
 			ShowItemDetailsCommand = new Command(OnShowItemDetails, IsItemSelected);
@@ -81,7 +83,6 @@ namespace FridgeApp.ViewModels
 			set
 			{
 				SetProperty(ref sortMethod, value);
-				OnQueryChanged();
 			}
 		}
 
@@ -171,7 +172,7 @@ namespace FridgeApp.ViewModels
 			return SelectedItem != null;
 		}
 
-		private void OnSortItems(object obj)
+		private async void OnSortItems(object obj)
 		{
 			ItemsOrder itemsOrder = (ItemsOrder)obj;
 
@@ -181,18 +182,32 @@ namespace FridgeApp.ViewModels
 				return;
 			}
 
-			SetSortedItems(itemsOrder);
+			await SetSortedItems(itemsOrder, Items);
 		}
 
-		private void SetSortedItems(ItemsOrder itemsOrder)
+		private async Task SetSortedItems(ItemsOrder itemsOrder, IEnumerable<IItemViewModel> itemsToSort)
 		{
-			List<IItemViewModel> listToSort = new List<IItemViewModel>(Items);
-
-			var comparer = GetComparer(itemsOrder);
-			listToSort.Sort(comparer);
-
-			Items = new ObservableCollection<IItemViewModel>(listToSort);
+			var sortedItems = await SortItemsAsync(itemsOrder, itemsToSort);
+			Items = new ObservableCollection<IItemViewModel>(sortedItems);
 			SortMethod = itemsOrder;
+		}
+
+		private async static Task<List<IItemViewModel>> SortItemsAsync(ItemsOrder itemsOrder, IEnumerable<IItemViewModel> itemsToSort)
+		{
+			return await Task.Run(() =>
+			{
+				List<IItemViewModel> sortedItems = new List<IItemViewModel>(itemsToSort);
+
+				var comparer = GetComparer(itemsOrder);
+				if(comparer == null)
+				{
+					return itemsToSort.ToList();
+				}
+
+				sortedItems.Sort(comparer);
+
+				return sortedItems;
+			});
 		}
 
 		private static IComparer<IItemViewModel> GetComparer(ItemsOrder itemsOrder)
@@ -269,7 +284,7 @@ namespace FridgeApp.ViewModels
 		/// Get all items and store them in the collection Items
 		/// </summary>
 		/// <returns></returns>
-		async Task ExecuteLoadItemsCommand()
+		public async Task ExecuteLoadItemsCommand()
 		{
 			IsBusy = true;
 
@@ -300,6 +315,7 @@ namespace FridgeApp.ViewModels
 			{
 				Items.Clear();
 				var items = await FridgeDal.GetItemsAsync(true);
+
 				foreach (var item in items)
 				{
 					PartitionDescriptor partitionDescriptor = null;
@@ -318,7 +334,7 @@ namespace FridgeApp.ViewModels
 					Items.Add(itemVM);
 				}
 
-				SetSortedItems(SortMethod);
+				await SetSortedItems(SortMethod, Items);
 			}
 			catch (Exception ex)
 			{

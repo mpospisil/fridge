@@ -13,7 +13,7 @@ namespace UT_FridgeApp
 	public class ItemsViewModelTest
 	{
 		[TestMethod]
-		public void LoadItemsCommandTest()
+		public async void LoadItemsCommandTest()
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
@@ -25,6 +25,7 @@ namespace UT_FridgeApp
 
 			// tested view model
 			var itemsViewModel = new ItemsViewModel(fridgeDal);
+			itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
 
 			Assert.IsFalse(itemsViewModel.IsBusy, "Initially IsBusy == false");
 			Assert.IsTrue(itemsViewModel.Items.Count == 0, "InitiallyExpecting no items");
@@ -33,7 +34,7 @@ namespace UT_FridgeApp
 
 			Assert.IsTrue(itemsViewModel.IsBusy, "Expecting IsBusy == true");
 
-			itemsViewModel.LoadItemsCommand.Execute(null);
+			await itemsViewModel.ExecuteLoadItemsCommand();
 
 			Assert.IsFalse(itemsViewModel.IsBusy, "IsBusy should equal to 'false'");
 			Assert.IsTrue(itemsViewModel.Items.Count == 4, "Expecting 4 items");
@@ -108,7 +109,10 @@ namespace UT_FridgeApp
 
 				// tested view model
 				var itemsViewModel = new ItemsViewModel(fridgeDal);
+
+
 				itemsViewModel.ItemFilterEvent += handler;
+				itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
 
 				itemsViewModel.LoadItemsCommand.Execute(null);
 
