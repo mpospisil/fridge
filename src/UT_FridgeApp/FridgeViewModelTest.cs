@@ -110,7 +110,7 @@ namespace UT_FridgeApp
 			Assert.IsTrue(thirdPartition.Items.Count == 0, "Expecting no items in the third partition");
 		}
 
-			[TestMethod]
+		[TestMethod]
 		public void CanAddItemTest()
 		{
 			// create mock
@@ -127,7 +127,7 @@ namespace UT_FridgeApp
 
 			var canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedPartition);
 			Assert.IsFalse(canAddItemRes, "When no partitions is selected the user can not add item");
-			
+
 			// select the first partition
 			fridgeVM.SelectedPartition = fridgeVM.Partitions[0];
 			canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedPartition);

@@ -7,11 +7,11 @@ namespace FridgeApp.Comparers
 	{
 		public int Compare(IItemViewModel x, IItemViewModel y)
 		{
-			if(x.FridgeIndex < y.FridgeIndex)
+			if (x.FridgeIndex < y.FridgeIndex)
 			{
 				return -1;
 			}
-			else if(x.FridgeIndex > y.FridgeIndex)
+			else if (x.FridgeIndex > y.FridgeIndex)
 			{
 				return 1;
 			}

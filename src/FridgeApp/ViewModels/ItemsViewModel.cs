@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using System.Linq;
 
 namespace FridgeApp.ViewModels
 {
@@ -107,7 +107,7 @@ namespace FridgeApp.ViewModels
 			searchAgain = false;
 			isSearching = false;
 
-			if(ItemFilterEvent != null)
+			if (ItemFilterEvent != null)
 			{
 				ItemFilterEvent.Invoke(this, new EventArgs());
 			}
@@ -135,14 +135,14 @@ namespace FridgeApp.ViewModels
 
 			Debug.Assert(allItems.Count == foundItems.Count);
 
-			for(int i = 0; i < allItems.Count; i++)
+			for (int i = 0; i < allItems.Count; i++)
 			{
 				var item = allItems[i];
 				item.IsVisible = foundItems[i];
 			}
 		}
 
-		private static Task<List<bool>> GetSearchTask(string query , IList<IItemViewModel> itemsToSearch)
+		private static Task<List<bool>> GetSearchTask(string query, IList<IItemViewModel> itemsToSearch)
 		{
 			return Task.Run<List<bool>>(() =>
 			{
@@ -150,13 +150,13 @@ namespace FridgeApp.ViewModels
 				List<bool> res = new List<bool>(itemsToSearch.Count);
 				var capitalisedQuery = query.ToLower();
 
-				foreach(var item in itemsToSearch)
+				foreach (var item in itemsToSearch)
 				{
 					var capItemName = item.Name.ToLower();
 					bool searchRes = capItemName.Contains(capitalisedQuery);
 					res.Add(searchRes);
 				}
-				
+
 				return res;
 			});
 		}
@@ -199,7 +199,7 @@ namespace FridgeApp.ViewModels
 				List<IItemViewModel> sortedItems = new List<IItemViewModel>(itemsToSort);
 
 				var comparer = GetComparer(itemsOrder);
-				if(comparer == null)
+				if (comparer == null)
 				{
 					return itemsToSort.ToList();
 				}

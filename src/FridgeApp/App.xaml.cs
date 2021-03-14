@@ -31,7 +31,7 @@ namespace FridgeApp
 		{
 			InitializeComponent();
 
-			DependencyResolver.ResolveUsing(type => 
+			DependencyResolver.ResolveUsing(type =>
 			{
 				object res = container.IsRegistered(type) ? container.Resolve(type) : null;
 				return res;

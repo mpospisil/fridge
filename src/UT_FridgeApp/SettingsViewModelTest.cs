@@ -19,7 +19,7 @@ namespace UT_FridgeApp
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 
-	
+
 			// tested view model
 			var settingsViewModel = new SettingsViewModel(fridgeDal);
 

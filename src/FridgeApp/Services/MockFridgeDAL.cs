@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace FridgeApp.Services
 {
@@ -143,13 +142,13 @@ namespace FridgeApp.Services
 
 		public async Task DeleteFridgeAsync(Guid fridgeId)
 		{
-			if(fridgeId == Guid.Empty)
+			if (fridgeId == Guid.Empty)
 			{
 				return;
 			}
 
 			int index = fridges.FindIndex((item) => item.FridgeId == fridgeId);
-			if(index < -1)
+			if (index < -1)
 			{
 				throw new Exception($"Fridge id = '{fridgeId}' doesn't exist");
 			}
@@ -161,7 +160,7 @@ namespace FridgeApp.Services
 
 		public async Task<IEnumerable<Fridge.Model.ItemInFridge>> GetItemsAsync(bool forceRefresh = false)
 		{
-			return await Task.FromResult(items); 
+			return await Task.FromResult(items);
 		}
 
 		public async Task AddItemAsync(Fridge.Model.ItemInFridge newItemInFridge)

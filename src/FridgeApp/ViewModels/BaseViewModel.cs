@@ -9,7 +9,7 @@ namespace FridgeApp.ViewModels
 	public class BaseViewModel : INotifyPropertyChanged
 	{
 		bool isBusy = false;
-		protected  IFridgeDAL FridgeDal { get; private set; }
+		protected IFridgeDAL FridgeDal { get; private set; }
 
 		public BaseViewModel(IFridgeDAL fridgeDal = null)
 		{

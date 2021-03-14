@@ -1,5 +1,4 @@
 ﻿using Fridge.Model;
-using System;
 
 namespace FridgeApp.ViewModels
 {

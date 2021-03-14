@@ -1,5 +1,4 @@
 ﻿using FridgeApp.Services;
-using FridgeApp.Views;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -256,7 +255,7 @@ namespace FridgeApp.ViewModels
 
 		public async Task SaveData()
 		{
-			if(string.IsNullOrEmpty(itemId) || itemId.Equals(Guid.Empty.ToString()))
+			if (string.IsNullOrEmpty(itemId) || itemId.Equals(Guid.Empty.ToString()))
 			{
 				// new item
 				var newItem = ItemFromVM();

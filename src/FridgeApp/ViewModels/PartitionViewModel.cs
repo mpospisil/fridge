@@ -1,11 +1,10 @@
 ﻿using FridgeApp.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Linq;
-using Xamarin.Forms;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace FridgeApp.ViewModels
 {
