@@ -22,6 +22,11 @@ namespace Fridge.Model
 		public Guid FridgeId { get; set; }
 
 		/// <summary>
+		/// Id of the owner of this fridge
+		/// </summary>
+		public Guid OwnerId { get; set; }
+
+		/// <summary>
 		/// The unique identifier of the items which were removed from this fridge
 		/// </summary>
 		public Guid RemovedItemsIdentifier { get; set; }
