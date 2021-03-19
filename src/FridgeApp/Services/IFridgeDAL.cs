@@ -9,6 +9,10 @@ namespace FridgeApp.Services
 	/// </summary>
 	public interface IFridgeDAL
 	{
+		Task<Fridge.Model.User> GetUserAsync();
+
+		Task CreateUserAsync(Fridge.Model.User newUser);
+
 		Task<IEnumerable<Fridge.Model.Fridge>> GetFridgesAsync(bool forceRefresh = false);
 
 		Task<Fridge.Model.Fridge> GetFridgeAsync(Guid fridgeId);
