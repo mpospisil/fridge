@@ -7,6 +7,10 @@ namespace FridgeApp.Services
 {
 	public class MockFridgeDAL : IFridgeDAL
 	{
+		public static readonly Guid User1Id = Guid.Parse("B49518B9-92A8-4FDF-8395-A452EDBAECD2");
+		public const string User1Name = "Tester";
+		public const string User1Email = "tester@tester.com";
+
 		public static readonly DateTime Date1 = new DateTime(2021, 1, 9);
 		public static readonly DateTime Date2 = new DateTime(2021, 1, 8);
 		public static readonly DateTime Date3 = new DateTime(2021, 1, 8);
@@ -104,7 +108,7 @@ namespace FridgeApp.Services
 		public static List<Fridge.Model.Fridge> CreateMockFridges()
 		{
 			var fridges = new List<Fridge.Model.Fridge>();
-			var fridge1 = new Fridge.Model.Fridge() { Name = Fridge1Name, FridgeId = Fridge1Id, RemovedItemsIdentifier = Fridge1RemovedItemsId };
+			var fridge1 = new Fridge.Model.Fridge() { Name = Fridge1Name, FridgeId = Fridge1Id, RemovedItemsIdentifier = Fridge1RemovedItemsId, OwnerId = User1Id };
 			var partition1 = new Fridge.Model.Partition() { Name = Partition1Name, PartitionId = Partition1Id };
 			var partition2 = new Fridge.Model.Partition() { Name = Partition2Name, PartitionId = Partition2Id };
 			var partition3 = new Fridge.Model.Partition() { Name = Partition3Name, PartitionId = Partition3Id };
@@ -198,6 +202,37 @@ namespace FridgeApp.Services
 			items.RemoveAt(index);
 
 			await Task.CompletedTask;
+		}
+
+		public async Task<Fridge.Model.User> GetUserAsync()
+		{
+			Fridge.Model.User user = GetDefaultUser();
+			return await Task.FromResult(user);
+		}
+
+		public static Fridge.Model.User GetDefaultUser()
+		{
+			var user = new Fridge.Model.User()
+			{
+				UserId = User1Id,
+				Name = User1Name,
+				Email = User1Email,
+			};
+
+			var myFridge = new Fridge.Model.FridgeForUser()
+			{
+				FridgeId = Fridge1Id,
+				MyPermission = Fridge.Model.UserPermissionTypes.Owner,
+				OwnerId = User1Id
+			};
+
+			user.MyFridges.Add(myFridge);
+			return user;
+		}
+
+		public Task CreateUserAsync(Fridge.Model.User newUser)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

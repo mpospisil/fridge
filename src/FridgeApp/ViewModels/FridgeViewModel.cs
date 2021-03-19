@@ -25,6 +25,7 @@ namespace FridgeApp.ViewModels
 		#region Private fields
 		private string name;
 		private Guid fridgeGuid;
+		private Guid ownerId;
 		private Guid removedItemsIdentifier;
 		private DateTime timeStamp;
 		private IPartitionViewModel selectedPartition;
@@ -78,6 +79,12 @@ namespace FridgeApp.ViewModels
 		{
 			get => name;
 			set => SetProperty(ref name, value);
+		}
+
+		public Guid OwnerId
+		{
+			get => ownerId;
+			set => SetProperty(ref ownerId, value);
 		}
 
 		public DateTime TimeStamp
@@ -242,6 +249,8 @@ namespace FridgeApp.ViewModels
 				// new fridge
 				var newFridge = FridgeFromVM();
 				newFridge.FridgeId = Guid.NewGuid();
+				var user = await FridgeDal.GetUserAsync();
+				newFridge.OwnerId = user.UserId;
 				await FridgeDal.AddFridge(newFridge);
 			}
 			else
@@ -338,6 +347,7 @@ namespace FridgeApp.ViewModels
 			this.RemovedItemsIdentifier = fridge.RemovedItemsIdentifier;
 			this.Name = fridge.Name;
 			this.TimeStamp = fridge.TimeStamp;
+			this.OwnerId = fridge.OwnerId;
 
 			Partitions.Clear();
 
@@ -358,6 +368,7 @@ namespace FridgeApp.ViewModels
 			fridgeDataFromVM.FridgeId = fridgeGuid;
 			fridgeDataFromVM.RemovedItemsIdentifier = RemovedItemsIdentifier;
 			fridgeDataFromVM.Name = Name;
+			fridgeDataFromVM.OwnerId = OwnerId;
 
 			fridgeDataFromVM.TimeStamp = TimeStamp;
 
