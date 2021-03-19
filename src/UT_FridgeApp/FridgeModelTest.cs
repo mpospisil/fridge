@@ -12,18 +12,19 @@ namespace UT_FridgeApp
 		public void CopyFridgeTest()
 		{
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
-			var firdge = fridges[0];
+			var fridge = fridges[0];
 
-			var deepCopy = firdge.DeepCopy();
-			Assert.IsTrue(firdge.FridgeId == deepCopy.FridgeId);
-			Assert.IsTrue(firdge.RemovedItemsIdentifier == deepCopy.RemovedItemsIdentifier);
-			Assert.IsTrue(firdge.Name == deepCopy.Name);
-			Assert.IsTrue(firdge.TimeStamp == deepCopy.TimeStamp);
-			Assert.IsTrue(firdge.Partitions.Count == deepCopy.Partitions.Count);
+			var deepCopy = fridge.DeepCopy();
+			Assert.IsTrue(fridge.FridgeId == deepCopy.FridgeId);
+			Assert.IsTrue(fridge.OwnerId == deepCopy.OwnerId);
+			Assert.IsTrue(fridge.RemovedItemsIdentifier == deepCopy.RemovedItemsIdentifier);
+			Assert.IsTrue(fridge.Name == deepCopy.Name);
+			Assert.IsTrue(fridge.TimeStamp == deepCopy.TimeStamp);
+			Assert.IsTrue(fridge.Partitions.Count == deepCopy.Partitions.Count);
 
-			Assert.IsTrue(firdge.Partitions[0].PartitionId == deepCopy.Partitions[0].PartitionId);
-			Assert.IsTrue(firdge.Partitions[0].Name == deepCopy.Partitions[0].Name);
-			Assert.IsTrue(firdge.Partitions[0].TimeStamp == deepCopy.Partitions[0].TimeStamp);
+			Assert.IsTrue(fridge.Partitions[0].PartitionId == deepCopy.Partitions[0].PartitionId);
+			Assert.IsTrue(fridge.Partitions[0].Name == deepCopy.Partitions[0].Name);
+			Assert.IsTrue(fridge.Partitions[0].TimeStamp == deepCopy.Partitions[0].TimeStamp);
 		}
 	}
 }

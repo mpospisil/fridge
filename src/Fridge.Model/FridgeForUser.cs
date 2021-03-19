@@ -12,6 +12,14 @@ namespace Fridge.Model
 		/// </summary>
 		public Guid FridgeId { get; set; }
 
+		/// <summary>
+		/// Id of the user who owns this fridge
+		/// </summary>
+		public Guid OwnerId { get; set; }
 
+		/// <summary>
+		/// My permission to this fridge
+		/// </summary>
+		public UserPermissionTypes MyPermission { get; set; }
 	}
 }

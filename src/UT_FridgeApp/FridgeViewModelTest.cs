@@ -3,8 +3,10 @@ using FridgeApp.Services;
 using FridgeApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace UT_FridgeApp
 {
@@ -132,6 +134,45 @@ namespace UT_FridgeApp
 			fridgeVM.SelectedPartition = fridgeVM.Partitions[0];
 			canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedPartition);
 			Assert.IsTrue(canAddItemRes, "When a partitions is selected the user can add item");
+		}
+
+		[TestMethod]
+		public async Task AddFridgeTest()
+		{
+			var defaultUser = MockFridgeDAL.GetDefaultUser();
+
+			// create mock
+			var fridgeDal = Substitute.For<IFridgeDAL>();
+			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
+			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
+			fridgeDal.GetUserAsync().Returns(defaultUser);
+
+			Assert.IsTrue(fridges.Count == 1, "Expecting 1 fridge");
+
+			fridgeDal.When(x => x.AddFridge(Arg.Any<Fridge.Model.Fridge>())).Do(param1 =>
+			{
+				fridges.Add(param1.ArgAt<Fridge.Model.Fridge>(0));
+			});
+
+			// tested view model
+			FridgeViewModel fridgeViewModel = new FridgeViewModel(fridgeDal);
+			fridgeViewModel.FridgeId = Guid.Empty.ToString();
+			Assert.IsTrue(FridgeApp.Resources.NewFridge.Equals(fridgeViewModel.Name), $"The name of the new fridge should be '{FridgeApp.Resources.NewFridge}'");
+			Assert.IsTrue(fridgeViewModel.Partitions.Count == 0, "Expecting no partition");
+
+			const string newFridgeName = "My new fridge";
+			fridgeViewModel.Name = newFridgeName;
+			fridgeViewModel.AddPartitionCommand.Execute(null);
+
+			await fridgeViewModel.SaveData();
+
+			Assert.IsTrue(fridges.Count == 2, "Expecting 2 fridges");
+			var testedFridge = fridges.Last();
+
+			Assert.IsTrue(testedFridge.OwnerId != Guid.Empty, "Owner should be set");
+			Assert.IsTrue(testedFridge.Name == newFridgeName, $"Invalid name of the user. Expected value is '{newFridgeName}'");
+
+			Assert.IsTrue(testedFridge.Partitions.Count == 1, "Expecting one partition");
 		}
 	}
 }
