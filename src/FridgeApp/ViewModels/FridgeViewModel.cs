@@ -249,6 +249,8 @@ namespace FridgeApp.ViewModels
 				// new fridge
 				var newFridge = FridgeFromVM();
 				newFridge.FridgeId = Guid.NewGuid();
+				var user = await FridgeDal.GetUserAsync();
+				newFridge.OwnerId = user.UserId;
 				await FridgeDal.AddFridge(newFridge);
 			}
 			else

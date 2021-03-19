@@ -206,6 +206,12 @@ namespace FridgeApp.Services
 
 		public async Task<Fridge.Model.User> GetUserAsync()
 		{
+			Fridge.Model.User user = GetDefaultUser();
+			return await Task.FromResult(user);
+		}
+
+		public static Fridge.Model.User GetDefaultUser()
+		{
 			var user = new Fridge.Model.User()
 			{
 				UserId = User1Id,
@@ -221,8 +227,7 @@ namespace FridgeApp.Services
 			};
 
 			user.MyFridges.Add(myFridge);
-				
-			return await Task.FromResult(user);
+			return user;
 		}
 
 		public Task CreateUserAsync(Fridge.Model.User newUser)
