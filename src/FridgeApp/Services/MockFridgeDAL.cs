@@ -243,5 +243,10 @@ namespace FridgeApp.Services
 			this.user = newUser;
 			await Task.CompletedTask;
 		}
+
+		public void CreateUser(Fridge.Model.User newUser)
+		{
+			this.user = newUser;
+		}
 	}
 }

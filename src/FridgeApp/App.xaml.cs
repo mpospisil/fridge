@@ -17,8 +17,11 @@ namespace FridgeApp
 
 		static App()
 		{
+			var fridgeDal = new MockFridgeDAL(true);
+			fridgeDal.CreateUser(MockFridgeDAL.GetDefaultUser());
+
 			builder = new ContainerBuilder();
-			builder.RegisterInstance<IFridgeDAL>(new MockFridgeDAL());
+			builder.RegisterInstance<IFridgeDAL>(fridgeDal);
 			RegisterType<IMainViewModel, MainViewModel>();
 			RegisterType<IItemsViewModel, ItemsViewModel>();
 			RegisterType<ISettingsViewModel, SettingsViewModel>();
