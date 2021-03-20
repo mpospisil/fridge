@@ -98,7 +98,10 @@
     <ShellContent Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
   </FlyoutItem>
 
-  <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
+  <ShellContent x:Name="userPage" Title="{x:Static res:Resources.User}" Icon="user32.png" ContentTemplate="{DataTemplate local:UserPage}"/>
+
+
+    <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
 
 
   <!--

@@ -192,6 +192,9 @@
   <data name="SortByName" xml:space="preserve">
     <value>By name</value>
   </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
   <data name="Verification" xml:space="preserve">
     <value>Verification</value>
   </data>
