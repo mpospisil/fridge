@@ -195,6 +195,9 @@
   <data name="User" xml:space="preserve">
     <value>User</value>
   </data>
+  <data name="UserSettings" xml:space="preserve">
+    <value>User Settings</value>
+  </data>
   <data name="Verification" xml:space="preserve">
     <value>Verification</value>
   </data>

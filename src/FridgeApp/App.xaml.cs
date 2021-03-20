@@ -30,6 +30,7 @@ namespace FridgeApp
 			RegisterType<ISettingsViewModel, SettingsViewModel>();
 			RegisterType<IFridgeViewModel, FridgeViewModel>();
 			RegisterType<IItemViewModel, ItemViewModel>();
+			RegisterType<IUserViewModel, UserViewModel>();
 			BuildContainer();
 		}
 
