@@ -3,12 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              Title="{Binding Title}"
              x:Class="FridgeApp.Views.UserPage"
+             xmlns:local="clr-namespace:FridgeApp.ViewModels"
              x:Name="MyUserPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+  <ContentPage.Content x:DataType="local:UserViewModel">
+    <RefreshView x:DataType="local:UserViewModel" Command="{Binding GetUserCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition></ColumnDefinition>
+          <ColumnDefinition Width="40"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Text="User" FontSize="Medium"></Label>
+        <Label Text="{Binding Name}" FontSize="Medium"></Label>
+      </Grid>
+    </RefreshView>
+  </ContentPage.Content>
 </ContentPage>

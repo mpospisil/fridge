@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FridgeApp.Views.SettingsPage"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:FridgeApp.ViewModels"  
+             xmlns:local="clr-namespace:FridgeApp.ViewModels"
              xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"
              xmlns:res="clr-namespace:FridgeApp"
              x:Name="MySettingsPage">

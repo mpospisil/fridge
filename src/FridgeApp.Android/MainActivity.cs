@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using FridgeApp.Services;
 
 namespace FridgeApp.Droid
 {
@@ -13,6 +14,9 @@ namespace FridgeApp.Droid
 		{
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
+
+			App.RegisterType<IUserInfoService, UserDetailsProvider>();
+			App.BuildContainer();
 
 			base.OnCreate(savedInstanceState);
 

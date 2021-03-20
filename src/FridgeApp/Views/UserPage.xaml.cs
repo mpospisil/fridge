@@ -14,5 +14,11 @@ namespace FridgeApp.Views
 			InitializeComponent();
 			BindingContext = viewModel = DependencyService.Resolve<IUserViewModel>();
 		}
+
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
+			viewModel.OnAppearing();
+		}
 	}
 }
