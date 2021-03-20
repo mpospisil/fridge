@@ -36,14 +36,23 @@ namespace FridgeApp.Services
 
 		public static readonly Guid Fr1Part2Item1Id = Guid.Parse("33C431C6-F838-4964-9585-A73039741D3D");
 		public const string Fr1Part2Item1Name = "Bread";
+
 		private readonly List<Fridge.Model.Fridge> fridges;
-
 		private readonly List<Fridge.Model.ItemInFridge> items;
+		private Fridge.Model.User user;
 
-		public MockFridgeDAL()
+		public MockFridgeDAL(bool createEmpty = false)
 		{
-			fridges = CreateMockFridges();
-			items = CreateMockItems();
+			if (createEmpty)
+			{
+				fridges = new List<Fridge.Model.Fridge>();
+				items = new List<Fridge.Model.ItemInFridge>();
+			}
+			else
+			{
+				fridges = CreateMockFridges();
+				items = CreateMockItems();
+			}
 		}
 
 		public static List<Fridge.Model.ItemInFridge> CreateMockItems()
@@ -206,13 +215,12 @@ namespace FridgeApp.Services
 
 		public async Task<Fridge.Model.User> GetUserAsync()
 		{
-			Fridge.Model.User user = GetDefaultUser();
 			return await Task.FromResult(user);
 		}
 
 		public static Fridge.Model.User GetDefaultUser()
 		{
-			var user = new Fridge.Model.User()
+			var newUser = new Fridge.Model.User()
 			{
 				UserId = User1Id,
 				Name = User1Name,
@@ -226,13 +234,14 @@ namespace FridgeApp.Services
 				OwnerId = User1Id
 			};
 
-			user.MyFridges.Add(myFridge);
-			return user;
+			newUser.MyFridges.Add(myFridge);
+			return newUser;
 		}
 
-		public Task CreateUserAsync(Fridge.Model.User newUser)
+		public async Task CreateUserAsync(Fridge.Model.User newUser)
 		{
-			throw new NotImplementedException();
+			this.user = newUser;
+			await Task.CompletedTask;
 		}
 	}
 }
