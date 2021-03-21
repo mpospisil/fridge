@@ -165,7 +165,7 @@
   <data name="NewFridge" xml:space="preserve">
     <value>New Fridge</value>
   </data>
-  <data name="NewPartition" xml:space="preserve">
+  <data name="NewSector" xml:space="preserve">
     <value>New Sector</value>
   </data>
   <data name="NewUserMessage" xml:space="preserve">
@@ -177,7 +177,7 @@
   <data name="NotSorted" xml:space="preserve">
     <value>Unsorted</value>
   </data>
-  <data name="Partitions" xml:space="preserve">
+  <data name="Sectors" xml:space="preserve">
     <value>Sectors</value>
   </data>
   <data name="Products" xml:space="preserve">

@@ -42,15 +42,15 @@ namespace UT_FridgeApp
 			Assert.IsTrue(itemsViewModel.Items.Count == 4, "Expecting 4 items");
 
 			{
-				// the first item in the fridge 1 , partition 1
+				// the first item in the fridge 1 , sector 1
 				var itemInFridge = itemsViewModel.Items[0];
 				Assert.IsTrue(itemInFridge.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Invalid Id of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeName == MockFridgeDAL.Fridge1Name, "Invalid name of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeIndex == 0, "Invalid index of fridge");
 
-				Assert.IsTrue(itemInFridge.PartitionId == MockFridgeDAL.Partition1Id.ToString(), "Invalid Partition Id");
-				Assert.IsTrue(itemInFridge.PartitionName == MockFridgeDAL.Partition1Name, "Invalid Fridge Id");
-				Assert.IsTrue(itemInFridge.PartitionIndex == 0, "Invalid index of the partition");
+				Assert.IsTrue(itemInFridge.SectorId == MockFridgeDAL.Sector1Id.ToString(), "Invalid Sector Id");
+				Assert.IsTrue(itemInFridge.SectorName == MockFridgeDAL.Sector1Name, "Invalid Fridge Id");
+				Assert.IsTrue(itemInFridge.SectorIndex == 0, "Invalid index of the sector");
 
 				Assert.IsTrue(itemInFridge.Name == MockFridgeDAL.Fr1Part1Item1Name, "Invalid name of the item");
 				Assert.IsTrue(itemInFridge.ItemId == MockFridgeDAL.Fr1Part1Item1Id.ToString(), "Invalid id of the item");
@@ -58,15 +58,15 @@ namespace UT_FridgeApp
 			}
 
 			{
-				// the third item in the fridge 1, partition 1
+				// the third item in the fridge 1, sector 1
 				var itemInFridge = itemsViewModel.Items[2];
 				Assert.IsTrue(itemInFridge.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Invalid Id of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeName == MockFridgeDAL.Fridge1Name, "Invalid name of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeIndex == 0, "Invalid index of fridge");
 
-				Assert.IsTrue(itemInFridge.PartitionId == MockFridgeDAL.Partition1Id.ToString(), "Invalid Partition Id");
-				Assert.IsTrue(itemInFridge.PartitionName == MockFridgeDAL.Partition1Name, "Invalid Fridge Id");
-				Assert.IsTrue(itemInFridge.PartitionIndex == 0, "Invalid index of the partition");
+				Assert.IsTrue(itemInFridge.SectorId == MockFridgeDAL.Sector1Id.ToString(), "Invalid Sector Id");
+				Assert.IsTrue(itemInFridge.SectorName == MockFridgeDAL.Sector1Name, "Invalid Fridge Id");
+				Assert.IsTrue(itemInFridge.SectorIndex == 0, "Invalid index of the sector");
 
 				Assert.IsTrue(itemInFridge.Name == MockFridgeDAL.Fr1Part1Item3Name, "Invalid name of the item");
 				Assert.IsTrue(itemInFridge.ItemId == MockFridgeDAL.Fr1Part1Item3Id.ToString(), "Invalid id of the item");
@@ -74,15 +74,15 @@ namespace UT_FridgeApp
 			}
 
 			{
-				// the third item in the fridge 1, partition 2
+				// the third item in the fridge 1, sector 2
 				var itemInFridge = itemsViewModel.Items[3];
 				Assert.IsTrue(itemInFridge.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Invalid Id of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeName == MockFridgeDAL.Fridge1Name, "Invalid name of the fridge");
 				Assert.IsTrue(itemInFridge.FridgeIndex == 0, "Invalid index of fridge");
 
-				Assert.IsTrue(itemInFridge.PartitionId == MockFridgeDAL.Partition2Id.ToString(), "Invalid Partition Id");
-				Assert.IsTrue(itemInFridge.PartitionName == MockFridgeDAL.Partition2Name, "Invalid Fridge Id");
-				Assert.IsTrue(itemInFridge.PartitionIndex == 1, "Invalid index of the partition");
+				Assert.IsTrue(itemInFridge.SectorId == MockFridgeDAL.Sector2Id.ToString(), "Invalid Sector Id");
+				Assert.IsTrue(itemInFridge.SectorName == MockFridgeDAL.Sector2Name, "Invalid Fridge Id");
+				Assert.IsTrue(itemInFridge.SectorIndex == 1, "Invalid index of the sector");
 
 				Assert.IsTrue(itemInFridge.Name == MockFridgeDAL.Fr1Part2Item1Name, "Invalid name of the item");
 				Assert.IsTrue(itemInFridge.ItemId == MockFridgeDAL.Fr1Part2Item1Id.ToString(), "Invalid id of the item");

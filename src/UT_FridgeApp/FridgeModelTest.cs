@@ -20,11 +20,11 @@ namespace UT_FridgeApp
 			Assert.IsTrue(fridge.RemovedItemsIdentifier == deepCopy.RemovedItemsIdentifier);
 			Assert.IsTrue(fridge.Name == deepCopy.Name);
 			Assert.IsTrue(fridge.TimeStamp == deepCopy.TimeStamp);
-			Assert.IsTrue(fridge.Partitions.Count == deepCopy.Partitions.Count);
+			Assert.IsTrue(fridge.Sectors.Count == deepCopy.Sectors.Count);
 
-			Assert.IsTrue(fridge.Partitions[0].PartitionId == deepCopy.Partitions[0].PartitionId);
-			Assert.IsTrue(fridge.Partitions[0].Name == deepCopy.Partitions[0].Name);
-			Assert.IsTrue(fridge.Partitions[0].TimeStamp == deepCopy.Partitions[0].TimeStamp);
+			Assert.IsTrue(fridge.Sectors[0].SectorId == deepCopy.Sectors[0].SectorId);
+			Assert.IsTrue(fridge.Sectors[0].Name == deepCopy.Sectors[0].Name);
+			Assert.IsTrue(fridge.Sectors[0].TimeStamp == deepCopy.Sectors[0].TimeStamp);
 		}
 	}
 }

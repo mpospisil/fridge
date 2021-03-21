@@ -17,18 +17,18 @@ namespace FridgeApp.Comparers
 			}
 			else
 			{
-				// fride indexes are same - compare indexes of partitions
-				if (x.PartitionIndex < y.PartitionIndex)
+				// fride indexes are same - compare indexes of sectors
+				if (x.SectorIndex < y.SectorIndex)
 				{
 					return -1;
 				}
-				else if (x.PartitionIndex > y.PartitionIndex)
+				else if (x.SectorIndex > y.SectorIndex)
 				{
 					return 1;
 				}
 				else
 				{
-					// same fridge, same partition, compare names of items
+					// same fridge, same sector, compare names of items
 					return string.Compare(x.Name, y.Name);
 				}
 			}

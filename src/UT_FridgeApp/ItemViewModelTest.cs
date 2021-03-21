@@ -30,16 +30,16 @@ namespace UT_FridgeApp
 			});
 
 			var firstFridgeData = fridges[0];
-			Assert.AreEqual(firstFridgeData.Partitions.Count, 3);
+			Assert.AreEqual(firstFridgeData.Sectors.Count, 3);
 			Assert.IsTrue(firstFridgeData.FridgeId == MockFridgeDAL.Fridge1Id);
 
-			var firstPartition = firstFridgeData.Partitions[0];
-			Assert.IsTrue(firstPartition.PartitionId == MockFridgeDAL.Partition1Id);
+			var firstSector = firstFridgeData.Sectors[0];
+			Assert.IsTrue(firstSector.SectorId == MockFridgeDAL.Sector1Id);
 
 			var newItem = new ItemInFridge();
 			var newItemVM = new ItemViewModel(fridgeDal);
 			newItemVM.FridgeId = firstFridgeData.FridgeId.ToString();
-			newItemVM.PartitionId = firstPartition.PartitionId.ToString();
+			newItemVM.SectorId = firstSector.SectorId.ToString();
 			newItemVM.TimeStamp = MockFridgeDAL.Date1;
 
 			var canSaveItem = newItemVM.SaveCommand.CanExecute(null);
@@ -56,7 +56,7 @@ namespace UT_FridgeApp
 			Assert.IsTrue(addedItem != null);
 			Assert.IsTrue(addedItem.Name.Equals(NewItemName));
 			Assert.IsTrue(addedItem.FridgeId == MockFridgeDAL.Fridge1Id);
-			Assert.IsTrue(addedItem.PartitionId == MockFridgeDAL.Partition1Id);
+			Assert.IsTrue(addedItem.SectorId == MockFridgeDAL.Sector1Id);
 			Assert.IsTrue(addedItem.TimeStamp == MockFridgeDAL.Date1);
 			Assert.IsTrue(addedItem.IsInFridge == true);
 
@@ -90,7 +90,7 @@ namespace UT_FridgeApp
 
 			Assert.IsTrue(itemVM.ItemId.Equals(troutItem.ItemId.ToString()));
 			Assert.IsTrue(itemVM.FridgeId.Equals(troutItem.FridgeId.ToString()));
-			Assert.IsTrue(itemVM.PartitionId.Equals(troutItem.PartitionId.ToString()));
+			Assert.IsTrue(itemVM.SectorId.Equals(troutItem.SectorId.ToString()));
 			Assert.IsTrue(itemVM.Name == troutItem.Name);
 			Assert.IsTrue(itemVM.IsInFridge == troutItem.IsInFridge);
 			Assert.IsTrue(itemVM.TimeStamp == troutItem.TimeStamp);
@@ -135,7 +135,7 @@ namespace UT_FridgeApp
 			Assert.IsTrue(removedItem.ItemId == MockFridgeDAL.Fr1Part1Item2Id);
 			Assert.IsTrue(removedItem.Name == MockFridgeDAL.Fr1Part1Item2Name);
 			Assert.IsTrue(removedItem.FridgeId == firstFridge.RemovedItemsIdentifier);
-			Assert.IsTrue(removedItem.PartitionId == firstFridge.RemovedItemsIdentifier);
+			Assert.IsTrue(removedItem.SectorId == firstFridge.RemovedItemsIdentifier);
 			Assert.IsFalse(removedItem.IsInFridge);
 			Assert.IsFalse(removedItem.TimeStamp == MockFridgeDAL.Date2);
 

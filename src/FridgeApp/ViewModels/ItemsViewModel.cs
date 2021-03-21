@@ -273,7 +273,7 @@ namespace FridgeApp.ViewModels
 			// remove the selected item
 			var fridge = await FridgeDal.GetFridgeAsync(Guid.Parse(itemToRemoveVM.FridgeId));
 			Guid itemId = Guid.Parse(itemToRemoveVM.ItemId);
-			Guid partitionId = Guid.Parse(itemToRemoveVM.PartitionId);
+			Guid sectorId = Guid.Parse(itemToRemoveVM.SectorId);
 			await itemToRemoveVM.RemoveItemFromFridge(itemId, fridge.RemovedItemsIdentifier);
 
 			Items.Remove(itemToRemoveVM);
@@ -290,23 +290,23 @@ namespace FridgeApp.ViewModels
 
 			var fridges = await FridgeDal.GetFridgesAsync(true);
 
-			Dictionary<Guid, PartitionDescriptor> partitionDescriptorDict = new Dictionary<Guid, PartitionDescriptor>();
+			Dictionary<Guid, SectorDescriptor> sectorDescriptorDict = new Dictionary<Guid, SectorDescriptor>();
 
 			int fridgeInx = 0;
 			foreach (var fridge in fridges)
 			{
-				int partitionInx = 0;
-				foreach (var partition in fridge.Partitions)
+				int sectorInx = 0;
+				foreach (var sector in fridge.Sectors)
 				{
-					partitionDescriptorDict.Add(partition.PartitionId, new PartitionDescriptor()
+					sectorDescriptorDict.Add(sector.SectorId, new SectorDescriptor()
 					{
 						FridgeInx = fridgeInx,
-						PartitionInx = partitionInx,
+						SectorInx = sectorInx,
 						Fridge = fridge,
-						Partition = partition,
+						Sector = sector,
 					});
 
-					partitionInx++;
+					sectorInx++;
 				}
 				fridgeInx++;
 			}
@@ -318,19 +318,19 @@ namespace FridgeApp.ViewModels
 
 				foreach (var item in items)
 				{
-					PartitionDescriptor partitionDescriptor = null;
-					if (!partitionDescriptorDict.TryGetValue(item.PartitionId, out partitionDescriptor))
+					SectorDescriptor sectorDescriptor = null;
+					if (!sectorDescriptorDict.TryGetValue(item.SectorId, out sectorDescriptor))
 					{
-						// partition doesn't exist
+						// sector doesn't exist
 						continue;
 					}
 
 					var itemVM = new ItemViewModel(FridgeDal, item);
 
-					itemVM.PartitionIndex = partitionDescriptor.PartitionInx;
-					itemVM.FridgeIndex = partitionDescriptor.FridgeInx;
-					itemVM.FridgeName = partitionDescriptor.Fridge.Name;
-					itemVM.PartitionName = partitionDescriptor.Partition.Name;
+					itemVM.SectorIndex = sectorDescriptor.SectorInx;
+					itemVM.FridgeIndex = sectorDescriptor.FridgeInx;
+					itemVM.FridgeName = sectorDescriptor.Fridge.Name;
+					itemVM.SectorName = sectorDescriptor.Sector.Name;
 					Items.Add(itemVM);
 				}
 

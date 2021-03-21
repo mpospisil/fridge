@@ -35,7 +35,7 @@ namespace UT_FridgeApp
 			Assert.IsFalse(settingsViewModel.IsBusy, "IsBusy should equal to 'false'");
 			Assert.IsTrue(settingsViewModel.Fridges.Count == 1, "Expecting 1 fridge");
 
-			// get the middle partition
+			// get the middle sector
 			var fridgeVM = settingsViewModel.Fridges[0];
 			Assert.IsTrue(fridgeVM.Name.Equals(MockFridgeDAL.Fridge1Name), "Incorrect fridge name");
 			Assert.IsTrue(fridgeVM.FridgeId.Equals(MockFridgeDAL.Fridge1Id.ToString()), "Incorrect fridge ID");

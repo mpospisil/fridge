@@ -33,7 +33,7 @@ namespace UT_FridgeApp
 		}
 
 		[TestMethod]
-		public void AddPartitionTest()
+		public void AddSectorTest()
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
@@ -43,15 +43,15 @@ namespace UT_FridgeApp
 			var originalFrigeData = fridges[0];
 			var fridgeVM = new FridgeViewModel(fridgeDal, originalFrigeData);
 
-			Assert.AreEqual(fridgeVM.Partitions.Count, 3);
+			Assert.AreEqual(fridgeVM.Sectors.Count, 3);
 
-			fridgeVM.AddPartitionCommand.Execute(null);
+			fridgeVM.AddSectorCommand.Execute(null);
 
-			Assert.AreEqual(fridgeVM.Partitions.Count, 4);
+			Assert.AreEqual(fridgeVM.Sectors.Count, 4);
 		}
 
 		[TestMethod]
-		public void DeletePartitionTest()
+		public void DeleteSectorTest()
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
@@ -61,13 +61,13 @@ namespace UT_FridgeApp
 			var frigeData = fridges[0];
 			var fridgeVM = new FridgeViewModel(fridgeDal, frigeData);
 
-			Assert.AreEqual(fridgeVM.Partitions.Count, 3);
+			Assert.AreEqual(fridgeVM.Sectors.Count, 3);
 
-			// delete the first partition
-			fridgeVM.DeletePartitionCommand.Execute(fridgeVM.Partitions[0]);
+			// delete the first sector
+			fridgeVM.DeleteSectorCommand.Execute(fridgeVM.Sectors[0]);
 
-			Assert.AreEqual(fridgeVM.Partitions.Count, 2);
-			Assert.AreEqual(fridgeVM.Partitions[0].Name, MockFridgeDAL.Partition2Name);
+			Assert.AreEqual(fridgeVM.Sectors.Count, 2);
+			Assert.AreEqual(fridgeVM.Sectors[0].Name, MockFridgeDAL.Sector2Name);
 		}
 
 		[TestMethod]
@@ -87,29 +87,29 @@ namespace UT_FridgeApp
 
 			Assert.IsTrue(fridgeVM.Name == MockFridgeDAL.Fridge1Name, $"Invalid name of the fridge '{fridgeVM.Name}' !='{MockFridgeDAL.Fridge1Name}'");
 
-			Assert.IsTrue(fridgeVM.Partitions.Count == 3, "Expecting 3 partitions");
+			Assert.IsTrue(fridgeVM.Sectors.Count == 3, "Expecting 3 sectors");
 
-			var firstPartition = fridgeVM.Partitions[0];
-			Assert.IsTrue(firstPartition.Name == MockFridgeDAL.Partition1Name, "Invalid name of the first partition");
-			Assert.IsTrue(firstPartition.PartitionId == MockFridgeDAL.Partition1Id, "Invalid id of the first partition");
-			Assert.IsTrue(firstPartition.Items.Count == 3, "Expecting 3 items in the first partition");
+			var firstSector = fridgeVM.Sectors[0];
+			Assert.IsTrue(firstSector.Name == MockFridgeDAL.Sector1Name, "Invalid name of the first sector");
+			Assert.IsTrue(firstSector.SectorId == MockFridgeDAL.Sector1Id, "Invalid id of the first sector");
+			Assert.IsTrue(firstSector.Items.Count == 3, "Expecting 3 items in the first sector");
 
-			var firstItemInPart1 = firstPartition.Items[0];
+			var firstItemInPart1 = firstSector.Items[0];
 			Assert.IsTrue(firstItemInPart1.ItemId == MockFridgeDAL.Fr1Part1Item1Id.ToString(), "Invalid id of the item");
 			Assert.IsTrue(firstItemInPart1.Name == MockFridgeDAL.Fr1Part1Item1Name, "Invalid name of the item");
 			Assert.IsTrue(firstItemInPart1.IsInFridge == true, "The item should be in the fridge");
-			Assert.IsTrue(firstItemInPart1.PartitionId == MockFridgeDAL.Partition1Id.ToString(), "Incorrect partitionId");
-			Assert.IsTrue(firstItemInPart1.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Incorrect partitionId");
+			Assert.IsTrue(firstItemInPart1.SectorId == MockFridgeDAL.Sector1Id.ToString(), "Incorrect sectorId");
+			Assert.IsTrue(firstItemInPart1.FridgeId == MockFridgeDAL.Fridge1Id.ToString(), "Incorrect sectorId");
 
-			var secondPartition = fridgeVM.Partitions[1];
-			Assert.IsTrue(secondPartition.Name == MockFridgeDAL.Partition2Name, "Invalid name of the second partition");
-			Assert.IsTrue(secondPartition.PartitionId == MockFridgeDAL.Partition2Id, "Invalid id of the second partition");
-			Assert.IsTrue(secondPartition.Items.Count == 1, "Expecting 1 items in the second partition");
+			var secondSector = fridgeVM.Sectors[1];
+			Assert.IsTrue(secondSector.Name == MockFridgeDAL.Sector2Name, "Invalid name of the second sector");
+			Assert.IsTrue(secondSector.SectorId == MockFridgeDAL.Sector2Id, "Invalid id of the second sector");
+			Assert.IsTrue(secondSector.Items.Count == 1, "Expecting 1 items in the second sector");
 
-			var thirdPartition = fridgeVM.Partitions[2];
-			Assert.IsTrue(thirdPartition.Name == MockFridgeDAL.Partition3Name, "Invalid name of the third partition");
-			Assert.IsTrue(thirdPartition.PartitionId == MockFridgeDAL.Partition3Id, "Invalid id of the third partition");
-			Assert.IsTrue(thirdPartition.Items.Count == 0, "Expecting no items in the third partition");
+			var thirdSector = fridgeVM.Sectors[2];
+			Assert.IsTrue(thirdSector.Name == MockFridgeDAL.Sector3Name, "Invalid name of the third sector");
+			Assert.IsTrue(thirdSector.SectorId == MockFridgeDAL.Sector3Id, "Invalid id of the third sector");
+			Assert.IsTrue(thirdSector.Items.Count == 0, "Expecting no items in the third sector");
 		}
 
 		[TestMethod]
@@ -123,17 +123,17 @@ namespace UT_FridgeApp
 			var originalFrigeData = fridges[0];
 			var fridgeVM = new FridgeViewModel(fridgeDal, originalFrigeData);
 
-			Assert.AreEqual(fridgeVM.Partitions.Count, 3);
+			Assert.AreEqual(fridgeVM.Sectors.Count, 3);
 
-			fridgeVM.SelectedPartition = null;
+			fridgeVM.SelectedSector = null;
 
-			var canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedPartition);
-			Assert.IsFalse(canAddItemRes, "When no partitions is selected the user can not add item");
+			var canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedSector);
+			Assert.IsFalse(canAddItemRes, "When no sectors is selected the user can not add item");
 
-			// select the first partition
-			fridgeVM.SelectedPartition = fridgeVM.Partitions[0];
-			canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedPartition);
-			Assert.IsTrue(canAddItemRes, "When a partitions is selected the user can add item");
+			// select the first sector
+			fridgeVM.SelectedSector = fridgeVM.Sectors[0];
+			canAddItemRes = fridgeVM.AddItemCommand.CanExecute(fridgeVM.SelectedSector);
+			Assert.IsTrue(canAddItemRes, "When a sectors is selected the user can add item");
 		}
 
 		[TestMethod]
@@ -158,11 +158,11 @@ namespace UT_FridgeApp
 			FridgeViewModel fridgeViewModel = new FridgeViewModel(fridgeDal);
 			fridgeViewModel.FridgeId = Guid.Empty.ToString();
 			Assert.IsTrue(FridgeApp.Resources.NewFridge.Equals(fridgeViewModel.Name), $"The name of the new fridge should be '{FridgeApp.Resources.NewFridge}'");
-			Assert.IsTrue(fridgeViewModel.Partitions.Count == 3, "Expecting 3 sectors");
+			Assert.IsTrue(fridgeViewModel.Sectors.Count == 3, "Expecting 3 sectors");
 
 			const string newFridgeName = "My new fridge";
 			fridgeViewModel.Name = newFridgeName;
-			fridgeViewModel.AddPartitionCommand.Execute(null);
+			fridgeViewModel.AddSectorCommand.Execute(null);
 
 			await fridgeViewModel.SaveData();
 
@@ -172,7 +172,7 @@ namespace UT_FridgeApp
 			Assert.IsTrue(testedFridge.OwnerId != Guid.Empty, "Owner should be set");
 			Assert.IsTrue(testedFridge.Name == newFridgeName, $"Invalid name of the user. Expected value is '{newFridgeName}'");
 
-			Assert.IsTrue(testedFridge.Partitions.Count == 4, "Expecting 4 partition");
+			Assert.IsTrue(testedFridge.Sectors.Count == 4, "Expecting 4 sector");
 		}
 	}
 }

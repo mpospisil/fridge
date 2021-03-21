@@ -2,11 +2,11 @@
 
 namespace FridgeApp.ViewModels
 {
-	internal class PartitionDescriptor
+	internal class SectorDescriptor
 	{
 		internal int FridgeInx { get; set; }
-		internal int PartitionInx { get; set; }
-		internal Partition Partition { get; set; }
+		internal int SectorInx { get; set; }
+		internal Sector Sector { get; set; }
 		internal Fridge.Model.Fridge Fridge { get; set; }
 	}
 }
