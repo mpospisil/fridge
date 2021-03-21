@@ -7,14 +7,14 @@
              xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"
              xmlns:res="clr-namespace:FridgeApp"
              x:Name="MySettingsPage">
-  
+
   <ContentPage.ToolbarItems>
     <ToolbarItem IconImageSource="plus32.png" Command="{Binding AddFridgeCommand}" />
   </ContentPage.ToolbarItems>
+  <RefreshView x:DataType="local:SettingsViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+    <StackLayout Spacing="3" Padding="15">
+      <Label FontSize="Large" Text="{x:Static res:Resources.DefineYourFridge}" Margin="0,0,0,5" IsVisible="{Binding IsNoFridge}"/>
 
-  <StackLayout Spacing="3" Padding="15">
-
-    <RefreshView x:DataType="local:SettingsViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
       <CollectionView x:Name="FridgesView"
                 ItemsSource="{Binding Fridges}"
                 SelectionMode="Single">
@@ -36,6 +36,6 @@
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
-    </RefreshView>
-  </StackLayout>
+    </StackLayout>
+  </RefreshView>
 </ContentPage>

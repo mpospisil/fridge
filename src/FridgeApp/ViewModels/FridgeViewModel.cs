@@ -188,6 +188,7 @@ namespace FridgeApp.ViewModels
 				var newPartition = new Fridge.Model.Partition();
 				newPartition.Name = Resources.NewPartition;
 				Partitions.Add(new PartitionViewModel(FridgeDal, newPartition));
+				SaveCommand.ChangeCanExecute();
 			}
 			catch (Exception e)
 			{
@@ -229,6 +230,7 @@ namespace FridgeApp.ViewModels
 				IPartitionViewModel partitionToDelete = obj as IPartitionViewModel;
 				var partitionIndexToDelete = Partitions.IndexOf(partitionToDelete);
 				Partitions.RemoveAt(partitionIndexToDelete);
+				SaveCommand.ChangeCanExecute();
 			}
 			catch (Exception e)
 			{
@@ -382,7 +384,17 @@ namespace FridgeApp.ViewModels
 
 		private bool ValidateSave()
 		{
-			return !String.IsNullOrWhiteSpace(Name);
+			if(String.IsNullOrWhiteSpace(Name))
+			{
+				return false;
+			}
+
+			if (!Partitions.Any())
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

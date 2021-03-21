@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace FridgeApp.ViewModels
 {
@@ -52,6 +53,8 @@ namespace FridgeApp.ViewModels
 					var fridgeVM = new FridgeViewModel(FridgeDal, item);
 					Fridges.Add(fridgeVM);
 				}
+
+				OnPropertyChanged("IsNoFridge");
 			}
 			catch (Exception ex)
 			{
@@ -60,6 +63,14 @@ namespace FridgeApp.ViewModels
 			finally
 			{
 				IsBusy = false;
+			}
+		}
+
+		public bool IsNoFridge
+		{
+			get
+			{
+				return !Fridges.Any();
 			}
 		}
 

@@ -115,6 +115,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Define your first fridge.
+        /// </summary>
+        public static string DefineYourFridge {
+            get {
+                return ResourceManager.GetString("DefineYourFridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
