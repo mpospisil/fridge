@@ -4,20 +4,16 @@
              Title="{Binding Title}"
              x:Class="FridgeApp.Views.UserPage"
              xmlns:local="clr-namespace:FridgeApp.ViewModels"
+             xmlns:res="clr-namespace:FridgeApp"
              x:Name="MyUserPage">
   <ContentPage.Content x:DataType="local:UserViewModel">
     <RefreshView x:DataType="local:UserViewModel" Command="{Binding GetUserCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-      <Grid>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="40"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition></ColumnDefinition>
-          <ColumnDefinition Width="40"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Label Text="User" FontSize="Medium"></Label>
-        <Label Text="{Binding Name}" FontSize="Medium"></Label>
-      </Grid>
+      <StackLayout Spacing="3" Padding="15">
+        <Label Text="{x:Static res:Resources.Name}" FontSize="Small"></Label>
+        <Entry Text="{Binding Name}" FontSize="Medium"></Entry>
+        <Label Text="{x:Static res:Resources.Email}" FontSize="Small"></Label>
+        <Entry Text="{Binding Email}" FontSize="Medium"></Entry>        
+      </StackLayout>
     </RefreshView>
   </ContentPage.Content>
 </ContentPage>

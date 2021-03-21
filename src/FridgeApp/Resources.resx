@@ -138,6 +138,9 @@
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="Fridge" xml:space="preserve">
     <value>Fridge</value>
   </data>
