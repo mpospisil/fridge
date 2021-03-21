@@ -17,6 +17,7 @@ namespace FridgeApp.Views
 
 		protected override void OnAppearing()
 		{
+			Shell.SetNavBarIsVisible(this, false);
 			base.OnAppearing();
 			viewModel.OnAppearing();
 		}
