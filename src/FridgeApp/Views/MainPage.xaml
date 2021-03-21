@@ -40,14 +40,14 @@
 
               <StackLayout BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" HeightRequest="50">
                 <CollectionView
-                x:Name="PartitionsView"
-                ItemsSource="{Binding Partitions}"
-                SelectedItem="{Binding SelectedPartition}"
+                x:Name="SectorsView"
+                ItemsSource="{Binding Sectors}"
+                SelectedItem="{Binding SelectedSector}"
                 ItemsLayout="HorizontalList" SelectionMode="Single" Margin="2" BackgroundColor="White">
 
                   <CollectionView.ItemTemplate>
                     <DataTemplate>
-                      <Grid x:DataType="local:PartitionViewModel" Margin="2">
+                      <Grid x:DataType="local:SectorViewModel" Margin="2">
                         <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
@@ -58,7 +58,7 @@
                 </CollectionView>
               </StackLayout>
 
-              <FlexLayout  BindableLayout.ItemsSource="{Binding SelectedPartition.Items}"
+              <FlexLayout  BindableLayout.ItemsSource="{Binding SelectedSector.Items}"
                            Wrap="Wrap" 
                            Direction="Row" JustifyContent="Start"
                            AlignItems="Start" AlignContent="Start">

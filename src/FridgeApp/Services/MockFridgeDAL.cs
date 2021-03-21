@@ -17,13 +17,13 @@ namespace FridgeApp.Services
 
 		public static readonly Guid Fridge1Id = Guid.Parse("07860F5F-038F-4417-9190-E139EF9FE961");
 		public static readonly Guid Fridge1RemovedItemsId = Guid.Parse("0CF37477-E479-4EA7-B825-4B1A25A3E1D9");
-		public static readonly Guid Partition1Id = Guid.Parse("4257558B-BC0A-43A8-A5A3-CB36B46D0DFC");
-		public static readonly Guid Partition2Id = Guid.Parse("B01D35D0-D6FC-4A30-80B9-6EA841FBF85B");
-		public static readonly Guid Partition3Id = Guid.Parse("7F79DE2A-13F8-4C20-932F-CFF6BD877D0C");
+		public static readonly Guid Sector1Id = Guid.Parse("4257558B-BC0A-43A8-A5A3-CB36B46D0DFC");
+		public static readonly Guid Sector2Id = Guid.Parse("B01D35D0-D6FC-4A30-80B9-6EA841FBF85B");
+		public static readonly Guid Sector3Id = Guid.Parse("7F79DE2A-13F8-4C20-932F-CFF6BD877D0C");
 		public const string Fridge1Name = "Fridge 1";
-		public const string Partition1Name = "Upper partition";
-		public const string Partition2Name = "Middle partition";
-		public const string Partition3Name = "Lower partition";
+		public const string Sector1Name = "Upper sector";
+		public const string Sector2Name = "Middle sector";
+		public const string Sector3Name = "Lower sector";
 
 		public static readonly Guid Fr1Part1Item1Id = Guid.Parse("59C7EDD9-E451-4D2C-852E-63A101241CBA");
 		public const string Fr1Part1Item1Name = "Pork meat";
@@ -36,14 +36,23 @@ namespace FridgeApp.Services
 
 		public static readonly Guid Fr1Part2Item1Id = Guid.Parse("33C431C6-F838-4964-9585-A73039741D3D");
 		public const string Fr1Part2Item1Name = "Bread";
+
 		private readonly List<Fridge.Model.Fridge> fridges;
-
 		private readonly List<Fridge.Model.ItemInFridge> items;
+		private Fridge.Model.User user;
 
-		public MockFridgeDAL()
+		public MockFridgeDAL(bool createEmpty = false)
 		{
-			fridges = CreateMockFridges();
-			items = CreateMockItems();
+			if (createEmpty)
+			{
+				fridges = new List<Fridge.Model.Fridge>();
+				items = new List<Fridge.Model.ItemInFridge>();
+			}
+			else
+			{
+				fridges = CreateMockFridges();
+				items = CreateMockItems();
+			}
 		}
 
 		public static List<Fridge.Model.ItemInFridge> CreateMockItems()
@@ -55,7 +64,7 @@ namespace FridgeApp.Services
 				ItemId = Fr1Part1Item1Id,
 				Name = Fr1Part1Item1Name,
 				FridgeId = Fridge1Id,
-				PartitionId = Partition1Id,
+				SectorId = Sector1Id,
 				IsInFridge = true,
 				TimeStamp = Date1,
 			};
@@ -68,7 +77,7 @@ namespace FridgeApp.Services
 				ItemId = Fr1Part1Item2Id,
 				Name = Fr1Part1Item2Name,
 				FridgeId = Fridge1Id,
-				PartitionId = Partition1Id,
+				SectorId = Sector1Id,
 				IsInFridge = true,
 				TimeStamp = Date2
 			};
@@ -81,7 +90,7 @@ namespace FridgeApp.Services
 				ItemId = Fr1Part1Item3Id,
 				Name = Fr1Part1Item3Name,
 				FridgeId = Fridge1Id,
-				PartitionId = Partition1Id,
+				SectorId = Sector1Id,
 				IsInFridge = true,
 				TimeStamp = Date1
 			};
@@ -94,7 +103,7 @@ namespace FridgeApp.Services
 				ItemId = Fr1Part2Item1Id,
 				Name = Fr1Part2Item1Name,
 				FridgeId = Fridge1Id,
-				PartitionId = Partition2Id,
+				SectorId = Sector2Id,
 				IsInFridge = true,
 				TimeStamp = Date3
 			};
@@ -109,12 +118,12 @@ namespace FridgeApp.Services
 		{
 			var fridges = new List<Fridge.Model.Fridge>();
 			var fridge1 = new Fridge.Model.Fridge() { Name = Fridge1Name, FridgeId = Fridge1Id, RemovedItemsIdentifier = Fridge1RemovedItemsId, OwnerId = User1Id };
-			var partition1 = new Fridge.Model.Partition() { Name = Partition1Name, PartitionId = Partition1Id };
-			var partition2 = new Fridge.Model.Partition() { Name = Partition2Name, PartitionId = Partition2Id };
-			var partition3 = new Fridge.Model.Partition() { Name = Partition3Name, PartitionId = Partition3Id };
-			fridge1.Partitions.Add(partition1);
-			fridge1.Partitions.Add(partition2);
-			fridge1.Partitions.Add(partition3);
+			var sector1 = new Fridge.Model.Sector() { Name = Sector1Name, SectorId = Sector1Id };
+			var sector2 = new Fridge.Model.Sector() { Name = Sector2Name, SectorId = Sector2Id };
+			var sector3 = new Fridge.Model.Sector() { Name = Sector3Name, SectorId = Sector3Id };
+			fridge1.Sectors.Add(sector1);
+			fridge1.Sectors.Add(sector2);
+			fridge1.Sectors.Add(sector3);
 			fridges.Add(fridge1);
 
 			return fridges;
@@ -206,13 +215,12 @@ namespace FridgeApp.Services
 
 		public async Task<Fridge.Model.User> GetUserAsync()
 		{
-			Fridge.Model.User user = GetDefaultUser();
 			return await Task.FromResult(user);
 		}
 
 		public static Fridge.Model.User GetDefaultUser()
 		{
-			var user = new Fridge.Model.User()
+			var newUser = new Fridge.Model.User()
 			{
 				UserId = User1Id,
 				Name = User1Name,
@@ -226,13 +234,19 @@ namespace FridgeApp.Services
 				OwnerId = User1Id
 			};
 
-			user.MyFridges.Add(myFridge);
-			return user;
+			newUser.MyFridges.Add(myFridge);
+			return newUser;
 		}
 
-		public Task CreateUserAsync(Fridge.Model.User newUser)
+		public async Task CreateUserAsync(Fridge.Model.User newUser)
 		{
-			throw new NotImplementedException();
+			this.user = newUser;
+			await Task.CompletedTask;
+		}
+
+		public void CreateUser(Fridge.Model.User newUser)
+		{
+			this.user = newUser;
 		}
 	}
 }

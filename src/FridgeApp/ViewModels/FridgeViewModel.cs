@@ -16,7 +16,7 @@ namespace FridgeApp.ViewModels
 	{
 		string Name { get; set; }
 		string FridgeId { get; set; }
-		ObservableCollection<IPartitionViewModel> Partitions { get; }
+		ObservableCollection<ISectorViewModel> Sectors { get; }
 	}
 
 	[QueryProperty(nameof(FridgeId), nameof(FridgeId))]
@@ -28,7 +28,7 @@ namespace FridgeApp.ViewModels
 		private Guid ownerId;
 		private Guid removedItemsIdentifier;
 		private DateTime timeStamp;
-		private IPartitionViewModel selectedPartition;
+		private ISectorViewModel selectedSector;
 		private IItemViewModel selectedItem;
 		#endregion
 
@@ -43,7 +43,7 @@ namespace FridgeApp.ViewModels
 
 		public FridgeViewModel(IFridgeDAL fridgeDal, Fridge.Model.Fridge fridge) : base(fridgeDal)
 		{
-			Partitions = new ObservableCollection<IPartitionViewModel>();
+			Sectors = new ObservableCollection<ISectorViewModel>();
 			if (fridge != null)
 			{
 				SetPropertiesInVM(fridge);
@@ -51,8 +51,8 @@ namespace FridgeApp.ViewModels
 
 			SaveCommand = new Command(OnSave, ValidateSave);
 			CancelCommand = new Command(OnCancel);
-			AddPartitionCommand = new Command(AddPartition);
-			DeletePartitionCommand = new Command(DeletePartition);
+			AddSectorCommand = new Command(AddSector);
+			DeleteSectorCommand = new Command(DeleteSector);
 			DeleteFridgeCommand = new Command(OnDeleteFridge, CanDeleteFridge);
 			AddItemCommand = new Command(OnAddItem, CanAddItem);
 			RemoveItemCommand = new Command(OnRemoveItem, IsItemSelected);
@@ -63,7 +63,7 @@ namespace FridgeApp.ViewModels
 					(_, __) => SaveCommand.ChangeCanExecute();
 
 			this.PropertyChanged +=
-					(_, __) => DeletePartitionCommand.ChangeCanExecute();
+					(_, __) => DeleteSectorCommand.ChangeCanExecute();
 
 			this.PropertyChanged +=
 					(_, __) => DeleteFridgeCommand.ChangeCanExecute();
@@ -93,7 +93,7 @@ namespace FridgeApp.ViewModels
 			set => SetProperty(ref timeStamp, value);
 		}
 
-		public ObservableCollection<IPartitionViewModel> Partitions { get; }
+		public ObservableCollection<ISectorViewModel> Sectors { get; }
 
 		/// <summary>
 		/// The unique identifier of the fridge
@@ -113,10 +113,20 @@ namespace FridgeApp.ViewModels
 				}
 				else
 				{
-					// create temporary fridge
-					fridgeGuid = Guid.Empty;
-					Name = Resources.NewFridge;
+					SetDefaultFridge();
 				}
+			}
+		}
+
+		private void SetDefaultFridge()
+		{
+			// create temporary fridge
+			fridgeGuid = Guid.Empty;
+			Name = Resources.NewFridge;
+
+			for (int i = 1; i < 4; i++)
+			{
+				AddSector($"{Resources.Sector} {i}");
 			}
 		}
 
@@ -133,14 +143,14 @@ namespace FridgeApp.ViewModels
 		}
 
 		/// <summary>
-		/// Selected partition in the fridge
+		/// Selected sector in the fridge
 		/// </summary>
-		public IPartitionViewModel SelectedPartition
+		public ISectorViewModel SelectedSector
 		{
-			get => selectedPartition;
+			get => selectedSector;
 			set
 			{
-				SetProperty(ref selectedPartition, value);
+				SetProperty(ref selectedSector, value);
 				value?.LoadItemsCommand?.Execute(null);
 				AddItemCommand?.ChangeCanExecute();
 			}
@@ -173,25 +183,33 @@ namespace FridgeApp.ViewModels
 
 		public Command SaveCommand { get; }
 		public Command CancelCommand { get; }
-		public Command AddPartitionCommand { get; }
-		public Command DeletePartitionCommand { get; }
+		public Command AddSectorCommand { get; }
+		public Command DeleteSectorCommand { get; }
 		public Command DeleteFridgeCommand { get; }
 		public Command AddItemCommand { get; }
 		public Command RemoveItemCommand { get; }
 		public Command ShowItemDetailsCommand { get; }
 		public Command SelectItemCommand { get; }
 
-		public void AddPartition()
+		public void AddSector(object param)
 		{
 			try
 			{
-				var newPartition = new Fridge.Model.Partition();
-				newPartition.Name = Resources.NewPartition;
-				Partitions.Add(new PartitionViewModel(FridgeDal, newPartition));
+				var newSector = new Fridge.Model.Sector();
+				if (param == null)
+				{
+					newSector.Name = Resources.NewSector;
+				}
+				else
+				{
+					newSector.Name = param.ToString();
+				}
+				Sectors.Add(new SectorViewModel(FridgeDal, newSector));
+				SaveCommand.ChangeCanExecute();
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine($"Failed to add partition {e.Message}");
+				Debug.WriteLine($"Failed to add sector {e.Message}");
 			}
 		}
 
@@ -222,17 +240,18 @@ namespace FridgeApp.ViewModels
 			await Shell.Current.GoToAsync("..");
 		}
 
-		public void DeletePartition(object obj)
+		public void DeleteSector(object obj)
 		{
 			try
 			{
-				IPartitionViewModel partitionToDelete = obj as IPartitionViewModel;
-				var partitionIndexToDelete = Partitions.IndexOf(partitionToDelete);
-				Partitions.RemoveAt(partitionIndexToDelete);
+				ISectorViewModel sectorToDelete = obj as ISectorViewModel;
+				var sectorIndexToDelete = Sectors.IndexOf(sectorToDelete);
+				Sectors.RemoveAt(sectorIndexToDelete);
+				SaveCommand.ChangeCanExecute();
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine($"Failed to delete partition {e.Message}");
+				Debug.WriteLine($"Failed to delete sector {e.Message}");
 			}
 		}
 
@@ -271,12 +290,12 @@ namespace FridgeApp.ViewModels
 
 		private bool CanAddItem(object obj)
 		{
-			return SelectedPartition != null;
+			return SelectedSector != null;
 		}
 
 		private async void OnAddItem(object obj)
 		{
-			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemId)}={Guid.Empty.ToString()}&{nameof(ItemViewModel.FridgeId)}={FridgeId.ToString()}&{nameof(ItemViewModel.PartitionId)}={SelectedPartition.PartitionId.ToString()}");
+			await Shell.Current.GoToAsync($"{nameof(ItemPage)}?{nameof(ItemViewModel.ItemId)}={Guid.Empty.ToString()}&{nameof(ItemViewModel.FridgeId)}={FridgeId.ToString()}&{nameof(ItemViewModel.SectorId)}={SelectedSector.SectorId.ToString()}");
 		}
 
 		private async void OnShowItemDetails(object obj)
@@ -303,10 +322,10 @@ namespace FridgeApp.ViewModels
 
 			// remove the selected item
 			Guid itemId = Guid.Parse(itemToRemoveVM.ItemId);
-			Guid partitionId = Guid.Parse(itemToRemoveVM.PartitionId);
+			Guid sectorId = Guid.Parse(itemToRemoveVM.SectorId);
 			await itemToRemoveVM.RemoveItemFromFridge(itemId, RemovedItemsIdentifier);
 
-			Partitions.First(p => p.PartitionId == partitionId).Items.Remove(itemToRemoveVM);
+			Sectors.First(p => p.SectorId == sectorId).Items.Remove(itemToRemoveVM);
 		}
 
 		private void OnSelectItem(object obj)
@@ -349,16 +368,16 @@ namespace FridgeApp.ViewModels
 			this.TimeStamp = fridge.TimeStamp;
 			this.OwnerId = fridge.OwnerId;
 
-			Partitions.Clear();
+			Sectors.Clear();
 
-			foreach (var partition in fridge.Partitions)
+			foreach (var sector in fridge.Sectors)
 			{
-				Partitions.Add(new PartitionViewModel(FridgeDal, partition));
+				Sectors.Add(new SectorViewModel(FridgeDal, sector));
 			}
 
-			if (SelectedPartition == null)
+			if (SelectedSector == null)
 			{
-				SelectedPartition = Partitions?.FirstOrDefault();
+				SelectedSector = Sectors?.FirstOrDefault();
 			}
 		}
 
@@ -372,9 +391,9 @@ namespace FridgeApp.ViewModels
 
 			fridgeDataFromVM.TimeStamp = TimeStamp;
 
-			foreach (var partitionVM in Partitions)
+			foreach (var sectorVM in Sectors)
 			{
-				fridgeDataFromVM.Partitions.Add(partitionVM.PartitionFromVM());
+				fridgeDataFromVM.Sectors.Add(sectorVM.SectorFromVM());
 			}
 
 			return fridgeDataFromVM;
@@ -382,7 +401,17 @@ namespace FridgeApp.ViewModels
 
 		private bool ValidateSave()
 		{
-			return !String.IsNullOrWhiteSpace(Name);
+			if (String.IsNullOrWhiteSpace(Name))
+			{
+				return false;
+			}
+
+			if (!Sectors.Any())
+			{
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

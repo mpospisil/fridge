@@ -11,7 +11,7 @@
 
   <ContentPage.Content>
     <StackLayout Spacing="3" Padding="15">
-      <Label Text="Name" FontSize="Medium" />
+      <Label Text="{x:Static res:Resources.Name}" FontSize="Medium" />
       <Entry Text="{Binding Name, Mode=TwoWay}" FontSize="Medium" />
 
       <Grid>
@@ -22,16 +22,16 @@
           <ColumnDefinition></ColumnDefinition>
           <ColumnDefinition Width="40"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Text="Partitions" FontSize="Medium"></Label>
-        <Button Grid.Column="1" ImageSource="plus32.png" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
+        <Label Text="{x:Static res:Resources.Sectors}" FontSize="Medium"></Label>
+        <Button Grid.Column="1" ImageSource="plus32.png" FontSize="Medium" Command="{Binding AddSectorCommand}"></Button>
       </Grid>
 
-      <CollectionView x:Name="PartitionsView"
-                ItemsSource="{Binding Partitions}"
+      <CollectionView x:Name="SectorsView"
+                ItemsSource="{Binding Sectors}"
                 SelectionMode="None">
         <CollectionView.ItemTemplate>
           <DataTemplate>
-            <Grid Padding="10" x:DataType="local:PartitionViewModel">
+            <Grid Padding="10" x:DataType="local:SectorViewModel">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition Width="35"></ColumnDefinition>
@@ -39,7 +39,7 @@
               <Entry Grid.Column="0" Text="{Binding Name, Mode=TwoWay}" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Medium" />
-              <Button Grid.Column="1" ImageSource="delete32.png" FontSize="Medium" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=DeletePartitionCommand}" CommandParameter="{Binding}">
+              <Button Grid.Column="1" ImageSource="delete32.png" FontSize="Medium" Command="{Binding Source={RelativeSource AncestorType={x:Type local:FridgeViewModel}}, Path=DeleteSectorCommand}" CommandParameter="{Binding}">
               </Button>
             </Grid>
           </DataTemplate>

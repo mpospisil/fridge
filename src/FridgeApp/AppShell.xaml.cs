@@ -10,6 +10,22 @@ namespace FridgeApp
 			InitializeComponent();
 			Routing.RegisterRoute(nameof(FridgeEditPage), typeof(FridgeEditPage));
 			Routing.RegisterRoute(nameof(ItemPage), typeof(ItemPage));
+			Routing.RegisterRoute(nameof(UserPage), typeof(UserPage));
+		}
+
+		public void OpenUserPage()
+		{
+			CurrentItem = userPage;
+		}
+
+		public void OpenSettingsPage()
+		{
+			CurrentItem = settingsPage;
+		}
+
+		public void OpenFridgeContentPage()
+		{
+			CurrentItem = fridgeContentPage;
 		}
 	}
 }

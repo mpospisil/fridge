@@ -26,9 +26,9 @@ namespace Fridge.Model
 		public Guid FridgeId { get; set; }
 
 		/// <summary>
-		/// The identifier of the partition where item is stored
+		/// The identifier of the sector where item is stored
 		/// </summary>
-		public Guid PartitionId { get; set; }
+		public Guid SectorId { get; set; }
 
 		/// <summary>
 		/// True if this item is currently in a fridge
@@ -36,7 +36,7 @@ namespace Fridge.Model
 		public bool IsInFridge { get; set; }
 
 		/// <summary>
-		/// Time when the partition in the fridge  was modified
+		/// Time when the sector in the fridge  was modified
 		/// </summary>
 		public DateTime TimeStamp { get; set; }
 

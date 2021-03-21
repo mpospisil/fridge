@@ -135,8 +135,14 @@
   <data name="DateFormat" xml:space="preserve">
     <value>{0:dd.MM.yyyy}</value>
   </data>
+  <data name="DefineYourFridge" xml:space="preserve">
+    <value>Define your first fridge</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="Fridge" xml:space="preserve">
     <value>Fridge</value>
@@ -147,6 +153,9 @@
   <data name="FridgeSettings" xml:space="preserve">
     <value>Fridge Settings</value>
   </data>
+  <data name="GoToProducts" xml:space="preserve">
+    <value>Go to products</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -156,8 +165,11 @@
   <data name="NewFridge" xml:space="preserve">
     <value>New Fridge</value>
   </data>
-  <data name="NewPartition" xml:space="preserve">
-    <value>New Partition</value>
+  <data name="NewSector" xml:space="preserve">
+    <value>New Sector</value>
+  </data>
+  <data name="NewUserMessage" xml:space="preserve">
+    <value>Create a new user </value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -165,8 +177,8 @@
   <data name="NotSorted" xml:space="preserve">
     <value>Unsorted</value>
   </data>
-  <data name="Partitions" xml:space="preserve">
-    <value>Partitions</value>
+  <data name="Sectors" xml:space="preserve">
+    <value>Sectors</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>
@@ -183,6 +195,9 @@
   <data name="SearchPlaceHolder" xml:space="preserve">
     <value>Product</value>
   </data>
+  <data name="Sector" xml:space="preserve">
+    <value>Sector</value>
+  </data>
   <data name="SortByDate" xml:space="preserve">
     <value>By date</value>
   </data>
@@ -191,6 +206,12 @@
   </data>
   <data name="SortByName" xml:space="preserve">
     <value>By name</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="UserSettings" xml:space="preserve">
+    <value>User Settings</value>
   </data>
   <data name="Verification" xml:space="preserve">
     <value>Verification</value>

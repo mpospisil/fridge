@@ -65,7 +65,7 @@
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>
 
-                <Label Grid.Column="0" Grid.Row="2" Text="{Binding PartitionName}" 
+                <Label Grid.Column="0" Grid.Row="2" Text="{Binding SectorName}" 
                             LineBreakMode="NoWrap"
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="Small" Margin="3" VerticalTextAlignment="Center"/>

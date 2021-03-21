@@ -9,6 +9,10 @@ namespace FridgeApp.Services
 	/// </summary>
 	public interface IFridgeDAL
 	{
+		/// <summary>
+		/// Get the current user or null if user doesn't exist
+		/// </summary>
+		/// <returns></returns>
 		Task<Fridge.Model.User> GetUserAsync();
 
 		Task CreateUserAsync(Fridge.Model.User newUser);

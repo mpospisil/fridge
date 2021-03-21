@@ -81,7 +81,7 @@
         https://docs.microsoft.com/dotnet/api/xamarin.forms.shellgroupitem.flyoutdisplayoptions?view=xamarin-forms
     -->
 
-  <FlyoutItem Title="{x:Static res:Resources.Products}" Icon="fridge32.png">
+  <FlyoutItem x:Name="fridgeContentPage" Title="{x:Static res:Resources.Products}" Icon="fridge32.png">
     <Tab Title="{x:Static res:Resources.Fridges}">
       <ShellContent x:Name="mainPage"
                   Title="{x:Static res:Resources.Fridges}"
@@ -94,11 +94,14 @@
     </Tab>
   </FlyoutItem>
 
-  <FlyoutItem Title="{x:Static res:Resources.FridgeSettings}" Icon="settings32.png">
+  <FlyoutItem x:Name="settingsPage" Title="{x:Static res:Resources.FridgeSettings}" Icon="settings32.png">
     <ShellContent Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
   </FlyoutItem>
 
-  <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
+  <ShellContent x:Name="userPage" Title="{x:Static res:Resources.User}" Icon="user32.png" ContentTemplate="{DataTemplate local:UserPage}"/>
+
+
+    <!-- When the Flyout is visible this will be a menu item you can tie a click behavior to  -->
 
 
   <!--

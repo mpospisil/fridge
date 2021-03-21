@@ -12,7 +12,7 @@ namespace FridgeApp.ViewModels
 
 		string FridgeId { get; }
 
-		string PartitionId { get; set; }
+		string SectorId { get; set; }
 
 		/// <summary>
 		/// True if this item is currently in a fridge
@@ -25,9 +25,9 @@ namespace FridgeApp.ViewModels
 
 		int FridgeIndex { get; }
 
-		string PartitionName { get; }
+		string SectorName { get; }
 
-		int PartitionIndex { get; }
+		int SectorIndex { get; }
 
 		/// <summary>
 		/// Method set read data from repository and sets them into properties ov VM
@@ -47,25 +47,25 @@ namespace FridgeApp.ViewModels
 		/// Remove item from fridge. 
 		/// </summary>
 		/// <param name="itemId">Id of the item which will be removed</param>
-		/// <param name="removedItemIdentifier">The id which will be set to properties ItemId and PartitionId</param>
+		/// <param name="removedItemIdentifier">The id which will be set to properties ItemId and SectorId</param>
 		/// <returns>Task</returns>
 		Task RemoveItemFromFridge(Guid itemId, Guid removedItemIdentifier);
 	}
 
 	[QueryProperty(nameof(ItemId), nameof(ItemId))]
 	[QueryProperty(nameof(FridgeId), nameof(FridgeId))]
-	[QueryProperty(nameof(PartitionId), nameof(PartitionId))]
+	[QueryProperty(nameof(SectorId), nameof(SectorId))]
 	[QueryProperty(nameof(ItemFromRepositoryId), nameof(ItemFromRepositoryId))]
 	public class ItemViewModel : BaseViewModel, IItemViewModel
 	{
 		string itemId;
-		string partitionId;
+		string sectorId;
 		string fridgeId;
 		string name;
 		string fridgeName;
 		int fridgeIndex;
-		string partitionName;
-		int partitionIndex;
+		string sectorName;
+		int sectorIndex;
 		private DateTime timeStamp;
 		private bool isInFridge;
 		DateTime addToFridgeTime;
@@ -136,12 +136,12 @@ namespace FridgeApp.ViewModels
 			SetPropertiesInVM(itemData);
 		}
 
-		public string PartitionId
+		public string SectorId
 		{
-			get => partitionId;
+			get => sectorId;
 			set
 			{
-				SetProperty(ref partitionId, value);
+				SetProperty(ref sectorId, value);
 			}
 		}
 
@@ -175,16 +175,16 @@ namespace FridgeApp.ViewModels
 			set => SetProperty(ref fridgeIndex, value);
 		}
 
-		public string PartitionName
+		public string SectorName
 		{
-			get => partitionName;
-			set => SetProperty(ref partitionName, value);
+			get => sectorName;
+			set => SetProperty(ref sectorName, value);
 		}
 
-		public int PartitionIndex
+		public int SectorIndex
 		{
-			get => partitionIndex;
-			set => SetProperty(ref partitionIndex, value);
+			get => sectorIndex;
+			set => SetProperty(ref sectorIndex, value);
 		}
 		public DateTime TimeStamp
 		{
@@ -223,9 +223,9 @@ namespace FridgeApp.ViewModels
 		{
 			var itemToRemove = await FridgeDal.GetItemAsync(itemId);
 
-			// set FrigeId and PartitionId to value of RemovedItemsIdentifier for this fridge
+			// set FrigeId and SectorId to value of RemovedItemsIdentifier for this fridge
 			itemToRemove.FridgeId = removedItemIdentifier;
-			itemToRemove.PartitionId = removedItemIdentifier;
+			itemToRemove.SectorId = removedItemIdentifier;
 			itemToRemove.IsInFridge = false;
 			itemToRemove.TimeStamp = DateTime.UtcNow;
 			itemToRemove.History.Add(new Fridge.Model.ItemChange() { TimeOfChange = itemToRemove.TimeStamp, TypeOfChange = Fridge.Model.ChangeTypes.Removed });
@@ -237,7 +237,7 @@ namespace FridgeApp.ViewModels
 			this.itemId = item.ItemId.ToString();
 			this.IsInFridge = item.IsInFridge;
 			this.FridgeId = item.FridgeId.ToString();
-			this.PartitionId = item.PartitionId.ToString();
+			this.SectorId = item.SectorId.ToString();
 			this.Name = item.Name;
 			this.TimeStamp = item.TimeStamp;
 
@@ -276,7 +276,7 @@ namespace FridgeApp.ViewModels
 		{
 			var item = new Fridge.Model.ItemInFridge();
 			item.FridgeId = Guid.Parse(FridgeId);
-			item.PartitionId = Guid.Parse(PartitionId);
+			item.SectorId = Guid.Parse(SectorId);
 			item.ItemId = Guid.Parse(ItemId);
 			item.Name = Name;
 			item.IsInFridge = IsInFridge;

@@ -14,6 +14,8 @@ namespace FridgeApp.Droid
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
 
+			App.BuildContainer();
+
 			base.OnCreate(savedInstanceState);
 
 			Xamarin.Essentials.Platform.Init(this, savedInstanceState);
