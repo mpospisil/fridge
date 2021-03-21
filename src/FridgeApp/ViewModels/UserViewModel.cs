@@ -68,7 +68,8 @@ namespace FridgeApp.ViewModels
 			}
 			else
 			{
-				await Shell.Current.GoToAsync("..");
+				//await Shell.Current.GoToAsync("..");
+				((AppShell)Shell.Current).OpenFridgeContentPage();
 			}
 		}
 
@@ -120,8 +121,18 @@ namespace FridgeApp.ViewModels
 			set
 			{
 				SetProperty(ref userId, value);
+				OnPropertyChanged("IsNewUser");
 			}
 		}
+
+		public bool IsNewUser
+		{
+			get
+			{
+				return (UserId == Guid.Empty);
+			}
+		}
+
 		public void OnAppearing()
 		{
 			IsBusy = true;

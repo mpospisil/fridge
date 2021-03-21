@@ -196,6 +196,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create a new user .
+        /// </summary>
+        public static string NewUserMessage {
+            get {
+                return ResourceManager.GetString("NewUserMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No.
         /// </summary>
         public static string No {

@@ -22,5 +22,10 @@ namespace FridgeApp
 		{
 			CurrentItem = settingsPage;
 		}
+
+		public void OpenFridgeContentPage()
+		{
+			CurrentItem = fridgeContentPage;
+		}
 	}
 }

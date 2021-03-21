@@ -10,6 +10,7 @@
     <RefreshView x:DataType="local:UserViewModel" Command="{Binding GetUserCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
       <StackLayout>
         <StackLayout  Spacing="3" Padding="15" VerticalOptions="Start">
+          <Label FontSize="Large" Text="{x:Static res:Resources.NewUserMessage}" Margin="0,0,0,5" IsVisible="{Binding IsNewUser}"/>
           <Label Text="{x:Static res:Resources.Name}" FontSize="Small"></Label>
           <Entry Text="{Binding Name}" FontSize="Medium"></Entry>
           <Label Text="{x:Static res:Resources.Email}" FontSize="Small"></Label>

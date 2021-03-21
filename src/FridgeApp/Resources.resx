@@ -162,6 +162,9 @@
   <data name="NewPartition" xml:space="preserve">
     <value>New Partition</value>
   </data>
+  <data name="NewUserMessage" xml:space="preserve">
+    <value>Create a new user </value>
+  </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
