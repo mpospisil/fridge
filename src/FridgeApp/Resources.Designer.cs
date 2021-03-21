@@ -115,11 +115,29 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Define your first fridge.
+        /// </summary>
+        public static string DefineYourFridge {
+            get {
+                return ResourceManager.GetString("DefineYourFridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
         public static string Delete {
             get {
                 return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email.
+        /// </summary>
+        public static string Email {
+            get {
+                return ResourceManager.GetString("Email", resourceCulture);
             }
         }
         
@@ -151,6 +169,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Go to products.
+        /// </summary>
+        public static string GoToProducts {
+            get {
+                return ResourceManager.GetString("GoToProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -178,11 +205,20 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Partition.
+        ///   Looks up a localized string similar to New Sector.
         /// </summary>
         public static string NewPartition {
             get {
                 return ResourceManager.GetString("NewPartition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a new user .
+        /// </summary>
+        public static string NewUserMessage {
+            get {
+                return ResourceManager.GetString("NewUserMessage", resourceCulture);
             }
         }
         
@@ -205,7 +241,7 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Partitions.
+        ///   Looks up a localized string similar to Sectors.
         /// </summary>
         public static string Partitions {
             get {
@@ -259,6 +295,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sector.
+        /// </summary>
+        public static string Sector {
+            get {
+                return ResourceManager.GetString("Sector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By date.
         /// </summary>
         public static string SortByDate {
@@ -282,6 +327,24 @@ namespace FridgeApp {
         public static string SortByName {
             get {
                 return ResourceManager.GetString("SortByName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string User {
+            get {
+                return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Settings.
+        /// </summary>
+        public static string UserSettings {
+            get {
+                return ResourceManager.GetString("UserSettings", resourceCulture);
             }
         }
         

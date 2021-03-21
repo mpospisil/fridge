@@ -158,7 +158,7 @@ namespace UT_FridgeApp
 			FridgeViewModel fridgeViewModel = new FridgeViewModel(fridgeDal);
 			fridgeViewModel.FridgeId = Guid.Empty.ToString();
 			Assert.IsTrue(FridgeApp.Resources.NewFridge.Equals(fridgeViewModel.Name), $"The name of the new fridge should be '{FridgeApp.Resources.NewFridge}'");
-			Assert.IsTrue(fridgeViewModel.Partitions.Count == 0, "Expecting no partition");
+			Assert.IsTrue(fridgeViewModel.Partitions.Count == 3, "Expecting 3 sectors");
 
 			const string newFridgeName = "My new fridge";
 			fridgeViewModel.Name = newFridgeName;
@@ -172,7 +172,7 @@ namespace UT_FridgeApp
 			Assert.IsTrue(testedFridge.OwnerId != Guid.Empty, "Owner should be set");
 			Assert.IsTrue(testedFridge.Name == newFridgeName, $"Invalid name of the user. Expected value is '{newFridgeName}'");
 
-			Assert.IsTrue(testedFridge.Partitions.Count == 1, "Expecting one partition");
+			Assert.IsTrue(testedFridge.Partitions.Count == 4, "Expecting 4 partition");
 		}
 	}
 }

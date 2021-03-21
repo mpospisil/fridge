@@ -3,39 +3,47 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FridgeApp.Views.SettingsPage"
              Title="{Binding Title}"
-             xmlns:local="clr-namespace:FridgeApp.ViewModels"  
+             xmlns:local="clr-namespace:FridgeApp.ViewModels"
              xmlns:model="clr-namespace:Fridge.Model;assembly=Fridge.Model"
              xmlns:res="clr-namespace:FridgeApp"
              x:Name="MySettingsPage">
-  
+
   <ContentPage.ToolbarItems>
     <ToolbarItem IconImageSource="plus32.png" Command="{Binding AddFridgeCommand}" />
   </ContentPage.ToolbarItems>
+  <RefreshView x:DataType="local:SettingsViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+    <StackLayout Spacing="3" Padding="15">
+      <StackLayout VerticalOptions="Start">
+        <Label FontSize="Large" Text="{x:Static res:Resources.DefineYourFridge}" Margin="0,0,0,5" IsVisible="{Binding IsNoFridge}"/>
 
-  <StackLayout Spacing="3" Padding="15">
-
-    <RefreshView x:DataType="local:SettingsViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-      <CollectionView x:Name="FridgesView"
+        <CollectionView x:Name="FridgesView"
                 ItemsSource="{Binding Fridges}"
                 SelectionMode="Single">
-        <CollectionView.ItemTemplate>
-          <DataTemplate>
-            <StackLayout Padding="10" x:DataType="local:FridgeViewModel">
-              <Label Text="{Binding Name}" 
+          <CollectionView.ItemTemplate>
+            <DataTemplate>
+              <StackLayout Padding="10" x:DataType="local:FridgeViewModel">
+                <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
-              <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer 
+                <StackLayout.GestureRecognizers>
+                  <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:SettingsViewModel}}, Path=FridgeDetailsCommand}"		
                                 CommandParameter="{Binding .}">
-                </TapGestureRecognizer>
-              </StackLayout.GestureRecognizers>
-            </StackLayout>
-          </DataTemplate>
-        </CollectionView.ItemTemplate>
-      </CollectionView>
-    </RefreshView>
-  </StackLayout>
+                  </TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+              </StackLayout>
+            </DataTemplate>
+          </CollectionView.ItemTemplate>
+        </CollectionView>
+      </StackLayout>
+      <StackLayout VerticalOptions="CenterAndExpand">
+        <!-- middle controls -->
+      </StackLayout>
+      <StackLayout VerticalOptions="End" Margin="3">
+        <Button Text="{x:Static res:Resources.GoToProducts}" Command="{Binding GoToProductsCommand}" HorizontalOptions="Center"/>
+      </StackLayout>
+    </StackLayout>
+  </RefreshView>
 </ContentPage>

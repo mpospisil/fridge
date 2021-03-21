@@ -15,16 +15,22 @@ namespace FridgeApp
 		static IContainer container;
 		static readonly ContainerBuilder builder;
 
+		//Custom event that is raised when the application is starting
+		private event EventHandler Starting = delegate { };
+
 		static App()
 		{
+			var fridgeDal = new MockFridgeDAL(true);
+			//fridgeDal.CreateUser(MockFridgeDAL.GetDefaultUser());
+
 			builder = new ContainerBuilder();
-			builder.RegisterInstance<IFridgeDAL>(new MockFridgeDAL());
+			builder.RegisterInstance<IFridgeDAL>(fridgeDal);
 			RegisterType<IMainViewModel, MainViewModel>();
 			RegisterType<IItemsViewModel, ItemsViewModel>();
 			RegisterType<ISettingsViewModel, SettingsViewModel>();
 			RegisterType<IFridgeViewModel, FridgeViewModel>();
 			RegisterType<IItemViewModel, ItemViewModel>();
-			BuildContainer();
+			RegisterType<IUserViewModel, UserViewModel>();
 		}
 
 		public App()
@@ -43,6 +49,10 @@ namespace FridgeApp
 
 		protected override void OnStart()
 		{
+			//subscribe to event
+			Starting += OnStarting;
+			//raise event
+			Starting(this, EventArgs.Empty);
 		}
 
 		protected override void OnSleep()
@@ -90,6 +100,20 @@ namespace FridgeApp
 		public static void BuildContainer()
 		{
 			container = builder.Build();
+		}
+
+		private async void OnStarting(object sender, EventArgs args)
+		{
+			//unsubscribe from event
+			Starting -= OnStarting;
+
+			var fridgeDal = container.Resolve<IFridgeDAL>();
+			var user = await fridgeDal.GetUserAsync(); 
+
+			if(user == null)
+			{
+				((AppShell)Shell.Current).OpenUserPage();
+			}
 		}
 	}
 }
