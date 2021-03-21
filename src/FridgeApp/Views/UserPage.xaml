@@ -8,11 +8,19 @@
              x:Name="MyUserPage">
   <ContentPage.Content x:DataType="local:UserViewModel">
     <RefreshView x:DataType="local:UserViewModel" Command="{Binding GetUserCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-      <StackLayout Spacing="3" Padding="15">
-        <Label Text="{x:Static res:Resources.Name}" FontSize="Small"></Label>
-        <Entry Text="{Binding Name}" FontSize="Medium"></Entry>
-        <Label Text="{x:Static res:Resources.Email}" FontSize="Small"></Label>
-        <Entry Text="{Binding Email}" FontSize="Medium"></Entry>        
+      <StackLayout>
+        <StackLayout  Spacing="3" Padding="15" VerticalOptions="Start">
+          <Label Text="{x:Static res:Resources.Name}" FontSize="Small"></Label>
+          <Entry Text="{Binding Name}" FontSize="Medium"></Entry>
+          <Label Text="{x:Static res:Resources.Email}" FontSize="Small"></Label>
+          <Entry Text="{Binding Email}" FontSize="Medium"></Entry>
+        </StackLayout>
+        <StackLayout VerticalOptions="CenterAndExpand">
+          <!-- middle controls -->
+        </StackLayout>
+        <StackLayout VerticalOptions="End" Margin="3">
+          <Button Text="{x:Static res:Resources.Save}" Command="{Binding SaveCommand}" HorizontalOptions="Center"/>
+        </StackLayout>
       </StackLayout>
     </RefreshView>
   </ContentPage.Content>

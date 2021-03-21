@@ -1,7 +1,7 @@
-﻿using FridgeApp.Services;
-using System.Threading.Tasks;
-using FridgeApp.Tools;
+﻿using Fridge.Model;
+using FridgeApp.Services;
 using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace FridgeApp.ViewModels
@@ -15,16 +15,29 @@ namespace FridgeApp.ViewModels
 
 	public class UserViewModel : BaseViewModel, IUserViewModel
 	{
-		private readonly IUserInfoService userInfoService;
 		private string name;
 		private string email;
 
-		public UserViewModel(IFridgeDAL fridgeDal, IUserInfoService userInfoService) : base(fridgeDal)
+		public UserViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
-			this.userInfoService = userInfoService;
 			Title = Resources.UserSettings;
 			GetUserCommand = new Command(async () => await ExecuteGetUserCommand());
+			SaveCommand = new Command(OnSave, ValidateSave);
 		}
+
+		public Command SaveCommand { get; }
+
+		private bool ValidateSave(object arg)
+		{
+			return true;
+		}
+
+		private void OnSave(object obj)
+		{
+
+		}
+
+
 
 		public string Name
 		{
@@ -53,15 +66,14 @@ namespace FridgeApp.ViewModels
 
 		public async Task ExecuteGetUserCommand()
 		{
-			var user = await FridgeDal.GetUserAsync();
+			User user = await FridgeDal.GetUserAsync();
 			if(user == null)
 			{
 				// create a new user if he is missing
-				var deviceUserData = await userInfoService.GetUserDataAsync();
-				user = new Fridge.Model.User();
-				user.Set(deviceUserData);
-				user.UserId = Guid.NewGuid();
-				await FridgeDal.CreateUserAsync(user);
+				user = new User();
+				user.Name = string.Empty;
+				user.Email = string.Empty;
+				user.UserId = Guid.Empty;
 			}
 
 			Name = user.Name;

@@ -15,10 +15,6 @@ namespace FridgeApp.Droid
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
 
-			//Android.Accounts.AccountManager accountManager = Android.Accounts.AccountManager.Get(this);
-			//var accounts = accountManager.GetAccounts();
-
-			App.RegisterType<IUserInfoService, UserDetailsProvider>();
 			App.BuildContainer();
 
 			base.OnCreate(savedInstanceState);
