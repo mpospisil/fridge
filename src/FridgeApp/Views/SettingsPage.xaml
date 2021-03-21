@@ -13,29 +13,37 @@
   </ContentPage.ToolbarItems>
   <RefreshView x:DataType="local:SettingsViewModel" Command="{Binding LoadFridgesCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
     <StackLayout Spacing="3" Padding="15">
-      <Label FontSize="Large" Text="{x:Static res:Resources.DefineYourFridge}" Margin="0,0,0,5" IsVisible="{Binding IsNoFridge}"/>
+      <StackLayout VerticalOptions="Start">
+        <Label FontSize="Large" Text="{x:Static res:Resources.DefineYourFridge}" Margin="0,0,0,5" IsVisible="{Binding IsNoFridge}"/>
 
-      <CollectionView x:Name="FridgesView"
+        <CollectionView x:Name="FridgesView"
                 ItemsSource="{Binding Fridges}"
                 SelectionMode="Single">
-        <CollectionView.ItemTemplate>
-          <DataTemplate>
-            <StackLayout Padding="10" x:DataType="local:FridgeViewModel">
-              <Label Text="{Binding Name}" 
+          <CollectionView.ItemTemplate>
+            <DataTemplate>
+              <StackLayout Padding="10" x:DataType="local:FridgeViewModel">
+                <Label Text="{Binding Name}" 
                             LineBreakMode="NoWrap" 
                             Style="{DynamicResource ListItemTextStyle}" 
                             FontSize="16" />
-              <StackLayout.GestureRecognizers>
-                <TapGestureRecognizer 
+                <StackLayout.GestureRecognizers>
+                  <TapGestureRecognizer 
                                 NumberOfTapsRequired="1"
                                 Command="{Binding Source={RelativeSource AncestorType={x:Type local:SettingsViewModel}}, Path=FridgeDetailsCommand}"		
                                 CommandParameter="{Binding .}">
-                </TapGestureRecognizer>
-              </StackLayout.GestureRecognizers>
-            </StackLayout>
-          </DataTemplate>
-        </CollectionView.ItemTemplate>
-      </CollectionView>
+                  </TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+              </StackLayout>
+            </DataTemplate>
+          </CollectionView.ItemTemplate>
+        </CollectionView>
+      </StackLayout>
+      <StackLayout VerticalOptions="CenterAndExpand">
+        <!-- middle controls -->
+      </StackLayout>
+      <StackLayout VerticalOptions="End" Margin="3">
+        <Button Text="{x:Static res:Resources.GoToProducts}" Command="{Binding GoToProductsCommand}" HorizontalOptions="Center"/>
+      </StackLayout>
     </StackLayout>
   </RefreshView>
 </ContentPage>

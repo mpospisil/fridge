@@ -113,10 +113,20 @@ namespace FridgeApp.ViewModels
 				}
 				else
 				{
-					// create temporary fridge
-					fridgeGuid = Guid.Empty;
-					Name = Resources.NewFridge;
+					SetDefaultFridge();
 				}
+			}
+		}
+
+		private void SetDefaultFridge()
+		{
+			// create temporary fridge
+			fridgeGuid = Guid.Empty;
+			Name = Resources.NewFridge;
+
+			for(int i = 1; i < 4; i++)
+			{
+				AddPartition($"{Resources.Sector} {i}");
 			}
 		}
 
@@ -181,12 +191,19 @@ namespace FridgeApp.ViewModels
 		public Command ShowItemDetailsCommand { get; }
 		public Command SelectItemCommand { get; }
 
-		public void AddPartition()
+		public void AddPartition(object param)
 		{
 			try
 			{
 				var newPartition = new Fridge.Model.Partition();
-				newPartition.Name = Resources.NewPartition;
+				if (param == null)
+				{
+					newPartition.Name = Resources.NewPartition;
+				}
+				else
+				{
+					newPartition.Name = param.ToString();
+				}
 				Partitions.Add(new PartitionViewModel(FridgeDal, newPartition));
 				SaveCommand.ChangeCanExecute();
 			}

@@ -22,7 +22,7 @@
           <ColumnDefinition></ColumnDefinition>
           <ColumnDefinition Width="40"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Label Text="Partitions" FontSize="Medium"></Label>
+        <Label Text="{x:Static res:Resources.Partitions}" FontSize="Medium"></Label>
         <Button Grid.Column="1" ImageSource="plus32.png" FontSize="Medium" Command="{Binding AddPartitionCommand}"></Button>
       </Grid>
 

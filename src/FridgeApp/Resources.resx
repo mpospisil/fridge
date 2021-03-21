@@ -153,6 +153,9 @@
   <data name="FridgeSettings" xml:space="preserve">
     <value>Fridge Settings</value>
   </data>
+  <data name="GoToProducts" xml:space="preserve">
+    <value>Go to products</value>
+  </data>
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
@@ -163,7 +166,7 @@
     <value>New Fridge</value>
   </data>
   <data name="NewPartition" xml:space="preserve">
-    <value>New Partition</value>
+    <value>New Sector</value>
   </data>
   <data name="NewUserMessage" xml:space="preserve">
     <value>Create a new user </value>
@@ -175,7 +178,7 @@
     <value>Unsorted</value>
   </data>
   <data name="Partitions" xml:space="preserve">
-    <value>Partitions</value>
+    <value>Sectors</value>
   </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>
@@ -191,6 +194,9 @@
   </data>
   <data name="SearchPlaceHolder" xml:space="preserve">
     <value>Product</value>
+  </data>
+  <data name="Sector" xml:space="preserve">
+    <value>Sector</value>
   </data>
   <data name="SortByDate" xml:space="preserve">
     <value>By date</value>

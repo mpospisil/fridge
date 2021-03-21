@@ -25,6 +25,7 @@ namespace FridgeApp.ViewModels
 
 			FridgeDetailsCommand = new Command<FridgeViewModel>(OnShowFridgeDetails);
 			AddFridgeCommand = new Command(OnAddFridge);
+			GoToProductsCommand = new Command(GoToProducts);
 		}
 
 		private FridgeViewModel selectedFridge;
@@ -32,6 +33,8 @@ namespace FridgeApp.ViewModels
 		public ObservableCollection<FridgeViewModel> Fridges { get; }
 		public Command LoadFridgesCommand { get; }
 		public Command AddFridgeCommand { get; }
+
+		public Command GoToProductsCommand { get; }
 
 		public Command<FridgeViewModel> FridgeDetailsCommand { get; }
 
@@ -102,6 +105,11 @@ namespace FridgeApp.ViewModels
 
 			// This will push the ItemDetailPage onto the navigation stack
 			await Shell.Current.GoToAsync($"{nameof(FridgeEditPage)}?{nameof(FridgeViewModel.FridgeId)}={item.FridgeId}");
+		}
+
+		private void GoToProducts()
+		{
+			((AppShell)Shell.Current).OpenFridgeContentPage();
 		}
 	}
 }
