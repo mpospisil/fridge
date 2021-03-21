@@ -3,28 +3,28 @@
 namespace Fridge.Model
 {
 	/// <summary>
-	/// A partition in a fridge
+	/// A sector in a fridge
 	/// </summary>
-	public class Partition
+	public class Sector
 	{
-		public Partition()
+		public Sector()
 		{
-			PartitionId = Guid.NewGuid(); ;
+			SectorId = Guid.NewGuid(); ;
 			TimeStamp = DateTime.UtcNow;
 		}
 
 		/// <summary>
-		/// The unique identifier of the partition in the fridge
+		/// The unique identifier of the sector in the fridge
 		/// </summary>
-		public Guid PartitionId { get; set; }
+		public Guid SectorId { get; set; }
 
 		/// <summary>
-		/// User friendly name of a partition in a fridge
+		/// User friendly name of a sector in a fridge
 		/// </summary>
 		public string Name { get; set; }
 
 		/// <summary>
-		/// Time when the partition in the fridge  was modified
+		/// Time when the sector in the fridge  was modified
 		/// </summary>
 		public DateTime TimeStamp { get; set; }
 	}

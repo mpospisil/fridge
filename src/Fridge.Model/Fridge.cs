@@ -10,7 +10,7 @@ namespace Fridge.Model
 	{
 		public Fridge()
 		{
-			Partitions = new List<Partition>();
+			Sectors = new List<Sector>();
 			TimeStamp = DateTime.UtcNow;
 			FridgeId = Guid.NewGuid();
 			RemovedItemsIdentifier = Guid.NewGuid();
@@ -42,8 +42,8 @@ namespace Fridge.Model
 		public DateTime TimeStamp { get; set; }
 
 		/// <summary>
-		/// Partitions in the fridge
+		/// Sectors in the fridge
 		/// </summary>
-		public List<Partition> Partitions { get; set; }
+		public List<Sector> Sectors { get; set; }
 	}
 }

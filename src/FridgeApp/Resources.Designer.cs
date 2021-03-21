@@ -207,9 +207,9 @@ namespace FridgeApp {
         /// <summary>
         ///   Looks up a localized string similar to New Sector.
         /// </summary>
-        public static string NewPartition {
+        public static string NewSector {
             get {
-                return ResourceManager.GetString("NewPartition", resourceCulture);
+                return ResourceManager.GetString("NewSector", resourceCulture);
             }
         }
         
@@ -237,15 +237,6 @@ namespace FridgeApp {
         public static string NotSorted {
             get {
                 return ResourceManager.GetString("NotSorted", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sectors.
-        /// </summary>
-        public static string Partitions {
-            get {
-                return ResourceManager.GetString("Partitions", resourceCulture);
             }
         }
         
@@ -300,6 +291,15 @@ namespace FridgeApp {
         public static string Sector {
             get {
                 return ResourceManager.GetString("Sector", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sectors.
+        /// </summary>
+        public static string Sectors {
+            get {
+                return ResourceManager.GetString("Sectors", resourceCulture);
             }
         }
         

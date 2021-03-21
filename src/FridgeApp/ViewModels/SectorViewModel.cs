@@ -8,42 +8,42 @@ using Xamarin.Forms;
 
 namespace FridgeApp.ViewModels
 {
-	public interface IPartitionViewModel
+	public interface ISectorViewModel
 	{
 		string Name { get; set; }
 		DateTime TimeStamp { get; set; }
 
-		Guid PartitionId { get; set; }
+		Guid SectorId { get; set; }
 
 		ObservableCollection<IItemViewModel> Items { get; }
 
-		void SetPropertiesInVM(Fridge.Model.Partition partition);
-		Fridge.Model.Partition PartitionFromVM();
+		void SetPropertiesInVM(Fridge.Model.Sector sector);
+		Fridge.Model.Sector SectorFromVM();
 		Command LoadItemsCommand { get; }
 	}
 
-	public class PartitionViewModel : BaseViewModel, IPartitionViewModel
+	public class SectorViewModel : BaseViewModel, ISectorViewModel
 	{
-		private Guid partitionId;
+		private Guid sectorId;
 		private string name;
 		private DateTime timeStamp;
 
-		public PartitionViewModel(IFridgeDAL fridgeDal, Fridge.Model.Partition partition) : base(fridgeDal)
+		public SectorViewModel(IFridgeDAL fridgeDal, Fridge.Model.Sector sector) : base(fridgeDal)
 		{
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 			Items = new ObservableCollection<IItemViewModel>();
-			if (partition != null)
+			if (sector != null)
 			{
-				SetPropertiesInVM(partition);
+				SetPropertiesInVM(sector);
 			}
 
 			LoadItemsCommand.Execute(null);
 		}
 
-		public Guid PartitionId
+		public Guid SectorId
 		{
-			get => partitionId;
-			set => SetProperty(ref partitionId, value);
+			get => sectorId;
+			set => SetProperty(ref sectorId, value);
 		}
 
 		public string Name
@@ -65,12 +65,12 @@ namespace FridgeApp.ViewModels
 		/// <summary>
 		/// Write data to the view model
 		/// </summary>
-		/// <param name="partition"></param>
-		public void SetPropertiesInVM(Fridge.Model.Partition partition)
+		/// <param name="sector"></param>
+		public void SetPropertiesInVM(Fridge.Model.Sector sector)
 		{
-			this.PartitionId = partition.PartitionId;
-			this.Name = partition.Name;
-			this.TimeStamp = partition.TimeStamp;
+			this.SectorId = sector.SectorId;
+			this.Name = sector.Name;
+			this.TimeStamp = sector.TimeStamp;
 		}
 
 		async Task ExecuteLoadItemsCommand()
@@ -81,9 +81,9 @@ namespace FridgeApp.ViewModels
 			{
 				Items.Clear();
 				var allItems = await FridgeDal.GetItemsAsync();
-				var itemsInPartition = allItems.Where(i => i.PartitionId == this.PartitionId);
+				var itemsInSector = allItems.Where(i => i.SectorId == this.SectorId);
 
-				foreach (var item in itemsInPartition)
+				foreach (var item in itemsInSector)
 				{
 					var itemVM = new ItemViewModel(FridgeDal, item);
 					Items.Add(itemVM);
@@ -103,14 +103,14 @@ namespace FridgeApp.ViewModels
 		/// Read data from the view model
 		/// </summary>
 		/// <returns></returns>
-		public Fridge.Model.Partition PartitionFromVM()
+		public Fridge.Model.Sector SectorFromVM()
 		{
-			var partitionDataFromVM = new Fridge.Model.Partition();
-			partitionDataFromVM.PartitionId = PartitionId;
-			partitionDataFromVM.Name = Name;
-			partitionDataFromVM.TimeStamp = TimeStamp;
+			var sectorDataFromVM = new Fridge.Model.Sector();
+			sectorDataFromVM.SectorId = SectorId;
+			sectorDataFromVM.Name = Name;
+			sectorDataFromVM.TimeStamp = TimeStamp;
 
-			return partitionDataFromVM;
+			return sectorDataFromVM;
 		}
 	}
 }
