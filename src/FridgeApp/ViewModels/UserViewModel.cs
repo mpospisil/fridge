@@ -34,7 +34,7 @@ namespace FridgeApp.ViewModels
 
 		private bool ValidateSave()
 		{
-			if(String.IsNullOrWhiteSpace(Name))
+			if (String.IsNullOrWhiteSpace(Name))
 			{
 				return false;
 			}
@@ -62,7 +62,7 @@ namespace FridgeApp.ViewModels
 		private async Task OnSave()
 		{
 			var isNewUser = await Save();
-			if(isNewUser)
+			if (isNewUser)
 			{
 				((AppShell)Shell.Current).OpenSettingsPage();
 			}
@@ -75,7 +75,7 @@ namespace FridgeApp.ViewModels
 
 		public async Task<bool> Save()
 		{
-			if(UserId == Guid.Empty)
+			if (UserId == Guid.Empty)
 			{
 				// this is the new user
 
@@ -141,7 +141,7 @@ namespace FridgeApp.ViewModels
 		public async Task ExecuteGetUserCommand()
 		{
 			User user = await FridgeDal.GetUserAsync();
-			if(user == null)
+			if (user == null)
 			{
 				// create a new user if he is missing
 				user = new User();

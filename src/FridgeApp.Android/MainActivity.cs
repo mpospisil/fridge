@@ -3,7 +3,6 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
-using FridgeApp.Services;
 
 namespace FridgeApp.Droid
 {

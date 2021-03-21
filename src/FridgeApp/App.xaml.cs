@@ -108,9 +108,9 @@ namespace FridgeApp
 			Starting -= OnStarting;
 
 			var fridgeDal = container.Resolve<IFridgeDAL>();
-			var user = await fridgeDal.GetUserAsync(); 
+			var user = await fridgeDal.GetUserAsync();
 
-			if(user == null)
+			if (user == null)
 			{
 				((AppShell)Shell.Current).OpenUserPage();
 			}

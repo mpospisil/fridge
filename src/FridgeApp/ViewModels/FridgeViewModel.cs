@@ -124,7 +124,7 @@ namespace FridgeApp.ViewModels
 			fridgeGuid = Guid.Empty;
 			Name = Resources.NewFridge;
 
-			for(int i = 1; i < 4; i++)
+			for (int i = 1; i < 4; i++)
 			{
 				AddSector($"{Resources.Sector} {i}");
 			}
@@ -401,7 +401,7 @@ namespace FridgeApp.ViewModels
 
 		private bool ValidateSave()
 		{
-			if(String.IsNullOrWhiteSpace(Name))
+			if (String.IsNullOrWhiteSpace(Name))
 			{
 				return false;
 			}
