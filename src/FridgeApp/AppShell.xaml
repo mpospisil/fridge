@@ -95,7 +95,7 @@
   </FlyoutItem>
 
   <FlyoutItem Title="{x:Static res:Resources.FridgeSettings}" Icon="settings32.png">
-    <ShellContent Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
+    <ShellContent x:Name="settingsPage" Route="SettingsPage" ContentTemplate="{DataTemplate local:SettingsPage}" />
   </FlyoutItem>
 
   <ShellContent x:Name="userPage" Title="{x:Static res:Resources.User}" Icon="user32.png" ContentTemplate="{DataTemplate local:UserPage}"/>

@@ -17,5 +17,10 @@ namespace FridgeApp
 		{
 			CurrentItem = userPage;
 		}
+
+		public void OpenSettingsPage()
+		{
+			CurrentItem = settingsPage;
+		}
 	}
 }
