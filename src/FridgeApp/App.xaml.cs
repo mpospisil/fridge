@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Autofac.Core;
+using Fridge.Logger;
 using FridgeApp.Services;
 using FridgeApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -14,15 +16,20 @@ namespace FridgeApp
 		// IContainer and ContainerBuilder are provided by Autofac
 		static IContainer container;
 		static readonly ContainerBuilder builder;
+		static public readonly IFridgeLogger fridgeLogger;
 
 		//Custom event that is raised when the application is starting
 		private event EventHandler Starting = delegate { };
 
 		static App()
 		{
-			var fridgeDal = new MockFridgeDAL(true);
-			//fridgeDal.CreateUser(MockFridgeDAL.GetDefaultUser());
+			////var logDir = Xamarin.Essentials.FileSystem.AppDataDirectory;
+			//string logDir = string.Empty;
+			//string logFile = Path.Combine(logDir, "fridge.log");
+			//fridgeLogger = new FridgeSerilog(logFile);
+			builder.RegisterInstance<IFridgeLogger>(fridgeLogger);
 
+			var fridgeDal = new MockFridgeDAL(true);
 			builder = new ContainerBuilder();
 			builder.RegisterInstance<IFridgeDAL>(fridgeDal);
 			RegisterType<IMainViewModel, MainViewModel>();
@@ -49,6 +56,7 @@ namespace FridgeApp
 
 		protected override void OnStart()
 		{
+			fridgeLogger.LogDebug("OnStart()");
 			//subscribe to event
 			Starting += OnStarting;
 			//raise event
@@ -57,10 +65,12 @@ namespace FridgeApp
 
 		protected override void OnSleep()
 		{
+			fridgeLogger.LogDebug("OnSleep()");
 		}
 
 		protected override void OnResume()
 		{
+			fridgeLogger.LogDebug("OnResume()");
 		}
 
 		public static void RegisterType<T>() where T : class

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Fridge.Logger\Fridge.Logger.csproj" />
     <ProjectReference Include="..\Fridge.Model\Fridge.Model.csproj" />
   </ItemGroup>
 
