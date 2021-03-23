@@ -3,6 +3,9 @@ using Android.App;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Fridge.Logger;
+using FridgeApp.Services;
+using Serilog;
 
 namespace FridgeApp.Droid
 {
@@ -14,6 +17,29 @@ namespace FridgeApp.Droid
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
 
+
+			var logDir = Xamarin.Essentials.FileSystem.AppDataDirectory;
+			string logFile = System.IO.Path.Combine(logDir, "fridge.log");
+
+#if DEBUG
+			var seriLogger = new LoggerConfiguration()
+								.MinimumLevel.Debug()
+								.WriteTo.AndroidLog()
+								//.WriteTo.File(logFile, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+								.CreateLogger();
+#else
+			var seriLogger = new LoggerConfiguration()
+								.MinimumLevel.Error()
+								.WriteTo.AndroidLog()
+								//.WriteTo.File(logFile, outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}", fileSizeLimitBytes = 100*1024)
+								.CreateLogger();
+#endif
+			var fridgeLogger = new FridgeSerilog(seriLogger);
+
+
+			App.RegisterInstance<IFridgeLogger>(fridgeLogger);
+
+			App.RegisterTypes();
 			App.BuildContainer();
 
 			base.OnCreate(savedInstanceState);

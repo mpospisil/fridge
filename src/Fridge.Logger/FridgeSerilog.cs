@@ -1,5 +1,4 @@
 ﻿using FridgeApp.Services;
-using Serilog;
 using System;
 
 namespace Fridge.Logger
@@ -8,22 +7,9 @@ namespace Fridge.Logger
 	{
 		private readonly Serilog.Core.Logger Logger;
 
-		public FridgeSerilog(string logFile)
+		public FridgeSerilog(Serilog.Core.Logger seriLogger)
 		{
-#if DEBUG
-			Logger = new LoggerConfiguration()
-					.MinimumLevel.Debug()
-					.WriteTo.Console()
-					.WriteTo.File(logFile,
-				outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-					.CreateLogger();
-#else
-			Logger = new LoggerConfiguration()
-				.MinimumLevel.Error()
-				.WriteTo.File(logFile,
-				outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-					.CreateLogger();
-#endif
+			Logger = seriLogger;
 		}
 
 		public void LogDebug(string message)

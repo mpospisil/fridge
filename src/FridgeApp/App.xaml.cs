@@ -1,11 +1,9 @@
 ﻿using Autofac;
 using Autofac.Core;
-using Fridge.Logger;
 using FridgeApp.Services;
 using FridgeApp.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -14,31 +12,18 @@ namespace FridgeApp
 	public partial class App : Application
 	{
 		// IContainer and ContainerBuilder are provided by Autofac
-		static IContainer container;
-		static readonly ContainerBuilder builder;
-		static public readonly IFridgeLogger fridgeLogger;
+		private static IContainer container;
+		private static ContainerBuilder builder;
+		private static  IFridgeLogger fridgeLogger;
 
 		//Custom event that is raised when the application is starting
 		private event EventHandler Starting = delegate { };
 
 		static App()
 		{
-			////var logDir = Xamarin.Essentials.FileSystem.AppDataDirectory;
-			//string logDir = string.Empty;
-			//string logFile = Path.Combine(logDir, "fridge.log");
-			//fridgeLogger = new FridgeSerilog(logFile);
-			builder.RegisterInstance<IFridgeLogger>(fridgeLogger);
-
-			var fridgeDal = new MockFridgeDAL(true);
 			builder = new ContainerBuilder();
-			builder.RegisterInstance<IFridgeDAL>(fridgeDal);
-			RegisterType<IMainViewModel, MainViewModel>();
-			RegisterType<IItemsViewModel, ItemsViewModel>();
-			RegisterType<ISettingsViewModel, SettingsViewModel>();
-			RegisterType<IFridgeViewModel, FridgeViewModel>();
-			RegisterType<IItemViewModel, ItemViewModel>();
-			RegisterType<IUserViewModel, UserViewModel>();
 		}
+
 
 		public App()
 		{
@@ -51,7 +36,6 @@ namespace FridgeApp
 			});
 
 			MainPage = new AppShell();
-
 		}
 
 		protected override void OnStart()
@@ -76,6 +60,11 @@ namespace FridgeApp
 		public static void RegisterType<T>() where T : class
 		{
 			builder.RegisterType<T>();
+		}
+
+		public static void RegisterInstance<TInterface>(TInterface instance) where TInterface : class
+		{
+			builder.RegisterInstance<TInterface>(instance);
 		}
 
 		public static void RegisterType<TInterface, T>() where TInterface : class where T : class, TInterface
@@ -107,9 +96,22 @@ namespace FridgeApp
 			}).As<TInterface>();
 		}
 
+		public static void RegisterTypes()
+		{
+			var fridgeDal = new MockFridgeDAL(true);
+			builder.RegisterInstance<IFridgeDAL>(fridgeDal);
+			RegisterType<IMainViewModel, MainViewModel>();
+			RegisterType<IItemsViewModel, ItemsViewModel>();
+			RegisterType<ISettingsViewModel, SettingsViewModel>();
+			RegisterType<IFridgeViewModel, FridgeViewModel>();
+			RegisterType<IItemViewModel, ItemViewModel>();
+			RegisterType<IUserViewModel, UserViewModel>();
+		}
+
 		public static void BuildContainer()
 		{
 			container = builder.Build();
+			fridgeLogger = container.Resolve<IFridgeLogger>();
 		}
 
 		private async void OnStarting(object sender, EventArgs args)
