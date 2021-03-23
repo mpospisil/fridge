@@ -214,7 +214,7 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new user .
+        ///   Looks up a localized string similar to Create your account.
         /// </summary>
         public static string NewUserMessage {
             get {

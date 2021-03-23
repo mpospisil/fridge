@@ -6,7 +6,7 @@ namespace UT_Fridge.Repository
 	public class RepositoryTest
 	{
 		[TestMethod]
-		public void TestMethod1()
+		public void CreateRepositoryTest()
 		{
 		}
 	}
