@@ -20,9 +20,10 @@ namespace FridgeApp.ViewModels
 	/// </summary>
 	public class MainViewModel : BaseViewModel, IMainViewModel
 	{
-
-		public MainViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
+		private readonly IFridgeLogger Logger;
+		public MainViewModel(IFridgeLogger logger, IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
+			this.Logger = logger;
 			Fridges = new ObservableCollection<IFridgeViewModel>();
 			LoadFridgesCommand = new Command(async () => await ExecuteLoadFridges());
 		}
@@ -53,7 +54,7 @@ namespace FridgeApp.ViewModels
 				var fridges = await FridgeDal.GetFridgesAsync(true);
 				foreach (var fridge in fridges)
 				{
-					var fridgeVM = new FridgeViewModel(FridgeDal, fridge);
+					var fridgeVM = new FridgeViewModel(Logger, FridgeDal, fridge);
 					Fridges.Add(fridgeVM);
 				}
 			}

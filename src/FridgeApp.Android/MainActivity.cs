@@ -17,7 +17,6 @@ namespace FridgeApp.Droid
 			TabLayoutResource = Resource.Layout.Tabbar;
 			ToolbarResource = Resource.Layout.Toolbar;
 
-
 			var logDir = Xamarin.Essentials.FileSystem.AppDataDirectory;
 			string logFile = System.IO.Path.Combine(logDir, "fridge.log");
 

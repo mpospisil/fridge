@@ -17,8 +17,11 @@ namespace FridgeApp.ViewModels
 
 	public class SettingsViewModel : BaseViewModel, ISettingsViewModel
 	{
-		public SettingsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
+		private readonly IFridgeLogger Logger;
+
+		public SettingsViewModel(IFridgeDAL fridgeDal, IFridgeLogger logger) : base(fridgeDal)
 		{
+			this.Logger = logger;
 			Title = Resources.FridgeSettings;
 			Fridges = new ObservableCollection<FridgeViewModel>();
 			LoadFridgesCommand = new Command(async () => await ExecuteLoadItemsCommand());
@@ -45,6 +48,7 @@ namespace FridgeApp.ViewModels
 
 		async Task ExecuteLoadItemsCommand()
 		{
+			Logger.LogDebug("SettingsViewModel.ExecuteLoadItemsCommand");
 			IsBusy = true;
 
 			try
@@ -53,7 +57,7 @@ namespace FridgeApp.ViewModels
 				var items = await FridgeDal.GetFridgesAsync(true);
 				foreach (var item in items)
 				{
-					var fridgeVM = new FridgeViewModel(FridgeDal, item);
+					var fridgeVM = new FridgeViewModel(Logger, FridgeDal, item);
 					Fridges.Add(fridgeVM);
 				}
 
@@ -61,7 +65,7 @@ namespace FridgeApp.ViewModels
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine(ex);
+				Logger.LogError("SettingsViewModel.ExecuteLoadItemsCommand", ex);
 			}
 			finally
 			{
@@ -79,6 +83,7 @@ namespace FridgeApp.ViewModels
 
 		public void OnAppearing()
 		{
+			Logger.LogDebug("SettingsViewModel.OnAppearing");
 			IsBusy = true;
 			SelectedItem = null;
 		}
@@ -95,11 +100,13 @@ namespace FridgeApp.ViewModels
 
 		private async void OnAddFridge(object obj)
 		{
+			Logger.LogDebug("SettingsViewModel.OnAddFridge");
 			await Shell.Current.GoToAsync($"{nameof(FridgeEditPage)}?{nameof(FridgeViewModel.FridgeId)}={Guid.Empty.ToString()}");
 		}
 
 		async void OnShowFridgeDetails(FridgeViewModel item)
 		{
+			Logger.LogDebug("SettingsViewModel.OnShowFridgeDetails");
 			if (item == null)
 				return;
 
@@ -109,6 +116,7 @@ namespace FridgeApp.ViewModels
 
 		private void GoToProducts()
 		{
+			Logger.LogDebug("SettingsViewModel.GoToProducts");
 			((AppShell)Shell.Current).OpenFridgeContentPage();
 		}
 	}

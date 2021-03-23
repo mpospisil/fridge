@@ -35,12 +35,12 @@ namespace FridgeApp
 				return res;
 			});
 
-			MainPage = new AppShell();
+			MainPage = new AppShell(fridgeLogger);
 		}
 
 		protected override void OnStart()
 		{
-			fridgeLogger.LogDebug("OnStart()");
+			fridgeLogger.LogDebug("App.OnStart()");
 			//subscribe to event
 			Starting += OnStarting;
 			//raise event
@@ -49,12 +49,12 @@ namespace FridgeApp
 
 		protected override void OnSleep()
 		{
-			fridgeLogger.LogDebug("OnSleep()");
+			fridgeLogger.LogDebug("App.OnSleep()");
 		}
 
 		protected override void OnResume()
 		{
-			fridgeLogger.LogDebug("OnResume()");
+			fridgeLogger.LogDebug("App.OnResume()");
 		}
 
 		public static void RegisterType<T>() where T : class

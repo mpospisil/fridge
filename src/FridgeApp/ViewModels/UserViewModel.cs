@@ -16,12 +16,14 @@ namespace FridgeApp.ViewModels
 
 	public class UserViewModel : BaseViewModel, IUserViewModel
 	{
+		private readonly IFridgeLogger Logger;
 		private string name;
 		private string email;
 		private Guid userId;
 
-		public UserViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
+		public UserViewModel(IFridgeDAL fridgeDal, IFridgeLogger logger) : base(fridgeDal)
 		{
+			Logger = logger;
 			Title = Resources.UserSettings;
 			GetUserCommand = new Command(async () => await ExecuteGetUserCommand());
 			SaveCommand = new Command(async () => await OnSave(), ValidateSave);
@@ -61,6 +63,7 @@ namespace FridgeApp.ViewModels
 
 		private async Task OnSave()
 		{
+			Logger.LogDebug("UserViewModel.OnSave");
 			var isNewUser = await Save();
 			if (isNewUser)
 			{
@@ -75,6 +78,7 @@ namespace FridgeApp.ViewModels
 
 		public async Task<bool> Save()
 		{
+			Logger.LogDebug("UserViewModel.Save");
 			if (UserId == Guid.Empty)
 			{
 				// this is the new user
@@ -140,9 +144,11 @@ namespace FridgeApp.ViewModels
 
 		public async Task ExecuteGetUserCommand()
 		{
+			Logger.LogDebug("UserViewModel.ExecuteGetUserCommand");
 			User user = await FridgeDal.GetUserAsync();
 			if (user == null)
 			{
+				Logger.LogDebug("UserViewModel.ExecuteGetUserCommand - new user");
 				// create a new user if he is missing
 				user = new User();
 				user.Name = string.Empty;

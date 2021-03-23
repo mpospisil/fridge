@@ -20,10 +20,11 @@ namespace UT_FridgeApp
 			var fridgeDal = Substitute.For<IFridgeDAL>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 
 			var originalFrigeData = fridges[0];
 
-			var fridgeVM = new FridgeViewModel(fridgeDal, originalFrigeData);
+			var fridgeVM = new FridgeViewModel(fridgeLogger, fridgeDal, originalFrigeData);
 
 			var fridgeFromVM = fridgeVM.FridgeFromVM();
 
@@ -37,11 +38,12 @@ namespace UT_FridgeApp
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 
 			var originalFrigeData = fridges[0];
-			var fridgeVM = new FridgeViewModel(fridgeDal, originalFrigeData);
+			var fridgeVM = new FridgeViewModel(fridgeLogger, fridgeDal, originalFrigeData);
 
 			Assert.AreEqual(fridgeVM.Sectors.Count, 3);
 
@@ -55,11 +57,12 @@ namespace UT_FridgeApp
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 
 			var frigeData = fridges[0];
-			var fridgeVM = new FridgeViewModel(fridgeDal, frigeData);
+			var fridgeVM = new FridgeViewModel(fridgeLogger, fridgeDal, frigeData);
 
 			Assert.AreEqual(fridgeVM.Sectors.Count, 3);
 
@@ -75,6 +78,8 @@ namespace UT_FridgeApp
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
+
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 
@@ -83,7 +88,7 @@ namespace UT_FridgeApp
 			fridgeDal.GetItemsAsync(false).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(itemsInFridge.AsEnumerable()));
 
 			var frigeData = fridges[0];
-			var fridgeVM = new FridgeViewModel(fridgeDal, frigeData);
+			var fridgeVM = new FridgeViewModel(fridgeLogger, fridgeDal, frigeData);
 
 			Assert.IsTrue(fridgeVM.Name == MockFridgeDAL.Fridge1Name, $"Invalid name of the fridge '{fridgeVM.Name}' !='{MockFridgeDAL.Fridge1Name}'");
 
@@ -117,11 +122,12 @@ namespace UT_FridgeApp
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 
 			var originalFrigeData = fridges[0];
-			var fridgeVM = new FridgeViewModel(fridgeDal, originalFrigeData);
+			var fridgeVM = new FridgeViewModel(fridgeLogger, fridgeDal, originalFrigeData);
 
 			Assert.AreEqual(fridgeVM.Sectors.Count, 3);
 
@@ -143,6 +149,7 @@ namespace UT_FridgeApp
 
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 			fridgeDal.GetUserAsync().Returns(defaultUser);
@@ -155,7 +162,7 @@ namespace UT_FridgeApp
 			});
 
 			// tested view model
-			FridgeViewModel fridgeViewModel = new FridgeViewModel(fridgeDal);
+			FridgeViewModel fridgeViewModel = new FridgeViewModel(fridgeLogger, fridgeDal);
 			fridgeViewModel.FridgeId = Guid.Empty.ToString();
 			Assert.IsTrue(FridgeApp.Resources.NewFridge.Equals(fridgeViewModel.Name), $"The name of the new fridge should be '{FridgeApp.Resources.NewFridge}'");
 			Assert.IsTrue(fridgeViewModel.Sectors.Count == 3, "Expecting 3 sectors");

@@ -1,12 +1,15 @@
-﻿using FridgeApp.Views;
+﻿using FridgeApp.Services;
+using FridgeApp.Views;
 using Xamarin.Forms;
 
 namespace FridgeApp
 {
 	public partial class AppShell : Xamarin.Forms.Shell
 	{
-		public AppShell()
+		private readonly IFridgeLogger Logger;
+		public AppShell(IFridgeLogger logger)
 		{
+			Logger = logger;
 			InitializeComponent();
 			Routing.RegisterRoute(nameof(FridgeEditPage), typeof(FridgeEditPage));
 			Routing.RegisterRoute(nameof(ItemPage), typeof(ItemPage));
@@ -15,16 +18,19 @@ namespace FridgeApp
 
 		public void OpenUserPage()
 		{
+			Logger.LogDebug("AppShell.OpenUserPage");
 			CurrentItem = userPage;
 		}
 
 		public void OpenSettingsPage()
 		{
+			Logger.LogDebug("AppShell.OpenSettingsPage");
 			CurrentItem = settingsPage;
 		}
 
 		public void OpenFridgeContentPage()
 		{
+			Logger.LogDebug("AppShell.OpenFridgeContentPage");
 			CurrentItem = fridgeContentPage;
 		}
 	}
