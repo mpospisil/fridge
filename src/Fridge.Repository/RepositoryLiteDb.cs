@@ -12,6 +12,7 @@ namespace Fridge.Repository
 	{
 		// colection Names
 		static readonly string UserCollection = "users";
+		static readonly string FridgeCollection = "fridges";
 
 		private bool disposedValue;
 		private readonly LiteDatabase db;
@@ -45,34 +46,69 @@ namespace Fridge.Repository
 				Logger.LogDebug($"RepositoryLiteDb.CreateUserAsync");
 				// Get a collection (or create, if doesn't exist)
 				var users = Db.GetCollection<User>(UserCollection);
-
 				var insertedVal = users.Insert(newUser);
+				users.EnsureIndex(u => u.UserId);
 			});
 		}
 
-		public Task<IEnumerable<Model.Fridge>> GetFridgesAsync(bool forceRefresh = false)
+		public async Task<IEnumerable<Model.Fridge>> GetFridgesAsync(bool forceRefresh = false)
 		{
-			throw new NotImplementedException();
+			return await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.GetFridgesAsync");
+				// Get a collection (or create, if doesn't exist)
+				var fridges = Db.GetCollection<Model.Fridge>(FridgeCollection);
+				var res = fridges.FindAll();
+				return res;
+			});
 		}
 
-		public Task<Model.Fridge> GetFridgeAsync(Guid fridgeId)
+		public async Task<Model.Fridge> GetFridgeAsync(Guid fridgeId)
 		{
-			throw new NotImplementedException();
+			return await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.GetFridgeAsync fridgeId = '{fridgeId}'");
+
+				// Get a collection (or create, if doesn't exist)
+				var fridges = Db.GetCollection<Model.Fridge>(FridgeCollection);
+				var res = fridges.Query().Where(f => f.FridgeId == fridgeId).FirstOrDefault();
+				return res;
+			});
 		}
 
-		public Task AddFridge(Model.Fridge newFridgeData)
+		public async Task AddFridgeAsync(Model.Fridge newFridgeData)
 		{
-			throw new NotImplementedException();
+			await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.AddFridge  fridgeId = {newFridgeData.FridgeId.ToString()}, fridgeName = '{newFridgeData.Name}'");
+				// Get a collection (or create, if doesn't exist)
+				var fridges = Db.GetCollection<Model.Fridge>(FridgeCollection);
+				var insertedVal = fridges.Insert(newFridgeData);
+				fridges.EnsureIndex(f => f.FridgeId);
+			});
 		}
 
-		public Task UpdateFridge(Model.Fridge modifiedFridge)
+		public async Task UpdateFridgeAsync(Model.Fridge modifiedFridge)
 		{
-			throw new NotImplementedException();
+			await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.UpdateFridgeAsync  fridgeId = {modifiedFridge.FridgeId.ToString()}, fridgeName = '{modifiedFridge.Name}'");
+				// Get a collection (or create, if doesn't exist)
+				var fridges = Db.GetCollection<Model.Fridge>(FridgeCollection);
+				var res = fridges.Update(modifiedFridge);
+			});
 		}
 
-		public Task DeleteFridgeAsync(Guid fridgeId)
+		public async Task DeleteFridgeAsync(Guid fridgeId)
 		{
-			throw new NotImplementedException();
+			await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.DeleteFridgeAsync  fridgeId = {fridgeId}");
+				// Get a collection (or create, if doesn't exist)
+				var fridges = Db.GetCollection<Model.Fridge>(FridgeCollection);
+				//var foundFridge = fridges.FindOne(f => f.FridgeId == fridgeId);
+				fridges.Delete(fridgeId);
+			});
 		}
 
 		public Task<IEnumerable<ItemInFridge>> GetItemsAsync(bool forceRefresh = false)
@@ -95,7 +131,7 @@ namespace Fridge.Repository
 			throw new NotImplementedException();
 		}
 
-		public Task DeleteAsync(Guid itemInFridgeId)
+		public Task DeleteItemAsync(Guid itemInFridgeId)
 		{
 			throw new NotImplementedException();
 		}

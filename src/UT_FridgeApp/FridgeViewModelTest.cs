@@ -156,7 +156,7 @@ namespace UT_FridgeApp
 
 			Assert.IsTrue(fridges.Count == 1, "Expecting 1 fridge");
 
-			fridgeDal.When(x => x.AddFridge(Arg.Any<Fridge.Model.Fridge>())).Do(param1 =>
+			fridgeDal.When(x => x.AddFridgeAsync(Arg.Any<Fridge.Model.Fridge>())).Do(param1 =>
 			{
 				fridges.Add(param1.ArgAt<Fridge.Model.Fridge>(0));
 			});
