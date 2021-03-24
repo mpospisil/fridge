@@ -1,5 +1,7 @@
 using Fridge.Repository;
+using FridgeApp.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 using System.IO;
 
 namespace UT_Fridge.Repository
@@ -10,11 +12,12 @@ namespace UT_Fridge.Repository
 		[TestMethod]
 		public void CreateRepositoryTest()
 		{
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			var tmpdir = System.IO.Path.GetTempPath();
 			var tempDbFileName = Path.Combine(tmpdir, "fridge.db");
 			try
 			{
-				using(var repos = new RepositoryLiteDb(tempDbFileName))
+				using(var repos = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
 				{
 
 				}

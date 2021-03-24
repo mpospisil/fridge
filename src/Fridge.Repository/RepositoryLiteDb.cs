@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿using FridgeApp.Services;
+using LiteDB;
 using System;
 
 namespace Fridge.Repository
@@ -7,9 +8,12 @@ namespace Fridge.Repository
 	{
 		private bool disposedValue;
 		private readonly LiteDatabase Db;
+		private readonly IFridgeLogger Logger;
 
-		public RepositoryLiteDb(string connectionString)
+		public RepositoryLiteDb(IFridgeLogger logger, string connectionString)
 		{
+			this.Logger = logger;
+			Logger.LogDebug($"RepositoryLiteDb.RepositoryLiteDb connectionString = '{connectionString}'");
 			Db = new LiteDatabase(connectionString);
 		}
 
