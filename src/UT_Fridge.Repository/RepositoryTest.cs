@@ -103,13 +103,7 @@ namespace UT_Fridge.Repository
 					Assert.IsTrue(fridgesStep1.Any() == false, "Expect no fridge");
 
 					// add fridge 1
-					var fridge = new Fridge.Model.Fridge()
-					{
-						FridgeId = Fridge1Id,
-						Name = Fridge1Name,
-						OwnerId = FirstUserId
-					};
-					await fridgeDal.AddFridgeAsync(fridge);
+					await CreateFridge1(fridgeDal);
 
 					var fridgesStep2= (await  fridgeDal.GetFridgesAsync(true)).ToList();
 					Assert.IsTrue(fridgesStep2.Count == 1, "Expect one fridge");
@@ -119,13 +113,7 @@ namespace UT_Fridge.Repository
 					Assert.IsTrue(fridgeStep2.Name ==  Fridge1Name);
 
 					// add the second fridge
-					var fridge2 = new Fridge.Model.Fridge()
-					{
-						FridgeId = Fridge2Id,
-						Name = Fridge2Name,
-						OwnerId = FirstUserId
-					};
-					await fridgeDal.AddFridgeAsync(fridge2);
+					await CreateFridge2(fridgeDal);
 
 					var fridgesStep3 = (await fridgeDal.GetFridgesAsync(true)).ToList();
 					Assert.IsTrue(fridgesStep3.Count == 2, "Expect two fridge");
@@ -136,8 +124,8 @@ namespace UT_Fridge.Repository
 					Assert.IsTrue(fridgeStep3.Name == Fridge2Name);
 
 					// rename the first fridge
-					fridge.Name = Fridge1NameChanged;
-					await fridgeDal.UpdateFridgeAsync(fridge);
+					fridgeStep2.Name = Fridge1NameChanged;
+					await fridgeDal.UpdateFridgeAsync(fridgeStep2);
 
 					// get fridge by id
 					var updatedFridge = await fridgeDal.GetFridgeAsync(Fridge1Id);
@@ -197,19 +185,38 @@ namespace UT_Fridge.Repository
 			Assert.IsTrue(firstUser.Email == FirstUserEmail);
 		}
 
-		private static async Task CreateFirstFridge(RepositoryLiteDb fridgeDal)
+		private static async Task CreateFridge1(RepositoryLiteDb fridgeDal)
 		{
 			Fridge.Model.Fridge fridge = new Fridge.Model.Fridge()
 			{
+				FridgeId = Fridge1Id,
+				Name = Fridge1Name,
+				OwnerId = FirstUserId
 			};
 
 			await fridgeDal.AddFridgeAsync(fridge);
 
-			var firstUser = await fridgeDal.GetFridgeAsync(fridge.FridgeId);
-			//Assert.IsNotNull(firstUser);
-			//Assert.IsTrue(firstUser.UserId == FirstUserId);
-			//Assert.IsTrue(firstUser.Name == FirstUserName);
-			//Assert.IsTrue(firstUser.Email == FirstUserEmail);
+			var firstFridge = await fridgeDal.GetFridgeAsync(fridge.FridgeId);
+			Assert.IsNotNull(firstFridge);
+			Assert.IsTrue(firstFridge.FridgeId == Fridge1Id);
+			Assert.IsTrue(firstFridge.Name == Fridge1Name);
+		}
+
+		private static async Task CreateFridge2(RepositoryLiteDb fridgeDal)
+		{
+			Fridge.Model.Fridge fridge = new Fridge.Model.Fridge()
+			{
+				FridgeId = Fridge2Id,
+				Name = Fridge2Name,
+				OwnerId = FirstUserId
+			};
+
+			await fridgeDal.AddFridgeAsync(fridge);
+
+			var firstFridge = await fridgeDal.GetFridgeAsync(fridge.FridgeId);
+			Assert.IsNotNull(firstFridge);
+			Assert.IsTrue(firstFridge.FridgeId == Fridge2Id);
+			Assert.IsTrue(firstFridge.Name == Fridge2Name);
 		}
 	}
 }
