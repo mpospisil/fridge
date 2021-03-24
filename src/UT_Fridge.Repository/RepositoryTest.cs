@@ -19,6 +19,7 @@ namespace UT_Fridge.Repository
 
 		static readonly Guid Fridge1Id = Guid.Parse("281A6F64-3C4D-42C7-99D1-588DE7B4D7E2");
 		static readonly string Fridge1Name = "Fridge 1";
+		static readonly string Fridge1NameChanged = "Updated Fridge 1";
 		static readonly Guid Fridge2Id = Guid.Parse("22FADBC4-29F6-4830-A678-E439CB8B3345");
 		static readonly string Fridge2Name = "Fridge 2";
 
@@ -110,7 +111,6 @@ namespace UT_Fridge.Repository
 					};
 					await fridgeDal.AddFridgeAsync(fridge);
 
-
 					var fridgesStep2= (await  fridgeDal.GetFridgesAsync(true)).ToList();
 					Assert.IsTrue(fridgesStep2.Count == 1, "Expect one fridge");
 
@@ -118,9 +118,54 @@ namespace UT_Fridge.Repository
 					Assert.IsTrue(fridgeStep2.FridgeId == Fridge1Id);
 					Assert.IsTrue(fridgeStep2.Name ==  Fridge1Name);
 
+					// add the second fridge
+					var fridge2 = new Fridge.Model.Fridge()
+					{
+						FridgeId = Fridge2Id,
+						Name = Fridge2Name,
+						OwnerId = FirstUserId
+					};
+					await fridgeDal.AddFridgeAsync(fridge2);
+
+					var fridgesStep3 = (await fridgeDal.GetFridgesAsync(true)).ToList();
+					Assert.IsTrue(fridgesStep3.Count == 2, "Expect two fridge");
+
+					var fridgeStep3 = fridgesStep3.Where(f => f.FridgeId == Fridge2Id).FirstOrDefault();
+					Assert.IsNotNull(fridgeStep3);
+					Assert.IsTrue(fridgeStep3.FridgeId == Fridge2Id);
+					Assert.IsTrue(fridgeStep3.Name == Fridge2Name);
+
+					// rename the first fridge
+					fridge.Name = Fridge1NameChanged;
+					await fridgeDal.UpdateFridgeAsync(fridge);
+
+					// get fridge by id
+					var updatedFridge = await fridgeDal.GetFridgeAsync(Fridge1Id);
+					Assert.IsNotNull(updatedFridge);
+					Assert.IsTrue(updatedFridge.FridgeId == Fridge1Id);
+					Assert.IsTrue(updatedFridge.Name == Fridge1NameChanged);
+
+					// try to delete fridge 1
+					await fridgeDal.DeleteFridgeAsync(Fridge1Id);
+
+					var fridgesStep4 = (await fridgeDal.GetFridgesAsync(true)).ToList();
+					Assert.IsTrue(fridgesStep4.Count == 1, "Expect one fridge");
+
+					var fridgeStep4 = fridgesStep4[0];
+					Assert.IsTrue(fridgeStep4.FridgeId == Fridge2Id);
+					Assert.IsTrue(fridgeStep4.Name == Fridge2Name);
 				}
 
+				// try to reopen the database
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
+				{
+					var fridgesStep4 = (await fridgeDal.GetFridgesAsync(true)).ToList();
+					Assert.IsTrue(fridgesStep4.Count == 1, "Expect one fridge");
 
+					var fridgeStep4 = fridgesStep4[0];
+					Assert.IsTrue(fridgeStep4.FridgeId == Fridge2Id);
+					Assert.IsTrue(fridgeStep4.Name == Fridge2Name);
+				}
 			}
 			finally
 			{
