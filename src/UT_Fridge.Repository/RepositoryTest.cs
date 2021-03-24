@@ -19,12 +19,18 @@ namespace UT_Fridge.Repository
 
 		static readonly Guid Fridge1Id = Guid.Parse("281A6F64-3C4D-42C7-99D1-588DE7B4D7E2");
 		static readonly string Fridge1Name = "Fridge 1";
+		static readonly Guid Fridge1Sector1Id = Guid.Parse("0FBD7E4C-0F74-4891-B663-CC7F52DA260A");
+		static readonly string Fridge1Sector1Name = "Fridge 1-1";
+
 		static readonly string Fridge1NameChanged = "Updated Fridge 1";
+
 		static readonly Guid Fridge2Id = Guid.Parse("22FADBC4-29F6-4830-A678-E439CB8B3345");
 		static readonly string Fridge2Name = "Fridge 2";
+		static readonly Guid Fridge2Sector1Id = Guid.Parse("A7038CD7-58FD-4233-B86B-50A0FA557614");
+		static readonly string Fridge2Sector1Name = "Fridge 2-1";
 
 		[TestMethod]
-		public async Task CreateUserTest()
+		public async Task UserTest()
 		{
 			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			var tmpdir = System.IO.Path.GetTempPath();
@@ -168,6 +174,46 @@ namespace UT_Fridge.Repository
 			}
 		}
 
+		[TestMethod]
+		public async Task FridgeItemTest()
+		{
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
+			var tmpdir = System.IO.Path.GetTempPath();
+			var tempDbFileName = Path.Combine(tmpdir, "fridge-items-tst.db");
+
+			if (File.Exists(tempDbFileName))
+			{
+				File.Delete(tempDbFileName);
+			}
+
+			try
+			{
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
+				{
+					// test - no fridge in the empty database
+					await CreateFirstUser(fridgeDal);
+
+					// add fridge 1
+					await CreateFridge1(fridgeDal);
+
+					// add the second fridge
+					await CreateFridge2(fridgeDal);
+				}
+			}
+			finally
+			{
+				try
+				{
+					if (File.Exists(tempDbFileName))
+					{
+						File.Delete(tempDbFileName);
+					}
+				}
+				catch { }
+			}
+		}
+
+
 		private static async Task CreateFirstUser(RepositoryLiteDb fridgeDal)
 		{
 			User user1 = new User()
@@ -194,6 +240,8 @@ namespace UT_Fridge.Repository
 				OwnerId = FirstUserId
 			};
 
+			fridge.Sectors.Add(new Sector() { SectorId = Fridge1Sector1Id, Name = Fridge1Sector1Name });
+
 			await fridgeDal.AddFridgeAsync(fridge);
 
 			var firstFridge = await fridgeDal.GetFridgeAsync(fridge.FridgeId);
@@ -210,6 +258,8 @@ namespace UT_Fridge.Repository
 				Name = Fridge2Name,
 				OwnerId = FirstUserId
 			};
+
+			fridge.Sectors.Add(new Sector() { SectorId = Fridge2Sector1Id, Name = Fridge2Sector1Name });
 
 			await fridgeDal.AddFridgeAsync(fridge);
 
