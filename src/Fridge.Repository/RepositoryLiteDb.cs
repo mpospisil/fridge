@@ -13,10 +13,18 @@ namespace Fridge.Repository
 		// colection Names
 		static readonly string UserCollection = "users";
 		static readonly string FridgeCollection = "fridges";
+		static readonly string ItemCollection = "items";
 
 		private bool disposedValue;
 		private readonly LiteDatabase db;
 		private readonly IFridgeLogger Logger;
+
+		static RepositoryLiteDb()
+		{
+			BsonMapper.Global.Entity<ItemInFridge>().Id(oid => oid.ItemId);
+			BsonMapper.Global.Entity<Fridge.Model.Fridge>().Id(oid => oid.FridgeId);
+			BsonMapper.Global.Entity<Fridge.Model.User>().Id(oid => oid.UserId);
+		}
 
 		public RepositoryLiteDb(IFridgeLogger logger, string connectionString) 
 		{
@@ -45,9 +53,11 @@ namespace Fridge.Repository
 			{
 				Logger.LogDebug($"RepositoryLiteDb.CreateUserAsync");
 				// Get a collection (or create, if doesn't exist)
+				Db.BeginTrans();
 				var users = Db.GetCollection<User>(UserCollection);
 				var insertedVal = users.Insert(newUser);
 				users.EnsureIndex(u => u.UserId);
+				Db.Commit();
 			});
 		}
 
@@ -81,10 +91,12 @@ namespace Fridge.Repository
 			await Task.Run(() =>
 			{
 				Logger.LogDebug($"RepositoryLiteDb.AddFridge  fridgeId = {newFridgeData.FridgeId.ToString()}, fridgeName = '{newFridgeData.Name}'");
+				Db.BeginTrans();
 				// Get a collection (or create, if doesn't exist)
 				var fridges = Db.GetCollection<Model.Fridge>(FridgeCollection);
 				var insertedVal = fridges.Insert(newFridgeData);
 				fridges.EnsureIndex(f => f.FridgeId);
+				Db.Commit();
 			});
 		}
 
@@ -93,9 +105,12 @@ namespace Fridge.Repository
 			await Task.Run(() =>
 			{
 				Logger.LogDebug($"RepositoryLiteDb.UpdateFridgeAsync  fridgeId = {modifiedFridge.FridgeId.ToString()}, fridgeName = '{modifiedFridge.Name}'");
+				Db.BeginTrans();
 				// Get a collection (or create, if doesn't exist)
+				Db.BeginTrans();
 				var fridges = Db.GetCollection<Model.Fridge>(FridgeCollection);
 				var res = fridges.Update(modifiedFridge);
+				Db.Commit();
 			});
 		}
 
@@ -104,36 +119,78 @@ namespace Fridge.Repository
 			await Task.Run(() =>
 			{
 				Logger.LogDebug($"RepositoryLiteDb.DeleteFridgeAsync  fridgeId = {fridgeId}");
+				Db.BeginTrans();
 				// Get a collection (or create, if doesn't exist)
 				var fridges = Db.GetCollection<Model.Fridge>(FridgeCollection);
 				//var foundFridge = fridges.FindOne(f => f.FridgeId == fridgeId);
 				fridges.Delete(fridgeId);
+				Db.Commit();
 			});
 		}
 
-		public Task<IEnumerable<ItemInFridge>> GetItemsAsync(bool forceRefresh = false)
+		public async Task<IEnumerable<ItemInFridge>> GetItemsAsync(bool forceRefresh = false)
 		{
-			throw new NotImplementedException();
+			return await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.GetItemsAsync");
+				// Get a collection (or create, if doesn't exist)
+				var items = Db.GetCollection<Model.ItemInFridge>(ItemCollection);
+				var res = items.FindAll();
+				return res;
+			});
 		}
 
-		public Task AddItemAsync(ItemInFridge newFridgeData)
+		public async Task AddItemAsync(ItemInFridge newItem)
 		{
-			throw new NotImplementedException();
+			await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.AddItemAsync  newItem = {newItem.ItemId.ToString()}, itemName = '{newItem.Name}'");
+				// Get a collection (or create, if doesn't exist)
+				Db.BeginTrans();
+				var items = Db.GetCollection<Model.ItemInFridge>(ItemCollection);
+				var insertedVal = items.Insert(newItem);
+				items.EnsureIndex(i => i.ItemId);
+				Db.Commit();
+			});
 		}
 
-		public Task<ItemInFridge> GetItemAsync(Guid itemId)
+		public async Task<ItemInFridge> GetItemAsync(Guid itemId)
 		{
-			throw new NotImplementedException();
+			return await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.GetItemAsync itemId = '{itemId}'");
+
+				// Get a collection (or create, if doesn't exist)
+				var items = Db.GetCollection<Model.ItemInFridge>(ItemCollection);
+				var res = items.Query().Where(i => i.ItemId == itemId).FirstOrDefault();
+				return res;
+			});
 		}
 
-		public Task UpdateItemAsync(ItemInFridge modifiedItem)
+		public async Task UpdateItemAsync(ItemInFridge modifiedItem)
 		{
-			throw new NotImplementedException();
+			await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.UpdateItemAsync itemId = {modifiedItem.ItemId.ToString()}, itemName = '{modifiedItem.Name}'");
+				Db.BeginTrans();
+				// Get a collection (or create, if doesn't exist)
+				var items = Db.GetCollection<Model.ItemInFridge>(ItemCollection);
+				var res = items.Update(modifiedItem);
+				Db.Commit();
+			});
 		}
 
-		public Task DeleteItemAsync(Guid itemInFridgeId)
+		public async Task DeleteItemAsync(Guid itemInFridgeId)
 		{
-			throw new NotImplementedException();
+			await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.DeleteItemAsync  itemInFridgeId = {itemInFridgeId}");
+				Db.BeginTrans();
+				// Get a collection (or create, if doesn't exist)
+				var items = Db.GetCollection<Model.ItemInFridge>(ItemCollection);
+				items.Delete(itemInFridgeId);
+				Db.Commit();
+			});
 		}
 		#endregion
 

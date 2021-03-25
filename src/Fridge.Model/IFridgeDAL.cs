@@ -29,7 +29,7 @@ namespace FridgeApp.Services
 
 		Task<IEnumerable<Fridge.Model.ItemInFridge>> GetItemsAsync(bool forceRefresh = false);
 
-		Task AddItemAsync(Fridge.Model.ItemInFridge newFridgeData);
+		Task AddItemAsync(Fridge.Model.ItemInFridge newItemInFridge);
 
 		Task<Fridge.Model.ItemInFridge> GetItemAsync(Guid itemId);
 
