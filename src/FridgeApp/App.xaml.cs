@@ -4,6 +4,8 @@ using FridgeApp.Services;
 using FridgeApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -15,6 +17,8 @@ namespace FridgeApp
 		private static IContainer container;
 		private static ContainerBuilder builder;
 		private static  IFridgeLogger fridgeLogger;
+
+		public static IFridgeLogger FridgeLogger { get => fridgeLogger; set => fridgeLogger = value; }
 
 		//Custom event that is raised when the application is starting
 		private event EventHandler Starting = delegate { };
@@ -35,12 +39,12 @@ namespace FridgeApp
 				return res;
 			});
 
-			MainPage = new AppShell(fridgeLogger);
+			MainPage = new AppShell(FridgeLogger);
 		}
 
 		protected override void OnStart()
 		{
-			fridgeLogger.LogDebug("App.OnStart()");
+			FridgeLogger.LogDebug("App.OnStart()");
 			//subscribe to event
 			Starting += OnStarting;
 			//raise event
@@ -49,12 +53,12 @@ namespace FridgeApp
 
 		protected override void OnSleep()
 		{
-			fridgeLogger.LogDebug("App.OnSleep()");
+			FridgeLogger.LogDebug("App.OnSleep()");
 		}
 
 		protected override void OnResume()
 		{
-			fridgeLogger.LogDebug("App.OnResume()");
+			FridgeLogger.LogDebug("App.OnResume()");
 		}
 
 		public static void RegisterType<T>() where T : class
@@ -98,7 +102,14 @@ namespace FridgeApp
 
 		public static void RegisterTypes()
 		{
-			var fridgeDal = new MockFridgeDAL(true);
+			Debug.Assert(FridgeLogger != null, "Fogger shoul be initialized");
+			var fridgeDal = new Fridge.Repository.RepositoryLiteDb(FridgeLogger);
+
+			string localAppDataDir = Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
+			var fridgeDbFileName = Path.Combine(localAppDataDir, "fridge.db");
+			fridgeDal.OpenRepository(fridgeDbFileName);
+
+
 			builder.RegisterInstance<IFridgeDAL>(fridgeDal);
 			RegisterType<IMainViewModel, MainViewModel>();
 			RegisterType<IItemsViewModel, ItemsViewModel>();
@@ -111,7 +122,6 @@ namespace FridgeApp
 		public static void BuildContainer()
 		{
 			container = builder.Build();
-			fridgeLogger = container.Resolve<IFridgeLogger>();
 		}
 
 		private async void OnStarting(object sender, EventArgs args)

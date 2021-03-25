@@ -34,9 +34,8 @@ namespace FridgeApp.Droid
 								.CreateLogger();
 #endif
 			var fridgeLogger = new FridgeSerilog(seriLogger);
-
-
 			App.RegisterInstance<IFridgeLogger>(fridgeLogger);
+			FridgeApp.App.FridgeLogger = fridgeLogger;
 
 			App.RegisterTypes();
 			App.BuildContainer();
