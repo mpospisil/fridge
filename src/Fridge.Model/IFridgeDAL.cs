@@ -9,6 +9,8 @@ namespace FridgeApp.Services
 	/// </summary>
 	public interface IFridgeDAL
 	{
+		void OpenRepository(string connectionString);
+
 		/// <summary>
 		/// Get the current user or null if user doesn't exist
 		/// </summary>

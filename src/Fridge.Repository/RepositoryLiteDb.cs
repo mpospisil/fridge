@@ -16,7 +16,7 @@ namespace Fridge.Repository
 		static readonly string ItemCollection = "items";
 
 		private bool disposedValue;
-		private readonly LiteDatabase db;
+		private LiteDatabase db;
 		private readonly IFridgeLogger Logger;
 
 		static RepositoryLiteDb()
@@ -26,16 +26,24 @@ namespace Fridge.Repository
 			BsonMapper.Global.Entity<Fridge.Model.User>().Id(oid => oid.UserId);
 		}
 
-		public RepositoryLiteDb(IFridgeLogger logger, string connectionString) 
+		public RepositoryLiteDb(IFridgeLogger logger)
 		{
 			this.Logger = logger;
-			Logger.LogDebug($"RepositoryLiteDb.RepositoryLiteDb connectionString = '{connectionString}'");
-			db = new LiteDatabase(connectionString);
 		}
 
-		public LiteDatabase Db => db;
+		public LiteDatabase Db
+		{
+			get => db;
+			set => db = value;
+		}
 
 		#region implementation IFridgeDAL
+		public void OpenRepository(string connectionString)
+		{
+			Logger.LogDebug($"RepositoryLiteDb.OpenRepository connectionString = '{connectionString}'");
+			Db = new LiteDatabase(connectionString);
+		}
+
 		public async Task<User> GetUserAsync()
 		{
 			return await Task.Run(() =>

@@ -51,8 +51,9 @@ namespace UT_Fridge.Repository
 
 			try
 			{
-				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger))
 				{
+					fridgeDal.OpenRepository(tempDbFileName);
 					{
 						var firstUser = await fridgeDal.GetUserAsync();
 						Assert.IsNull(firstUser);
@@ -69,8 +70,9 @@ namespace UT_Fridge.Repository
 					}
 				}
 
-				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger))
 				{
+					fridgeDal.OpenRepository(tempDbFileName);
 					{
 						var firstUser = await fridgeDal.GetUserAsync();
 						Assert.IsNotNull(firstUser);
@@ -107,8 +109,9 @@ namespace UT_Fridge.Repository
 
 			try
 			{
-				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger))
 				{
+					fridgeDal.OpenRepository(tempDbFileName);
 					// test - no fridge in the empty database
 					await CreateFirstUser(fridgeDal);
 
@@ -159,8 +162,9 @@ namespace UT_Fridge.Repository
 				}
 
 				// try to reopen the database
-				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger))
 				{
+					fridgeDal.OpenRepository(tempDbFileName);
 					var fridgesStep4 = (await fridgeDal.GetFridgesAsync(true)).ToList();
 					Assert.IsTrue(fridgesStep4.Count == 1, "Expect one fridge");
 
@@ -196,8 +200,9 @@ namespace UT_Fridge.Repository
 
 			try
 			{
-				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger))
 				{
+					fridgeDal.OpenRepository(tempDbFileName);
 					// test - no fridge in the empty database
 					await CreateFirstUser(fridgeDal);
 
@@ -253,8 +258,9 @@ namespace UT_Fridge.Repository
 					Assert.IsTrue(updatedItem.Name == Item1NameChanged);
 				}
 
-				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger, tempDbFileName))
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger))
 				{
+					fridgeDal.OpenRepository(tempDbFileName);
 					// get fridge by id
 					var updatedItem = await fridgeDal.GetItemAsync(Item1Id);
 					Assert.IsNotNull(updatedItem);

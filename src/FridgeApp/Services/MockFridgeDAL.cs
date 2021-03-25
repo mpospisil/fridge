@@ -248,5 +248,9 @@ namespace FridgeApp.Services
 		{
 			this.user = newUser;
 		}
+
+		public void OpenRepository(string connectionString)
+		{
+		}
 	}
 }
