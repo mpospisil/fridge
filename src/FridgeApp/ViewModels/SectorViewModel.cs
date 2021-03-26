@@ -24,12 +24,14 @@ namespace FridgeApp.ViewModels
 
 	public class SectorViewModel : BaseViewModel, ISectorViewModel
 	{
+		private readonly IFridgeLogger Logger;
 		private Guid sectorId;
 		private string name;
 		private DateTime timeStamp;
 
-		public SectorViewModel(IFridgeDAL fridgeDal, Fridge.Model.Sector sector) : base(fridgeDal)
+		public SectorViewModel(IFridgeLogger logger, IFridgeDAL fridgeDal, Fridge.Model.Sector sector) : base(fridgeDal)
 		{
+			Logger = logger;
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 			Items = new ObservableCollection<IItemViewModel>();
 			if (sector != null)
@@ -79,15 +81,18 @@ namespace FridgeApp.ViewModels
 
 			try
 			{
+				Logger.LogDebug($"SectorViewModel.ExecuteLoadItemsCommand Name = '{this.Name}'  SectorId = '{this.SectorId}'");
 				Items.Clear();
 				var allItems = await FridgeDal.GetItemsAsync();
 				var itemsInSector = allItems.Where(i => i.SectorId == this.SectorId);
 
 				foreach (var item in itemsInSector)
 				{
-					var itemVM = new ItemViewModel(FridgeDal, item);
+					var itemVM = new ItemViewModel(Logger, FridgeDal, item);
 					Items.Add(itemVM);
 				}
+
+				OnPropertyChanged("Items");
 			}
 			catch (Exception ex)
 			{

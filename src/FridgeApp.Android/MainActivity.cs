@@ -40,6 +40,8 @@ namespace FridgeApp.Droid
 			App.RegisterTypes();
 			App.BuildContainer();
 
+			savedInstanceState = null;
+
 			base.OnCreate(savedInstanceState);
 
 			Xamarin.Essentials.Platform.Init(this, savedInstanceState);

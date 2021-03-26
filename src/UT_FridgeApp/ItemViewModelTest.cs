@@ -16,6 +16,7 @@ namespace UT_FridgeApp
 		public async Task AddItemTest()
 		{
 			// create mock
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			var fridgeDal = Substitute.For<IFridgeDAL>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			List<Fridge.Model.ItemInFridge> allItems = new List<Fridge.Model.ItemInFridge>();
@@ -37,7 +38,7 @@ namespace UT_FridgeApp
 			Assert.IsTrue(firstSector.SectorId == MockFridgeDAL.Sector1Id);
 
 			var newItem = new ItemInFridge();
-			var newItemVM = new ItemViewModel(fridgeDal);
+			var newItemVM = new ItemViewModel(fridgeLogger ,fridgeDal);
 			newItemVM.FridgeId = firstFridgeData.FridgeId.ToString();
 			newItemVM.SectorId = firstSector.SectorId.ToString();
 			newItemVM.TimeStamp = MockFridgeDAL.Date1;
@@ -71,6 +72,7 @@ namespace UT_FridgeApp
 		public void InitItemFromRepositoryTest()
 		{
 			// create mock
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			var fridgeDal = Substitute.For<IFridgeDAL>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
@@ -83,7 +85,7 @@ namespace UT_FridgeApp
 			Assert.IsTrue(troutItem.ItemId == MockFridgeDAL.Fr1Part1Item2Id);
 			fridgeDal.GetItemAsync(MockFridgeDAL.Fr1Part1Item2Id).Returns(troutItem);
 
-			var itemVM = new ItemViewModel(fridgeDal);
+			var itemVM = new ItemViewModel(fridgeLogger, fridgeDal);
 
 			// it will initialize view model
 			itemVM.ItemFromRepositoryId = troutItem.ItemId.ToString(); // id of the Trout
@@ -99,6 +101,7 @@ namespace UT_FridgeApp
 		[TestMethod]
 		public async Task RemoveItemTest()
 		{
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			var fridgeDal = Substitute.For<IFridgeDAL>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
@@ -123,7 +126,7 @@ namespace UT_FridgeApp
 			Assert.IsTrue(troutItem.History.Count == 1);
 			Assert.IsTrue(troutItem.IsInFridge);
 
-			var itemVM = new ItemViewModel(fridgeDal);
+			var itemVM = new ItemViewModel(fridgeLogger, fridgeDal);
 
 			// it will initialize view model
 			itemVM.ItemFromRepositoryId = troutItem.ItemId.ToString(); // id of the Trout

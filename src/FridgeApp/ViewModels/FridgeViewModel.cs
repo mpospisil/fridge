@@ -213,7 +213,7 @@ namespace FridgeApp.ViewModels
 
 				Logger.LogDebug($"FridgeViewModel.AddSector '{newSector.Name}'"); 
 
-				Sectors.Add(new SectorViewModel(FridgeDal, newSector));
+				Sectors.Add(new SectorViewModel(Logger, FridgeDal, newSector));
 				SaveCommand.ChangeCanExecute();
 			}
 			catch (Exception e)
@@ -384,7 +384,7 @@ namespace FridgeApp.ViewModels
 
 			foreach (var sector in fridge.Sectors)
 			{
-				Sectors.Add(new SectorViewModel(FridgeDal, sector));
+				Sectors.Add(new SectorViewModel(Logger, FridgeDal, sector));
 			}
 
 			if (SelectedSector == null)
