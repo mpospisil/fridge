@@ -268,6 +268,15 @@ namespace FridgeApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset account.
+        /// </summary>
+        public static string ResetAccount {
+            get {
+                return ResourceManager.GetString("ResetAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {

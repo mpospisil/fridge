@@ -27,77 +27,17 @@ namespace FridgeApp.ViewModels
 			Title = Resources.UserSettings;
 			GetUserCommand = new Command(async () => await ExecuteGetUserCommand());
 			SaveCommand = new Command(async () => await OnSave(), ValidateSave);
+			ResetCommand = new Command(OnReset);
 
 			this.PropertyChanged +=
 					(_, __) => SaveCommand.ChangeCanExecute();
+
+			this.PropertyChanged +=
+					(_, __) => ResetCommand.ChangeCanExecute();
 		}
 
 		public Command SaveCommand { get; }
-
-		private bool ValidateSave()
-		{
-			if (String.IsNullOrWhiteSpace(Name))
-			{
-				return false;
-			}
-
-			if (String.IsNullOrWhiteSpace(Email))
-			{
-				return false;
-			}
-
-			{
-				try
-				{
-					var emailString = Email;
-					emailString.ToLower();
-					var addr = new System.Net.Mail.MailAddress(emailString);
-					return addr.Address == emailString;
-				}
-				catch
-				{
-					return false;
-				}
-			}
-		}
-
-		private async Task OnSave()
-		{
-			Logger.LogDebug("UserViewModel.OnSave");
-			var isNewUser = await Save();
-			if (isNewUser)
-			{
-				((AppShell)Shell.Current).OpenSettingsPage();
-			}
-			else
-			{
-				//await Shell.Current.GoToAsync("..");
-				((AppShell)Shell.Current).OpenFridgeContentPage();
-			}
-		}
-
-		public async Task<bool> Save()
-		{
-			Logger.LogDebug("UserViewModel.Save");
-			if (UserId == Guid.Empty)
-			{
-				// this is the new user
-
-				User newUser = new User();
-				newUser.Name = Name;
-				newUser.Email = Email;
-				newUser.UserId = Guid.NewGuid();
-
-				await FridgeDal.CreateUserAsync(newUser);
-
-				return true;
-			}
-			else
-			{
-				// update the existing user
-				return false;
-			}
-		}
+		public Command ResetCommand { get; }
 
 		public string Name
 		{
@@ -141,6 +81,29 @@ namespace FridgeApp.ViewModels
 		{
 			IsBusy = true;
 		}
+		public async Task<bool> Save()
+		{
+			Logger.LogDebug("UserViewModel.Save");
+			if (UserId == Guid.Empty)
+			{
+				// this is the new user
+
+				User newUser = new User();
+				newUser.Name = Name;
+				newUser.Email = Email;
+				newUser.UserId = Guid.NewGuid();
+
+				await FridgeDal.CreateUserAsync(newUser);
+
+				return true;
+			}
+			else
+			{
+				// update the existing user
+				return false;
+			}
+		}
+
 
 		public async Task ExecuteGetUserCommand()
 		{
@@ -161,6 +124,58 @@ namespace FridgeApp.ViewModels
 			Email = user.Email;
 
 			IsBusy = false;
+		}
+
+		private async Task OnSave()
+		{
+			Logger.LogDebug("UserViewModel.OnSave");
+			var isNewUser = await Save();
+			if (isNewUser)
+			{
+				((AppShell)Shell.Current).OpenSettingsPage();
+			}
+			else
+			{
+				//await Shell.Current.GoToAsync("..");
+				((AppShell)Shell.Current).OpenFridgeContentPage();
+			}
+		}
+
+
+		private bool ValidateSave()
+		{
+			if (String.IsNullOrWhiteSpace(Name))
+			{
+				return false;
+			}
+
+			if (String.IsNullOrWhiteSpace(Email))
+			{
+				return false;
+			}
+
+			{
+				try
+				{
+					var emailString = Email;
+					emailString.ToLower();
+					var addr = new System.Net.Mail.MailAddress(emailString);
+					return addr.Address == emailString;
+				}
+				catch
+				{
+					return false;
+				}
+			}
+		}
+
+		private void OnReset(object obj)
+		{
+			FridgeDal.ResetRepository();
+
+			UserId = Guid.Empty;
+			Name = string.Empty;
+			Email = string.Empty;
 		}
 	}
 }

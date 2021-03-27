@@ -252,5 +252,10 @@ namespace FridgeApp.Services
 		public void OpenRepository(string connectionString)
 		{
 		}
+
+		public void ResetRepository()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -3,6 +3,7 @@ using FridgeApp.Services;
 using LiteDB;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,11 +38,37 @@ namespace Fridge.Repository
 			set => db = value;
 		}
 
-		#region implementation IFridgeDAL
-		public void OpenRepository(string connectionString)
+		internal string ConnectionString {get; private set;}
+
+	#region implementation IFridgeDAL
+	public void OpenRepository(string connectionString)
 		{
 			Logger.LogDebug($"RepositoryLiteDb.OpenRepository connectionString = '{connectionString}'");
 			Db = new LiteDatabase(connectionString);
+			ConnectionString = connectionString;
+		}
+
+		public void ResetRepository()
+		{
+			if(Db == null)
+			{
+				return;
+			}
+
+			Logger.LogDebug("RepositoryLiteDb.ResetRepository");
+
+			if (string.IsNullOrEmpty(ConnectionString))
+			{
+				Logger.LogError("RepositoryLiteDb.ResetRepository missin the connection string", new Exception());
+				return;
+			}
+
+			Db.Dispose();
+
+			Logger.LogDebug($"RepositoryLiteDb.ResetRepository deleting the file '{ConnectionString}'");
+			File.Delete(ConnectionString);
+
+			OpenRepository(ConnectionString);
 		}
 
 		public async Task<User> GetUserAsync()

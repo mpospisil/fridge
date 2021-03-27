@@ -219,4 +219,7 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="ResetAccount" xml:space="preserve">
+    <value>Reset account</value>
+  </data>
 </root>
