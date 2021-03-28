@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fridge.Logger\Fridge.Logger.csproj" />
+    <ProjectReference Include="..\Fridge.Logger\Fridge.Diagnostics.csproj" />
     <ProjectReference Include="..\Fridge.Model\Fridge.Model.csproj" />
     <ProjectReference Include="..\Fridge.Repository\Fridge.Repository.csproj" />
   </ItemGroup>

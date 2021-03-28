@@ -104,9 +104,9 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fridge.Logger\Fridge.Logger.csproj">
+    <ProjectReference Include="..\Fridge.Logger\Fridge.Diagnostics.csproj">
       <Project>{8ff8fd71-60be-4921-8c19-378f0f2f19ec}</Project>
-      <Name>Fridge.Logger</Name>
+      <Name>Fridge.Diagnostics</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fridge.Model\Fridge.Model.csproj">
       <Project>{8a0e86c5-0120-422d-a272-69b000e7fd62}</Project>

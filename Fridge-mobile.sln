@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UT_FridgeApp", "src\UT_Frid
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge.Repository", "src\Fridge.Repository\Fridge.Repository.csproj", "{9DBC335E-A409-4B2C-95F7-B54E6AB186C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge.Logger", "src\Fridge.Logger\Fridge.Logger.csproj", "{8FF8FD71-60BE-4921-8C19-378F0F2F19EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge.Diagnostics", "src\Fridge.Logger\Fridge.Diagnostics.csproj", "{8FF8FD71-60BE-4921-8C19-378F0F2F19EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UT_Fridge.Repository", "src\UT_Fridge.Repository\UT_Fridge.Repository.csproj", "{80325937-9E08-4E89-8748-542047BD40A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UT_Fridge.Repository", "src\UT_Fridge.Repository\UT_Fridge.Repository.csproj", "{80325937-9E08-4E89-8748-542047BD40A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
