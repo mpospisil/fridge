@@ -46,6 +46,15 @@ namespace FridgeApp.Services
 
 		Task UpdateItemAsync(Fridge.Model.ItemInFridge modifiedItem);
 
+		/// <summary>
+		/// Remove item from fridge
+		/// </summary>
+		/// <param name="removingItemId">Id of the item to remove</param>
+		/// <returns>Returns true if item was removed</returns>
+		Task<bool> RemoveItemAsync(Guid removingItemId);
+
 		Task DeleteItemAsync(Guid itemInFridgeId);
+
+		Task<IEnumerable<Fridge.Model.ItemInFridge>> GetRemovedItemsAsync(bool forceRefresh = false);
 	}
 }
