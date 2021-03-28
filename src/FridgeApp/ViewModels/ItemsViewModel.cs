@@ -54,6 +54,7 @@ namespace FridgeApp.ViewModels
 			get => allItems;
 			set
 			{
+				Logger.LogDebug($"ItemsViewModel.Items setting '{value?.Count}'");
 				SetProperty(ref allItems, value);
 			}
 		}
@@ -126,7 +127,6 @@ namespace FridgeApp.ViewModels
 		{
 			IsBusy = true;
 			SelectedItem = null;
-			Query = string.Empty;
 		}
 
 		private async static Task SetFilter(string userQuery, IList<IItemViewModel> allItems)
@@ -189,6 +189,7 @@ namespace FridgeApp.ViewModels
 
 		public async Task SetSortedItems(ItemsOrder itemsOrder, IEnumerable<IItemViewModel> itemsToSort)
 		{
+			Logger.LogDebug($"ItemsViewModel.SetSortedItems '{itemsOrder}'");
 			var sortedItems = await SortItemsAsync(itemsOrder, itemsToSort);
 			Items = new ObservableCollection<IItemViewModel>(sortedItems);
 			SortMethod = itemsOrder;
@@ -315,7 +316,8 @@ namespace FridgeApp.ViewModels
 
 			try
 			{
-				Items.Clear();
+				ObservableCollection<IItemViewModel> newItems = new ObservableCollection<IItemViewModel>();
+
 				var items = await FridgeDal.GetItemsAsync(true);
 
 				foreach (var item in items)
@@ -333,14 +335,17 @@ namespace FridgeApp.ViewModels
 					itemVM.FridgeIndex = sectorDescriptor.FridgeInx;
 					itemVM.FridgeName = sectorDescriptor.Fridge.Name;
 					itemVM.SectorName = sectorDescriptor.Sector.Name;
-					Items.Add(itemVM);
+					newItems.Add(itemVM);
 				}
 
-				await SetSortedItems(SortMethod, Items);
+				var sortedItems = await SortItemsAsync(sortMethod, newItems);
+				Items = new ObservableCollection<IItemViewModel>(sortedItems);
+
+				Query = string.Empty;
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine(ex);
+				Logger.LogError("ItemsViewModel.ExecuteLoadItemsCommand", ex);
 			}
 			finally
 			{

@@ -25,12 +25,12 @@
   </ContentPage.ToolbarItems>
       
   <Shell.SearchHandler>
-    <SearchHandler Placeholder="{x:Static res:Resources.SearchPlaceHolder}" Query="{Binding Query}"/>
+    <SearchHandler Placeholder="{x:Static res:Resources.SearchPlaceHolder}" Query="{Binding Query, Mode=TwoWay}"/>
   </Shell.SearchHandler>
       
   <ContentPage.Content>
     <RefreshView x:DataType="local:ItemsViewModel" Command="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-      <FlexLayout  BindableLayout.ItemsSource="{Binding Items}"
+      <FlexLayout  BindableLayout.ItemsSource="{Binding Items, Mode=TwoWay}"
                            Wrap="Wrap" 
                            Direction="Row" JustifyContent="Start"
                            AlignItems="Start" AlignContent="Start">
