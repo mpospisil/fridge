@@ -128,7 +128,7 @@ namespace UT_FridgeApp
 
 				foreach (var item in itemsViewModel.Items)
 				{
-					Assert.IsTrue(item.IsVisible, $"Item '{item.Name}' should NOT be visible");
+					Assert.IsTrue(item.IsVisible, $"Item '{item.Name}' should be visible");
 				}
 
 				mre.Reset();
