@@ -93,7 +93,7 @@ namespace UT_FridgeApp
 
 		[TestMethod]
 		[Timeout(2000)]
-		public void FilterItemsTest()
+		public async Task FilterItemsTest()
 		{
 			// create mock
 			var fridgeLogger = Substitute.For<IFridgeLogger>();
@@ -118,7 +118,7 @@ namespace UT_FridgeApp
 				itemsViewModel.ItemFilterEvent += handler;
 				itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
 
-				itemsViewModel.LoadItemsCommand.Execute(null);
+				await itemsViewModel.ExecuteLoadItemsCommand();
 
 				Assert.IsTrue(itemsViewModel.Items.Count == 4, "Expecting 4 items");
 
