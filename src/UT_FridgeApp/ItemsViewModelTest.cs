@@ -92,7 +92,9 @@ namespace UT_FridgeApp
 		}
 
 		[TestMethod]
+#if !DEBUG
 		[Timeout(2000)]
+#endif
 		public async Task FilterItemsTest()
 		{
 			// create mock
@@ -120,23 +122,17 @@ namespace UT_FridgeApp
 
 				await itemsViewModel.ExecuteLoadItemsCommand();
 
+				mre.WaitOne();
+
 				Assert.IsTrue(itemsViewModel.Items.Count == 4, "Expecting 4 items");
 
 				foreach (var item in itemsViewModel.Items)
 				{
-					Assert.IsFalse(item.IsVisible, $"Item '{item.Name}' should NOT be visible");
+					Assert.IsTrue(item.IsVisible, $"Item '{item.Name}' should NOT be visible");
 				}
 
-				itemsViewModel.OnAppearing();
-				mre.WaitOne();
-
-				foreach (var item in itemsViewModel.Items)
+				mre.Reset();
 				{
-					Assert.IsTrue(item.IsVisible, $"Item '{item.Name}' should be visible");
-				}
-
-				{
-					mre.Reset();
 					itemsViewModel.Query = "Go";  // try to find goulash
 					mre.WaitOne();
 
