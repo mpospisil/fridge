@@ -214,7 +214,7 @@ namespace FridgeApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Create a new user .
+        ///   Looks up a localized string similar to Create your account.
         /// </summary>
         public static string NewUserMessage {
             get {
@@ -264,6 +264,15 @@ namespace FridgeApp {
         public static string Remove {
             get {
                 return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset account.
+        /// </summary>
+        public static string ResetAccount {
+            get {
+                return ResourceManager.GetString("ResetAccount", resourceCulture);
             }
         }
         

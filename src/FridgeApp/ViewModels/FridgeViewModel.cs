@@ -30,19 +30,22 @@ namespace FridgeApp.ViewModels
 		private DateTime timeStamp;
 		private ISectorViewModel selectedSector;
 		private IItemViewModel selectedItem;
+		private readonly IFridgeLogger Logger;
 		#endregion
 
 		#region Consructors
-		public FridgeViewModel() : this(null)
+		public FridgeViewModel(IFridgeLogger logger) : this(logger, null)
 		{
 		}
 
-		public FridgeViewModel(IFridgeDAL fridgeDal) : this(fridgeDal, null)
+		public FridgeViewModel(IFridgeLogger logger, IFridgeDAL fridgeDal) : this(logger, fridgeDal, null)
 		{
 		}
 
-		public FridgeViewModel(IFridgeDAL fridgeDal, Fridge.Model.Fridge fridge) : base(fridgeDal)
+		public FridgeViewModel(IFridgeLogger logger, IFridgeDAL fridgeDal, Fridge.Model.Fridge fridge) : base(fridgeDal)
 		{
+			Logger = logger;
+
 			Sectors = new ObservableCollection<ISectorViewModel>();
 			if (fridge != null)
 			{
@@ -120,6 +123,8 @@ namespace FridgeApp.ViewModels
 
 		private void SetDefaultFridge()
 		{
+			Logger.LogDebug("FridgeViewModel.SetDefaultFridge");
+
 			// create temporary fridge
 			fridgeGuid = Guid.Empty;
 			Name = Resources.NewFridge;
@@ -170,6 +175,7 @@ namespace FridgeApp.ViewModels
 		#endregion
 		private async void LoadItemId(Guid fridgeId)
 		{
+			Logger.LogDebug($"FridgeViewModel.LoadItemId '{fridgeId.ToString()}'");
 			try
 			{
 				var item = await this.FridgeDal.GetFridgeAsync(fridgeId);
@@ -204,17 +210,21 @@ namespace FridgeApp.ViewModels
 				{
 					newSector.Name = param.ToString();
 				}
-				Sectors.Add(new SectorViewModel(FridgeDal, newSector));
+
+				Logger.LogDebug($"FridgeViewModel.AddSector '{newSector.Name}'"); 
+
+				Sectors.Add(new SectorViewModel(Logger, FridgeDal, newSector));
 				SaveCommand.ChangeCanExecute();
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine($"Failed to add sector {e.Message}");
+				Logger.LogError($"FridgeViewModel.AddSector", e);
 			}
 		}
 
 		public async Task DeleteFridgeAsync()
 		{
+			Logger.LogDebug($"FridgeViewModel.DeleteFridgeAsync");
 			await FridgeDal.DeleteFridgeAsync(fridgeGuid);
 		}
 
@@ -225,6 +235,7 @@ namespace FridgeApp.ViewModels
 
 		private async void OnDeleteFridge()
 		{
+			Logger.LogDebug($"FridgeViewModel.OnDeleteFridge");
 			// ask user if he really wants to delete the selected item from the fridge
 			var answer = await App.Current.MainPage.DisplayAlert(Resources.Verification, String.Format(Resources.Question_Remove_Format, Name), Resources.Yes, Resources.No);
 
@@ -245,13 +256,14 @@ namespace FridgeApp.ViewModels
 			try
 			{
 				ISectorViewModel sectorToDelete = obj as ISectorViewModel;
+				Logger.LogDebug($"FridgeViewModel.DeleteSector '{sectorToDelete.Name}'");
 				var sectorIndexToDelete = Sectors.IndexOf(sectorToDelete);
 				Sectors.RemoveAt(sectorIndexToDelete);
 				SaveCommand.ChangeCanExecute();
 			}
 			catch (Exception e)
 			{
-				Debug.WriteLine($"Failed to delete sector {e.Message}");
+				Logger.LogError("FridgeViewModel.DeleteSector", e);
 			}
 		}
 
@@ -270,13 +282,13 @@ namespace FridgeApp.ViewModels
 				newFridge.FridgeId = Guid.NewGuid();
 				var user = await FridgeDal.GetUserAsync();
 				newFridge.OwnerId = user.UserId;
-				await FridgeDal.AddFridge(newFridge);
+				await FridgeDal.AddFridgeAsync(newFridge);
 			}
 			else
 			{
 				// existing fridge
 				var updatedFridge = FridgeFromVM();
-				await FridgeDal.UpdateFridge(updatedFridge);
+				await FridgeDal.UpdateFridgeAsync(updatedFridge);
 			}
 		}
 
@@ -372,7 +384,7 @@ namespace FridgeApp.ViewModels
 
 			foreach (var sector in fridge.Sectors)
 			{
-				Sectors.Add(new SectorViewModel(FridgeDal, sector));
+				Sectors.Add(new SectorViewModel(Logger, FridgeDal, sector));
 			}
 
 			if (SelectedSector == null)

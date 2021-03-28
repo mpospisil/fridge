@@ -58,6 +58,7 @@ namespace FridgeApp.ViewModels
 	[QueryProperty(nameof(ItemFromRepositoryId), nameof(ItemFromRepositoryId))]
 	public class ItemViewModel : BaseViewModel, IItemViewModel
 	{
+		private readonly IFridgeLogger Logger;
 		string itemId;
 		string sectorId;
 		string fridgeId;
@@ -72,24 +73,27 @@ namespace FridgeApp.ViewModels
 		bool isSelected;
 		bool isVisible;
 
-		public ItemViewModel() : this(null)
+		public ItemViewModel(IFridgeLogger logger) : this(logger, null)
 		{
 		}
 
-		public ItemViewModel(IFridgeDAL fridgeDal) : this(fridgeDal, null)
+		public ItemViewModel(IFridgeLogger logger, IFridgeDAL fridgeDal) : this(logger, fridgeDal, null)
 		{
 		}
 
-		public ItemViewModel(IFridgeDAL fridgeDal, Fridge.Model.ItemInFridge item) : base(fridgeDal)
+		public ItemViewModel(IFridgeLogger logger, IFridgeDAL fridgeDal, Fridge.Model.ItemInFridge item) : base(fridgeDal)
 		{
+			Logger = logger;
 			itemId = Guid.Empty.ToString();
 
 			if (item != null)
 			{
+				Logger.LogDebug($"ItemViewModel.ItemViewModel Name = {item.Name}  {item.ItemId}");
 				SetPropertiesInVM(item);
 			}
 			else
 			{
+				Logger.LogDebug("ItemViewModel.ItemViewModel  - new item");
 				TimeStamp = DateTime.UtcNow;
 			}
 

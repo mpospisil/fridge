@@ -22,6 +22,7 @@ namespace FridgeApp.ViewModels
 
 	public class ItemsViewModel : BaseViewModel, IItemsViewModel
 	{
+		private readonly IFridgeLogger Logger;
 		private IItemViewModel selectedItem;
 		private string query;
 		private bool isSearching;
@@ -31,8 +32,9 @@ namespace FridgeApp.ViewModels
 
 		public event EventHandler ItemFilterEvent;
 
-		public ItemsViewModel(IFridgeDAL fridgeDal) : base(fridgeDal)
+		public ItemsViewModel(IFridgeLogger logger, IFridgeDAL fridgeDal) : base(fridgeDal)
 		{
+			Logger = logger;
 			sortMethod = ItemsOrder.ByFridge;
 			allItems = new ObservableCollection<IItemViewModel>();
 			LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
@@ -325,7 +327,7 @@ namespace FridgeApp.ViewModels
 						continue;
 					}
 
-					var itemVM = new ItemViewModel(FridgeDal, item);
+					var itemVM = new ItemViewModel(Logger, FridgeDal, item);
 
 					itemVM.SectorIndex = sectorDescriptor.SectorInx;
 					itemVM.FridgeIndex = sectorDescriptor.FridgeInx;

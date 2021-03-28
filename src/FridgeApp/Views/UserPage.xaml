@@ -19,8 +19,9 @@
         <StackLayout VerticalOptions="CenterAndExpand">
           <!-- middle controls -->
         </StackLayout>
-        <StackLayout VerticalOptions="End" Margin="3">
+        <StackLayout VerticalOptions="End" Orientation="Horizontal" Margin="3" HorizontalOptions="End">
           <Button Text="{x:Static res:Resources.Save}" Command="{Binding SaveCommand}" HorizontalOptions="Center"/>
+          <Button Text="{x:Static res:Resources.ResetAccount}" Command="{Binding ResetCommand}" HorizontalOptions="Center"/>
         </StackLayout>
       </StackLayout>
     </RefreshView>

@@ -15,6 +15,7 @@ namespace UT_FridgeApp
 		{
 			// create mock
 			var fridgeDal = Substitute.For<IFridgeDAL>();
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
 
@@ -23,7 +24,7 @@ namespace UT_FridgeApp
 			fridgeDal.GetItemsAsync(false).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(itemsInFridge.AsEnumerable()));
 
 			// tested main view model
-			var mainViewModel = new MainViewModel(fridgeDal);
+			var mainViewModel = new MainViewModel(fridgeLogger, fridgeDal);
 			Assert.IsFalse(mainViewModel.IsBusy, "Initially IsBusy == false");
 			Assert.IsTrue(mainViewModel.Fridges.Count == 0, "InitiallyExpecting no items");
 

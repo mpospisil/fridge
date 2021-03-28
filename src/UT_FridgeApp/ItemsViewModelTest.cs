@@ -18,6 +18,7 @@ namespace UT_FridgeApp
 		public async Task LoadItemsCommandTest()
 		{
 			// create mock
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			var fridgeDal = Substitute.For<IFridgeDAL>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
@@ -26,7 +27,7 @@ namespace UT_FridgeApp
 			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(items.AsEnumerable()));
 
 			// tested view model
-			var itemsViewModel = new ItemsViewModel(fridgeDal);
+			var itemsViewModel = new ItemsViewModel(fridgeLogger, fridgeDal);
 			itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
 
 			Assert.IsFalse(itemsViewModel.IsBusy, "Initially IsBusy == false");
@@ -95,6 +96,7 @@ namespace UT_FridgeApp
 		public void FilterItemsTest()
 		{
 			// create mock
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			var fridgeDal = Substitute.For<IFridgeDAL>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
@@ -110,7 +112,7 @@ namespace UT_FridgeApp
 				};
 
 				// tested view model
-				var itemsViewModel = new ItemsViewModel(fridgeDal);
+				var itemsViewModel = new ItemsViewModel(fridgeLogger, fridgeDal);
 
 
 				itemsViewModel.ItemFilterEvent += handler;
@@ -206,6 +208,7 @@ namespace UT_FridgeApp
 		public async Task SortItemsTest()
 		{
 			// create mock
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 			var fridgeDal = Substitute.For<IFridgeDAL>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
@@ -221,7 +224,7 @@ namespace UT_FridgeApp
 				};
 
 				// tested view model
-				var itemsViewModel = new ItemsViewModel(fridgeDal);
+				var itemsViewModel = new ItemsViewModel(fridgeLogger, fridgeDal);
 
 				itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
 
