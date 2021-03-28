@@ -276,7 +276,7 @@ namespace FridgeApp.ViewModels
 			var fridge = await FridgeDal.GetFridgeAsync(Guid.Parse(itemToRemoveVM.FridgeId));
 			Guid itemId = Guid.Parse(itemToRemoveVM.ItemId);
 			Guid sectorId = Guid.Parse(itemToRemoveVM.SectorId);
-			await itemToRemoveVM.RemoveItemFromFridge(itemId, fridge.RemovedItemsIdentifier);
+			await itemToRemoveVM.RemoveItemFromFridge(itemId);
 
 			Items.Remove(itemToRemoveVM);
 			SelectedItem = null;

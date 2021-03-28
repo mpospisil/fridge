@@ -231,12 +231,10 @@ namespace Fridge.Repository
 
 		public async Task<bool> RemoveItemAsync(Guid removingItemId)
 		{
-			bool res = true;
-
 			var itemToRemove = await GetItemAsync(removingItemId);
 			if (itemToRemove == null)
 			{
-				return await Task.FromResult(res);
+				return await Task.FromResult(false);
 			}
 
 			var fridgeOfItem = await GetFridgeAsync(itemToRemove.FridgeId);
@@ -251,7 +249,7 @@ namespace Fridge.Repository
 			var removedItems = Db.GetCollection<Model.ItemInFridge>(RemovedItemCollection);
 
 			removedItems.Insert(itemToRemove);
-			return await Task.FromResult(res);
+			return await Task.FromResult(true);
 		}
 
 		public async Task<IEnumerable<ItemInFridge>> GetRemovedItemsAsync(bool forceRefresh = false)

@@ -49,7 +49,7 @@ namespace FridgeApp.ViewModels
 		/// <param name="itemId">Id of the item which will be removed</param>
 		/// <param name="removedItemIdentifier">The id which will be set to properties ItemId and SectorId</param>
 		/// <returns>Task</returns>
-		Task RemoveItemFromFridge(Guid itemId, Guid removedItemIdentifier);
+		Task RemoveItemFromFridge(Guid itemId);
 	}
 
 	[QueryProperty(nameof(ItemId), nameof(ItemId))]
@@ -223,7 +223,7 @@ namespace FridgeApp.ViewModels
 		public Command SaveCommand { get; }
 		public Command CancelCommand { get; }
 
-		public async Task RemoveItemFromFridge(Guid itemId, Guid removedItemIdentifier)
+		public async Task RemoveItemFromFridge(Guid itemId)
 		{
 			await FridgeDal.RemoveItemAsync(itemId);
 		}
