@@ -3,6 +3,7 @@ using FridgeApp.Services;
 using FridgeApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -110,11 +111,11 @@ namespace UT_FridgeApp
 			fridgeDal.GetItemsAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(itemsInFridge.AsEnumerable()));
 			fridgeDal.GetItemsAsync(false).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.ItemInFridge>>(itemsInFridge.AsEnumerable()));
 
-			ItemInFridge removedItem = null;
+			Guid removedItemId = Guid.Empty;
 
-			fridgeDal.When(x => x.UpdateItemAsync(Arg.Any<ItemInFridge>())).Do(param1 =>
+			fridgeDal.When(x => x.RemoveItemAsync(Arg.Any<Guid>())).Do(param1 =>
 			{
-				removedItem = param1.ArgAt<ItemInFridge>(0);
+				removedItemId = param1.ArgAt<Guid>(0);
 			});
 
 			var firstFridge = fridges[0];
@@ -131,21 +132,11 @@ namespace UT_FridgeApp
 			// it will initialize view model
 			itemVM.ItemFromRepositoryId = troutItem.ItemId.ToString(); // id of the Trout
 
-			Assert.IsTrue(removedItem == null);
-			await itemVM.RemoveItemFromFridge(troutItem.ItemId, firstFridge.RemovedItemsIdentifier);
+			Assert.IsTrue(removedItemId == Guid.Empty);
 
-			Assert.IsTrue(removedItem != null);
-			Assert.IsTrue(removedItem.ItemId == MockFridgeDAL.Fr1Part1Item2Id);
-			Assert.IsTrue(removedItem.Name == MockFridgeDAL.Fr1Part1Item2Name);
-			Assert.IsTrue(removedItem.FridgeId == firstFridge.RemovedItemsIdentifier);
-			Assert.IsTrue(removedItem.SectorId == firstFridge.RemovedItemsIdentifier);
-			Assert.IsFalse(removedItem.IsInFridge);
-			Assert.IsFalse(removedItem.TimeStamp == MockFridgeDAL.Date2);
+			await itemVM.RemoveItemFromFridge(troutItem.ItemId);
 
-			Assert.IsTrue(troutItem.History.Count == 2);
-			var histItemRemove = troutItem.History[1];
-			Assert.IsTrue(histItemRemove.TypeOfChange == ChangeTypes.Removed);
-			Assert.IsTrue(histItemRemove.TimeOfChange == removedItem.TimeStamp);
+			Assert.IsTrue(removedItemId == troutItem.ItemId);
 		}
 	}
 }

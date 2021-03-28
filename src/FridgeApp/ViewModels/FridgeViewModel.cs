@@ -335,7 +335,7 @@ namespace FridgeApp.ViewModels
 			// remove the selected item
 			Guid itemId = Guid.Parse(itemToRemoveVM.ItemId);
 			Guid sectorId = Guid.Parse(itemToRemoveVM.SectorId);
-			await itemToRemoveVM.RemoveItemFromFridge(itemId, RemovedItemsIdentifier);
+			await itemToRemoveVM.RemoveItemFromFridge(itemId);
 
 			Sectors.First(p => p.SectorId == sectorId).Items.Remove(itemToRemoveVM);
 		}

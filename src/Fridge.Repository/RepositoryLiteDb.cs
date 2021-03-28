@@ -15,6 +15,7 @@ namespace Fridge.Repository
 		static readonly string UserCollection = "users";
 		static readonly string FridgeCollection = "fridges";
 		static readonly string ItemCollection = "items";
+		static readonly string RemovedItemCollection = "removeditems";
 
 		private bool disposedValue;
 		private LiteDatabase db;
@@ -227,6 +228,42 @@ namespace Fridge.Repository
 				Db.Commit();
 			});
 		}
+
+		public async Task<bool> RemoveItemAsync(Guid removingItemId)
+		{
+			var itemToRemove = await GetItemAsync(removingItemId);
+			if (itemToRemove == null)
+			{
+				return await Task.FromResult(false);
+			}
+
+			var fridgeOfItem = await GetFridgeAsync(itemToRemove.FridgeId);
+			await DeleteItemAsync(removingItemId);
+
+			itemToRemove.FridgeId = fridgeOfItem.RemovedItemsIdentifier;
+			itemToRemove.SectorId = fridgeOfItem.RemovedItemsIdentifier;
+			itemToRemove.IsInFridge = false;
+			itemToRemove.TimeStamp = DateTime.UtcNow;
+			itemToRemove.History.Add(new Fridge.Model.ItemChange() { TimeOfChange = itemToRemove.TimeStamp, TypeOfChange = Fridge.Model.ChangeTypes.Removed });
+
+			var removedItems = Db.GetCollection<Model.ItemInFridge>(RemovedItemCollection);
+
+			removedItems.Insert(itemToRemove);
+			return await Task.FromResult(true);
+		}
+
+		public async Task<IEnumerable<ItemInFridge>> GetRemovedItemsAsync(bool forceRefresh = false)
+		{
+			return await Task.Run(() =>
+			{
+				Logger.LogDebug($"RepositoryLiteDb.GetRemovedItemsAsync");
+				// Get a collection (or create, if doesn't exist)
+				var removedItems = Db.GetCollection<Model.ItemInFridge>(RemovedItemCollection);
+				var res = removedItems.FindAll();
+				return res;
+			});
+		}
+
 		#endregion
 
 		#region Disposing

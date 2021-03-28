@@ -40,9 +40,12 @@ namespace FridgeApp.Services
 		private readonly List<Fridge.Model.Fridge> fridges;
 		private readonly List<Fridge.Model.ItemInFridge> items;
 		private Fridge.Model.User user;
+		private readonly List<Fridge.Model.ItemInFridge> removedItems;
 
 		public MockFridgeDAL(bool createEmpty = false)
 		{
+			removedItems = new List<Fridge.Model.ItemInFridge>();
+
 			if (createEmpty)
 			{
 				fridges = new List<Fridge.Model.Fridge>();
@@ -193,6 +196,39 @@ namespace FridgeApp.Services
 			items.RemoveAt(index);
 			items.Insert(index, modifiedItem);
 			await Task.CompletedTask;
+		}
+
+		/// <summary>
+		/// Remove item from fridge
+		/// </summary>
+		/// <param name="removingItemId">Id of the item to remove</param>
+		/// <returns>Returns true if item was removed</returns>
+		public async Task<bool> RemoveItemAsync(Guid removingItemId)
+		{
+			bool res = true;
+
+			var itemToRemove = await GetItemAsync(removingItemId);
+			if(itemToRemove == null)
+			{
+				return await Task.FromResult(res);
+			}
+
+			var fridgeOfItem = await GetFridgeAsync(itemToRemove.FridgeId);
+			await DeleteItemAsync(removingItemId);
+
+			itemToRemove.FridgeId = fridgeOfItem.RemovedItemsIdentifier;
+			itemToRemove.SectorId = fridgeOfItem.RemovedItemsIdentifier;
+			itemToRemove.IsInFridge = false;
+			itemToRemove.TimeStamp = DateTime.UtcNow;
+			itemToRemove.History.Add(new Fridge.Model.ItemChange() { TimeOfChange = itemToRemove.TimeStamp, TypeOfChange = Fridge.Model.ChangeTypes.Removed });
+
+			removedItems.Add(itemToRemove);
+			return await Task.FromResult(res);
+		}
+
+		public async Task<IEnumerable<Fridge.Model.ItemInFridge>> GetRemovedItemsAsync(bool forceRefresh = false)
+		{
+			return await Task.FromResult(removedItems);
 		}
 
 		public async Task DeleteItemAsync(Guid itemInFridgeId)

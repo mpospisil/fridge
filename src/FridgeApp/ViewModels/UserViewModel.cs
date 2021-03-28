@@ -81,6 +81,7 @@ namespace FridgeApp.ViewModels
 		{
 			IsBusy = true;
 		}
+
 		public async Task<bool> Save()
 		{
 			Logger.LogDebug("UserViewModel.Save");

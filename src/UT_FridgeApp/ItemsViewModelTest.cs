@@ -92,8 +92,10 @@ namespace UT_FridgeApp
 		}
 
 		[TestMethod]
+#if !DEBUG
 		[Timeout(2000)]
-		public void FilterItemsTest()
+#endif
+		public async Task FilterItemsTest()
 		{
 			// create mock
 			var fridgeLogger = Substitute.For<IFridgeLogger>();
@@ -118,25 +120,19 @@ namespace UT_FridgeApp
 				itemsViewModel.ItemFilterEvent += handler;
 				itemsViewModel.SortMethod = Fridge.Model.ItemsOrder.NotSorted;
 
-				itemsViewModel.LoadItemsCommand.Execute(null);
+				await itemsViewModel.ExecuteLoadItemsCommand();
+
+				mre.WaitOne();
 
 				Assert.IsTrue(itemsViewModel.Items.Count == 4, "Expecting 4 items");
-
-				foreach (var item in itemsViewModel.Items)
-				{
-					Assert.IsFalse(item.IsVisible, $"Item '{item.Name}' should NOT be visible");
-				}
-
-				itemsViewModel.OnAppearing();
-				mre.WaitOne();
 
 				foreach (var item in itemsViewModel.Items)
 				{
 					Assert.IsTrue(item.IsVisible, $"Item '{item.Name}' should be visible");
 				}
 
+				mre.Reset();
 				{
-					mre.Reset();
 					itemsViewModel.Query = "Go";  // try to find goulash
 					mre.WaitOne();
 
