@@ -1,4 +1,4 @@
-name: .NET
+name: Basic functionality test
 
 on:
   push
