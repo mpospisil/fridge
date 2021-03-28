@@ -169,7 +169,7 @@
     <value>New Sector</value>
   </data>
   <data name="NewUserMessage" xml:space="preserve">
-    <value>Create a new user </value>
+    <value>Create your account</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>
@@ -218,5 +218,8 @@
   </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
+  </data>
+  <data name="ResetAccount" xml:space="preserve">
+    <value>Reset account</value>
   </data>
 </root>

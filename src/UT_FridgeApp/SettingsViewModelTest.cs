@@ -18,10 +18,10 @@ namespace UT_FridgeApp
 			var fridgeDal = Substitute.For<IFridgeDAL>();
 			List<Fridge.Model.Fridge> fridges = MockFridgeDAL.CreateMockFridges();
 			fridgeDal.GetFridgesAsync(true).Returns(TestTools.ToTask<IEnumerable<Fridge.Model.Fridge>>(fridges.AsEnumerable()));
-
+			var fridgeLogger = Substitute.For<IFridgeLogger>();
 
 			// tested view model
-			var settingsViewModel = new SettingsViewModel(fridgeDal);
+			var settingsViewModel = new SettingsViewModel(fridgeDal, fridgeLogger);
 
 			Assert.IsFalse(settingsViewModel.IsBusy, "Initially IsBusy == false");
 			Assert.IsTrue(settingsViewModel.Fridges.Count == 0, "InitiallyExpecting no fridge");

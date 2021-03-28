@@ -139,13 +139,13 @@ namespace FridgeApp.Services
 			return await Task.FromResult(fridges.First(f => f.FridgeId == fridgeId));
 		}
 
-		public async Task AddFridge(Fridge.Model.Fridge newFridge)
+		public async Task AddFridgeAsync(Fridge.Model.Fridge newFridge)
 		{
 			fridges.Add(newFridge);
 			await Task.CompletedTask;
 		}
 
-		public async Task UpdateFridge(Fridge.Model.Fridge fridge)
+		public async Task UpdateFridgeAsync(Fridge.Model.Fridge fridge)
 		{
 			int index = fridges.FindIndex((item) => item.FridgeId == fridge.FridgeId);
 			fridges.RemoveAt(index);
@@ -195,7 +195,7 @@ namespace FridgeApp.Services
 			await Task.CompletedTask;
 		}
 
-		public async Task DeleteAsync(Guid itemInFridgeId)
+		public async Task DeleteItemAsync(Guid itemInFridgeId)
 		{
 			if (itemInFridgeId == Guid.Empty)
 			{
@@ -247,6 +247,15 @@ namespace FridgeApp.Services
 		public void CreateUser(Fridge.Model.User newUser)
 		{
 			this.user = newUser;
+		}
+
+		public void OpenRepository(string connectionString)
+		{
+		}
+
+		public void ResetRepository()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
