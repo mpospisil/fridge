@@ -104,6 +104,10 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fridge.Diagnostics\Fridge.Diagnostics.csproj">
+      <Project>{51276452-e6ca-40e3-9b07-768181426872}</Project>
+      <Name>Fridge.Diagnostics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fridge.Model\Fridge.Model.csproj">
       <Project>{8a0e86c5-0120-422d-a272-69b000e7fd62}</Project>
       <Name>Fridge.Model</Name>
