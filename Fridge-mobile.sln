@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UT_FridgeApp", "src\UT_Frid
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge.Repository", "src\Fridge.Repository\Fridge.Repository.csproj", "{9DBC335E-A409-4B2C-95F7-B54E6AB186C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge.Diagnostics", "src\Fridge.Logger\Fridge.Diagnostics.csproj", "{8FF8FD71-60BE-4921-8C19-378F0F2F19EC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UT_Fridge.Repository", "src\UT_Fridge.Repository\UT_Fridge.Repository.csproj", "{80325937-9E08-4E89-8748-542047BD40A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge.Diagnostics", "src\Fridge.Diagnostics\Fridge.Diagnostics.csproj", "{51276452-E6CA-40E3-9B07-768181426872}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,14 +45,14 @@ Global
 		{9DBC335E-A409-4B2C-95F7-B54E6AB186C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DBC335E-A409-4B2C-95F7-B54E6AB186C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DBC335E-A409-4B2C-95F7-B54E6AB186C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FF8FD71-60BE-4921-8C19-378F0F2F19EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FF8FD71-60BE-4921-8C19-378F0F2F19EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FF8FD71-60BE-4921-8C19-378F0F2F19EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FF8FD71-60BE-4921-8C19-378F0F2F19EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80325937-9E08-4E89-8748-542047BD40A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{80325937-9E08-4E89-8748-542047BD40A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80325937-9E08-4E89-8748-542047BD40A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80325937-9E08-4E89-8748-542047BD40A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51276452-E6CA-40E3-9B07-768181426872}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51276452-E6CA-40E3-9B07-768181426872}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51276452-E6CA-40E3-9B07-768181426872}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51276452-E6CA-40E3-9B07-768181426872}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
