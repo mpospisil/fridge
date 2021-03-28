@@ -1,4 +1,4 @@
-name: Mobile application build verification
+name: Mobile app build
 
 on:
   pull_request:
