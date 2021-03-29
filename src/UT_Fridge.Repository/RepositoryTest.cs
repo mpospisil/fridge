@@ -18,6 +18,7 @@ namespace UT_Fridge.Repository
 		static readonly string FirstUserEmail = "name@comapany.com";
 
 		static readonly Guid Fridge1Id = Guid.Parse("281A6F64-3C4D-42C7-99D1-588DE7B4D7E2");
+		static readonly Guid Fridge1RemovedItemId = Guid.Parse("3CE7AB85-CA51-4CCD-8AD1-9A5A0C5E177B");
 		static readonly string Fridge1Name = "Fridge 1";
 		static readonly Guid Fridge1Sector1Id = Guid.Parse("0FBD7E4C-0F74-4891-B663-CC7F52DA260A");
 		static readonly string Fridge1Sector1Name = "Fridge 1-1";
@@ -273,11 +274,60 @@ namespace UT_Fridge.Repository
 					var itemsStep2 = (await fridgeDal.GetItemsAsync(true)).ToList();
 					Assert.IsTrue(itemsStep2.Count == 1, "Expect one item");
 
-					//
+					var removedItemsStep2 = (await fridgeDal.GetRemovedItemsAsync(true)).ToList();
+					Assert.IsTrue(removedItemsStep2.Count == 0, "the collection of removed items should be empty");
+
 					var itemFromFridge = await fridgeDal.GetItemAsync(Item2Id);
 					Assert.IsNotNull(itemFromFridge);
 					Assert.IsTrue(itemFromFridge.ItemId == Item2Id);
 					Assert.IsTrue(itemFromFridge.Name == Item2Name);
+					Assert.IsTrue(itemFromFridge.IsInFridge == false);
+
+					// try remove Item1Id from its fridge which should not exist in the fridge
+					var removeRes = await fridgeDal.RemoveItemAsync(Item1Id);
+					Assert.IsFalse(removeRes);
+
+					// try remove Item2Id from its fridge which should exist in the fridge
+					var removeRes2 = await fridgeDal.RemoveItemAsync(Item2Id);
+					Assert.IsTrue(removeRes2);
+
+					var itemsStep3 = (await fridgeDal.GetItemsAsync(true)).ToList();
+					Assert.IsTrue(itemsStep3.Count == 0, "Expect no item");
+
+					var removedItemsStep3 = (await fridgeDal.GetRemovedItemsAsync(true)).ToList();
+					Assert.IsTrue(removedItemsStep3.Count == 1, "Expect one removed item");
+
+					var removedItem = removedItemsStep3.First();
+					Assert.IsTrue(removedItem.ItemId == Item2Id);
+					Assert.IsTrue(removedItem.Name == Item2Name);
+
+					Assert.IsTrue(removedItem.FridgeId == Fridge1RemovedItemId);
+					Assert.IsTrue(removedItem.SectorId == Fridge1RemovedItemId);
+					Assert.IsFalse(removedItem.IsInFridge);
+
+					Assert.IsTrue(removedItem.History.Count == 1);
+					var histItemRemove = removedItem.History[0];
+					Assert.IsTrue(histItemRemove.TypeOfChange == ChangeTypes.Removed);
+				}
+
+				using (var fridgeDal = new RepositoryLiteDb(fridgeLogger))
+				{
+					fridgeDal.OpenRepository(tempDbFileName);
+
+					var removedItemsStep3 = (await fridgeDal.GetRemovedItemsAsync(true)).ToList();
+					Assert.IsTrue(removedItemsStep3.Count == 1, "Expect one removed item");
+
+					var removedItem = removedItemsStep3.First();
+					Assert.IsTrue(removedItem.ItemId == Item2Id);
+					Assert.IsTrue(removedItem.Name == Item2Name);
+
+					Assert.IsTrue(removedItem.FridgeId == Fridge1RemovedItemId);
+					Assert.IsTrue(removedItem.SectorId == Fridge1RemovedItemId);
+					Assert.IsFalse(removedItem.IsInFridge);
+
+					Assert.IsTrue(removedItem.History.Count == 1);
+					var histItemRemove = removedItem.History[0];
+					Assert.IsTrue(histItemRemove.TypeOfChange == ChangeTypes.Removed);
 				}
 			}
 			finally
@@ -317,6 +367,7 @@ namespace UT_Fridge.Repository
 			{
 				FridgeId = Fridge1Id,
 				Name = Fridge1Name,
+				RemovedItemsIdentifier = Fridge1RemovedItemId,
 				OwnerId = FirstUserId
 			};
 
