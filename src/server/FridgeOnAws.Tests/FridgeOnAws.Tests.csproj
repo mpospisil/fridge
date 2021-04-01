@@ -23,6 +23,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\FridgeOnAws\FridgeOnAws.csproj" />
+    <ProjectReference Include="..\FridgeOnAws\FridgeOnAws.csproj" />
   </ItemGroup>
 </Project>
