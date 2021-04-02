@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["src/auth/Fridge.Auth/Fridge.Auth.csproj", "src/auth/Fridge.Auth/"]
-RUN dotnet restore "src/auth/Fridge.Auth/Fridge.Auth.csproj"
+COPY ["Fridge.Auth.csproj", "."]
+RUN dotnet restore "./Fridge.Auth.csproj"
 COPY . .
-WORKDIR "/src/src/auth/Fridge.Auth"
+WORKDIR "/src/."
 RUN dotnet build "Fridge.Auth.csproj" -c Release -o /app/build
 
 FROM build AS publish
