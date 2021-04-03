@@ -61,7 +61,43 @@ namespace Fridge.Auth
 								IdentityServerConstants.StandardScopes.OpenId,
 								IdentityServerConstants.StandardScopes.Profile
 						}
-				}
-			};
+				},
+
+				new Client
+				{
+					ClientId = "xamarin-client",
+					ClientName = "Xamarin Client",
+					AllowedGrantTypes = GrantTypes.Code,
+					AllowedScopes = new List<string>
+					{
+						IdentityServerConstants.StandardScopes.OpenId,
+						IdentityServerConstants.StandardScopes.Profile
+					},
+					AllowAccessTokensViaBrowser = true,
+					AllowOfflineAccess = true,
+					AlwaysIncludeUserClaimsInIdToken = true,
+					RequirePkce = true,
+					RequireClientSecret = false,
+					RedirectUris = { "https://localhost:5001/grands"},
+				},
+
+								new Client
+								{
+										ClientId = "interactive.public",
+										ClientName = "Interactive client (Code with PKCE)",
+
+										RedirectUris = { "https://notused" },
+										PostLogoutRedirectUris = { "https://notused" },
+
+										RequireClientSecret = false,
+
+										AllowedGrantTypes = GrantTypes.Code,
+										AllowedScopes = { "openid", "profile", "email"},
+
+										AllowOfflineAccess = true,
+										RefreshTokenUsage = TokenUsage.OneTimeOnly,
+										RefreshTokenExpiration = TokenExpiration.Sliding
+								},
+				};
 	}
 }
