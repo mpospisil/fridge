@@ -36,6 +36,7 @@ namespace MvcClient
 					.AddCookie("Cookies")
 					.AddOpenIdConnect("oidc", options =>
 					{
+						//options.Authority = "https://54rjh779j7.execute-api.eu-central-1.amazonaws.com/prod";
 						options.Authority = "https://localhost:5001";
 
 						options.ClientId = "mvc";

@@ -60,14 +60,14 @@ namespace Fridge.Auth
 			var retentionPolicy = LogGroupRetentionPolicy.OneDay;
 
 			// customer formatter  
-			//var formatter = new CustomLogFormatter();
+			var formatter = new AWSTextFormatter();
 
 			var options = new CloudWatchSinkOptions
 			{
 				// the name of the CloudWatch Log group from config  
 				LogGroupName = "Fridge.Auth",
 				// the main formatter of the log event  
-				//TextFormatter = formatter,
+				TextFormatter = formatter,
 				// other defaults  
 				MinimumLogEventLevel = LogEventLevel.Verbose,
 				BatchSizeLimit = 100,
@@ -78,24 +78,42 @@ namespace Fridge.Auth
 				RetryAttempts = 5,
 				LogGroupRetentionPolicy = retentionPolicy
 			};
+
 			// setup AWS CloudWatch client  
-			var client = new AmazonCloudWatchLogsClient();
+			var client = new AmazonCloudWatchLogsClient(Amazon.RegionEndpoint.EUCentral1);
+
+			//Log.Logger = new LoggerConfiguration()
+			//		.MinimumLevel.Debug()
+			//		.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+			//		.MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Verbose)
+			//		.MinimumLevel.Override("System", LogEventLevel.Warning)
+			//		.MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Verbose)
+			//		.Enrich.FromLogContext()
+
+			//		//.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+			//		.WriteTo.AmazonCloudWatch(options, client)
+			//		.CreateLogger();
+
 
 			Log.Logger = new LoggerConfiguration()
-					.MinimumLevel.Debug()
-					.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-					.MinimumLevel.Override("Microsoft.Hosting.Lifetime", LogEventLevel.Information)
-					.MinimumLevel.Override("System", LogEventLevel.Warning)
-					.MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-					.Enrich.FromLogContext()
+					 .MinimumLevel.Verbose()
+					 .WriteTo.AmazonCloudWatch(options, client)
+					 .CreateLogger();
 
-					//.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
-					.WriteTo.AmazonCloudWatch(options, client)
-					.CreateLogger();
-
-
-				Log.Information("Starting host...");
+			Log.Information("Starting host...");
 				return base.FunctionHandlerAsync(request, lambdaContext);			
+		}
+	}
+
+	public class AWSTextFormatter : Serilog.Formatting.ITextFormatter
+	{
+		public void Format(LogEvent logEvent, System.IO.TextWriter output)
+		{
+			output.Write("Timestamp - {0} | Level - {1} | Message {2} {3}", logEvent.Timestamp, logEvent.Level, logEvent.MessageTemplate, output.NewLine);
+			if (logEvent.Exception != null)
+			{
+				output.Write("Exception - {0}", logEvent.Exception);
+			}
 		}
 	}
 }
