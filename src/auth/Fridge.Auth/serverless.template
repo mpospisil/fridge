@@ -8,7 +8,7 @@
     "AspNetCoreApi": {
       "Type": "AWS::Serverless::Api",
       "Properties": {
-        "StageName": "Prod",
+        "StageName": "prod",
         "BinaryMediaTypes": [
           "*~1*"
         ]
@@ -56,9 +56,9 @@
   },
   "Outputs": {
     "ApiURL": {
-      "Description": "API endpoint URL for Prod environment",
+      "Description": "API endpoint URL for prod environment",
       "Value": {
-        "Fn::Sub": "https://${AspNetCoreApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+        "Fn::Sub": "https://${AspNetCoreApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
       }
     }
   }
