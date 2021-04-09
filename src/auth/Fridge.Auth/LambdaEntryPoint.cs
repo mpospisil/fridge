@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.CloudWatchLogs;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
+using Serilog.Sinks.AwsCloudWatch;
 
 namespace Fridge.Auth
 {
@@ -55,6 +57,30 @@ namespace Fridge.Auth
 
 		public override Task<APIGatewayProxyResponse> FunctionHandlerAsync(APIGatewayProxyRequest request, ILambdaContext lambdaContext)
 		{
+			var retentionPolicy = LogGroupRetentionPolicy.OneDay;
+
+			// customer formatter  
+			//var formatter = new CustomLogFormatter();
+
+			var options = new CloudWatchSinkOptions
+			{
+				// the name of the CloudWatch Log group from config  
+				LogGroupName = "Fridge.Auth",
+				// the main formatter of the log event  
+				//TextFormatter = formatter,
+				// other defaults  
+				MinimumLogEventLevel = LogEventLevel.Verbose,
+				BatchSizeLimit = 100,
+				QueueSizeLimit = 10000,
+				Period = TimeSpan.FromSeconds(10),
+				CreateLogGroup = true,
+				LogStreamNameProvider = new DefaultLogStreamProvider(),
+				RetryAttempts = 5,
+				LogGroupRetentionPolicy = retentionPolicy
+			};
+			// setup AWS CloudWatch client  
+			var client = new AmazonCloudWatchLogsClient();
+
 			Log.Logger = new LoggerConfiguration()
 					.MinimumLevel.Debug()
 					.MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -63,7 +89,8 @@ namespace Fridge.Auth
 					.MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
 					.Enrich.FromLogContext()
 
-					.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+					//.WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+					.WriteTo.AmazonCloudWatch(options, client)
 					.CreateLogger();
 
 
