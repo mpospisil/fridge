@@ -21,7 +21,6 @@ namespace Fridge.Auth
 		{
 			services.AddControllersWithViews();
 
-
 			var builder = services.AddIdentityServer(options =>
 			{
 				// see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
@@ -29,6 +28,7 @@ namespace Fridge.Auth
 			})
 					.AddInMemoryIdentityResources(Config.IdentityResources)
 					.AddInMemoryApiScopes(Config.ApiScopes)
+					.AddSigningCredential(new Services.CertificateStore().GetCertificate())
 					.AddInMemoryClients(Config.Clients);
 
 			// not recommended for production - you need to store your key material somewhere secure
