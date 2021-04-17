@@ -1,3 +1,4 @@
+using Fridge.Auth.Services;
 using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,11 +26,13 @@ namespace Fridge.Auth
 			{
 				// see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
 				options.EmitStaticAudienceClaim = true;
+
 			})
 					.AddInMemoryIdentityResources(Config.IdentityResources)
 					.AddInMemoryApiScopes(Config.ApiScopes)
 					.AddSigningCredential(new Services.CertificateStore().GetCertificate())
-					.AddInMemoryClients(Config.Clients);
+					.AddInMemoryClients(Config.Clients)
+					.AddProfileService<ProfileService>();
 
 			// not recommended for production - you need to store your key material somewhere secure
 			//builder.AddDeveloperSigningCredential();
