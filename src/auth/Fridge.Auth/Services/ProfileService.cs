@@ -1,14 +1,21 @@
 ﻿using IdentityModel;
 using IdentityServer4.Models;
-using IdentityServer4.Services;
+using IdentityServer4.Services; 
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Fridge.Auth.Services
 {
-	public class ProfileService : IProfileService
+	public class ProfileService<UserType> : IProfileService
 	{
+		IUserRepository<UserType> Users { get; set; } 
+		public ProfileService(IUserRepository<UserType> userRepos)
+		{
+			this.Users = userRepos;
+		}
+
+
 		public Task GetProfileDataAsync(ProfileDataRequestContext context)
 		{
 			var claims = new List<Claim>

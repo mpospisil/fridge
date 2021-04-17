@@ -28,11 +28,12 @@ namespace Fridge.Auth
 				options.EmitStaticAudienceClaim = true;
 
 			})
-					.AddInMemoryIdentityResources(Config.IdentityResources)
-					.AddInMemoryApiScopes(Config.ApiScopes)
-					.AddSigningCredential(new Services.CertificateStore().GetCertificate())
-					.AddInMemoryClients(Config.Clients)
-					.AddProfileService<ProfileService>();
+				.AddInMemoryIdentityResources(Config.IdentityResources)
+				.AddInMemoryApiScopes(Config.ApiScopes)
+				.AddSigningCredential(new Services.CertificateStore().GetCertificate())
+				.AddInMemoryClients(Config.Clients)
+				.AddProfileService<ProfileService<Fridge.Model.User>>()
+				.Services.AddSingleton<IUserRepository<Fridge.Model.User>, Fridge.Auth.Services.UserRepositoryLocal>();
 
 			// not recommended for production - you need to store your key material somewhere secure
 			//builder.AddDeveloperSigningCredential();
