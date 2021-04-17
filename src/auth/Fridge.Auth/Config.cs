@@ -10,11 +10,22 @@ namespace Fridge.Auth
 {
 	public static class Config
 	{
+		static string[] allowedScopes =
+		{
+						IdentityServerConstants.StandardScopes.OpenId,
+						IdentityServerConstants.StandardScopes.Profile,
+						IdentityServerConstants.StandardScopes.Email,
+						//"resource1.scope1",
+						//"resource2.scope1",
+						//"transaction"
+				};
+
 		public static IEnumerable<IdentityResource> IdentityResources =>
 				new IdentityResource[]
 				{
 				new IdentityResources.OpenId(),
 				new IdentityResources.Profile(),
+				new IdentityResources.Email()
 				};
 
 		public static IEnumerable<ApiScope> ApiScopes =>
@@ -44,24 +55,54 @@ namespace Fridge.Auth
 				},
 
 				new Client
-				{
-						ClientId = "mvc",
-						ClientSecrets = { new Secret("secret".Sha256()) },
+{
+		ClientId = "mvc",
+		ClientName = "MVC Client",
+		ClientUri = "https://localhost:5101",
 
-						AllowedGrantTypes = GrantTypes.Code,
+		AllowedGrantTypes = GrantTypes.Hybrid,
+		AllowOfflineAccess = true,
+		ClientSecrets = { new Secret("secret".Sha256()) },
 
-            // where to redirect to after login
-            RedirectUris = { "https://localhost:5101/signin-oidc" },
+		RedirectUris =           { "https://localhost:5101/signin-oidc" },
+		PostLogoutRedirectUris = { "https://localhost:5101/" },
+		//LogoutUri =                "https://localhost:5101/signout-oidc",
 
-            // where to redirect to after logout
-            PostLogoutRedirectUris = { "https://localhost:5101/signout-callback-oidc" },
+		AllowedScopes =
+		{
+				IdentityServerConstants.StandardScopes.OpenId,
+				IdentityServerConstants.StandardScopes.Profile,
+				IdentityServerConstants.StandardScopes.Email,
 
-						AllowedScopes = new List<string>
-						{
-								IdentityServerConstants.StandardScopes.OpenId,
-								IdentityServerConstants.StandardScopes.Profile
-						}
-				},
+				"api1",
+		},
+},
+
+                ///////////////////////////////////////////
+                // MVC Hybrid Flow Sample (Back Channel logout)
+                //////////////////////////////////////////
+                new Client
+								{
+										ClientId = "mvc.hybrid.backchannel",
+										ClientName = "MVC Hybrid (with BackChannel logout)",
+										ClientUri = "http://identityserver.io",
+
+										ClientSecrets =
+										{
+												new Secret("secret".Sha256())
+										},
+
+										AllowedGrantTypes = GrantTypes.Hybrid,
+										RequirePkce = false,
+
+										RedirectUris = { "https://localhost:5101/signin-oidc" },
+										BackChannelLogoutUri = "https://localhost:5101/logout",
+										PostLogoutRedirectUris = { "https://localhost:5101/signout-callback-oidc" },
+
+										AllowOfflineAccess = true,
+
+										AllowedScopes = allowedScopes
+								},
 
 				new Client
 				{
@@ -71,7 +112,8 @@ namespace Fridge.Auth
 					AllowedScopes = new List<string>
 					{
 						IdentityServerConstants.StandardScopes.OpenId,
-						IdentityServerConstants.StandardScopes.Profile
+						IdentityServerConstants.StandardScopes.Profile,
+						IdentityServerConstants.StandardScopes.Email,
 					},
 					AllowAccessTokensViaBrowser = true,
 					AllowOfflineAccess = true,

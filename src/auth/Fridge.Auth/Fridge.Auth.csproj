@@ -18,6 +18,9 @@
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Fridge.Model\Fridge.Model.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="identityserver-signing-certificate.pfx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

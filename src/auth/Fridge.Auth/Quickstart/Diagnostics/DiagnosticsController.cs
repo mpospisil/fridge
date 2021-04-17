@@ -16,6 +16,7 @@ namespace IdentityServerHost.Quickstart.UI
     {
         public async Task<IActionResult> Index()
         {
+      //TODO REMOVE
             //var localAddresses = new string[] { "127.0.0.1", "::1", HttpContext.Connection.LocalIpAddress.ToString() };
             //if (!localAddresses.Contains(HttpContext.Connection.RemoteIpAddress.ToString()))
             //{
