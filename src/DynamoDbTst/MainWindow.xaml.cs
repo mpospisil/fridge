@@ -14,5 +14,14 @@ namespace DynamoDbTst
 			DataContext = vm;
 			InitializeComponent();
 		}
+
+		private void Window_Closed(object sender, System.EventArgs e)
+		{
+			if(vm != null)
+			{
+				vm.Dispose();
+				vm = null;
+			}
+		}
 	}
 }
