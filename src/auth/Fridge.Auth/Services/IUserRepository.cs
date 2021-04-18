@@ -3,15 +3,15 @@ using System.Security.Claims;
 
 namespace Fridge.Auth.Services
 {
-	public interface IUserRepository<UserType>
+	public interface IUserRepository
 	{
-		public UserType AutoProvisionUser(string provider, string userId, List<Claim> claims);
+		public IIdentityUser AutoProvisionUser(string provider, string userId, List<Claim> claims);
 
-		public UserType FindByExternalProvider(string provider, string userId);
+		public IIdentityUser FindByExternalProvider(string provider, string userId);
 
-		public UserType FindBySubjectId(string subjectId);
+		public IIdentityUser FindBySubjectId(string subjectId);
 
-		public UserType FindByUsername(string username);
+		public IIdentityUser FindByUsername(string username);
 
 		public bool ValidateCredentials(string username, string password);
 	}

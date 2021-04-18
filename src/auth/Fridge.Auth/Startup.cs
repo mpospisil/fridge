@@ -32,8 +32,8 @@ namespace Fridge.Auth
 				.AddInMemoryApiScopes(Config.ApiScopes)
 				.AddSigningCredential(new Services.CertificateStore().GetCertificate())
 				.AddInMemoryClients(Config.Clients)
-				.AddProfileService<ProfileService<Fridge.Model.User>>()
-				.Services.AddSingleton<IUserRepository<Fridge.Model.User>, Fridge.Auth.Services.UserRepositoryLocal>();
+				.AddProfileService<FridgeUserProfileService>()
+				.Services.AddSingleton<IUserRepository, Fridge.Auth.Services.UserRepositoryLocal>();
 
 			// not recommended for production - you need to store your key material somewhere secure
 			//builder.AddDeveloperSigningCredential();
