@@ -10,4 +10,8 @@
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.0.13" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Fridge.Model\Fridge.Model.csproj" />
+  </ItemGroup>
+
 </Project>
