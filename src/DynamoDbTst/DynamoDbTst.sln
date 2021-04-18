@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31025.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamoDbTst", "DynamoDbTst.csproj", "{F15362E1-492D-4DD0-8C3B-510E6B74F7CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F15362E1-492D-4DD0-8C3B-510E6B74F7CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15362E1-492D-4DD0-8C3B-510E6B74F7CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15362E1-492D-4DD0-8C3B-510E6B74F7CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15362E1-492D-4DD0-8C3B-510E6B74F7CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2A887FE3-5A34-4CE5-B1B2-31797049BC74}
+	EndGlobalSection
+EndGlobal
