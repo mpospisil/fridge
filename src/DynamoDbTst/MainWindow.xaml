@@ -11,7 +11,26 @@
       <Button Command="{Binding ConnectCommand}">Connect</Button>
     </ToolBar>
     <Grid>
-      
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition></ColumnDefinition>
+        <ColumnDefinition></ColumnDefinition>
+      </Grid.ColumnDefinitions>
+
+      <ListView ItemsSource="{Binding Tables}">
+        <ListView.View>
+          <GridView>
+            <GridViewColumn Header="Table Name">
+              <GridViewColumn.CellTemplate>
+                <DataTemplate>
+                  <StackPanel>
+                    <TextBlock Text="{Binding TableName}" Margin="0"></TextBlock>
+                  </StackPanel>
+                </DataTemplate>
+              </GridViewColumn.CellTemplate>
+            </GridViewColumn>
+          </GridView>
+        </ListView.View>
+      </ListView>
     </Grid>
   </DockPanel>
 </Window>

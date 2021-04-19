@@ -13,7 +13,7 @@ namespace DynamoDbTst
 		private bool disposedValue;
 		private AmazonDynamoDBClient Client { get; set; }
 
-		const string UserTableName = "Users";
+		const string UserTableName = "Users2";
 
 		public FridgeDynamoClient()
 		{
@@ -99,6 +99,12 @@ namespace DynamoDbTst
 			return response.TableNames.Contains(tblNm);
 		}
 
+		public async Task<List<string>> GetTablesAsync()
+		{
+			var response = await Client.ListTablesAsync();
+			return response.TableNames;
+		}
+
 		public async Task<bool> CreateTable_async(string tableName,
 				List<AttributeDefinition> tableAttributes,
 				List<KeySchemaElement> tableKeySchema,
@@ -136,6 +142,11 @@ namespace DynamoDbTst
 
 			return result;
 		}
+
+		//private async Task CreateUsersTable()
+		//{
+
+		//}
 
 		private async Task CreateExampleTable(string tableName)
 		{

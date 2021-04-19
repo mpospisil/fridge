@@ -1,22 +1,14 @@
-﻿using Amazon.DynamoDBv2;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Linq;
 
 namespace DynamoDbTst
 {
-	public class MainVM : INotifyPropertyChanged, IDisposable
+	public class MainVM : ViewModelBase, IDisposable
 	{
 		private bool disposedValue;
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		private FridgeDynamoClient client;
 		private FridgeDynamoClient Client
@@ -33,6 +25,17 @@ namespace DynamoDbTst
 			this.ConnectCommand = new CustomCommand(CanConnectDb, ConnectDb);
 		}
 
+		ObservableCollection<TableVM> tables;
+		public ObservableCollection<TableVM> Tables
+		{
+			get => tables;
+			set
+			{
+				tables = value;
+				NotifyPropertyChanged("Tables");
+			}
+		}
+
 		private bool CanConnectDb(object arg)
 		{
 			return Client == null;
@@ -46,6 +49,14 @@ namespace DynamoDbTst
 				await newClient.ConnectAsync(true);
 
 				Client = newClient;
+
+				var tablesInDb = await Client.GetTablesAsync();
+				if(tablesInDb != null)
+				{
+					var tableList = new ObservableCollection<TableVM>(tablesInDb.Select(t => new TableVM(t)));
+					Tables = tableList;
+				}
+
 				NotifyPropertyChanged("");
 			}
 			catch(Exception e)
@@ -55,16 +66,6 @@ namespace DynamoDbTst
 		}
 
 		public ICommand ConnectCommand { get; }
-
-
-
-		// This method is called by the Set accessor of each property.  
-		// The CallerMemberName attribute that is applied to the optional propertyName  
-		// parameter causes the property name of the caller to be substituted as an argument.  
-		private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
 
 		protected virtual void Dispose(bool disposing)
 		{
