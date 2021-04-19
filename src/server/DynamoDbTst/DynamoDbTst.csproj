@@ -11,7 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fridge.Model\Fridge.Model.csproj" />
+    <ProjectReference Include="..\..\Fridge.Model\Fridge.Model.csproj" />
+    <ProjectReference Include="..\Fridge.DynamoDb\Fridge.DynamoDb.csproj" />
   </ItemGroup>
 
 </Project>
