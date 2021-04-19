@@ -6,14 +6,14 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 
-namespace DynamoDbTst
+namespace Fridge.DynamoDb
 {
 	public class FridgeDynamoClient : IDisposable
 	{
 		private bool disposedValue;
 		private AmazonDynamoDBClient Client { get; set; }
 
-		const string UserTableName = "Users2";
+		const string UserTableName = "Users";
 
 		public FridgeDynamoClient()
 		{

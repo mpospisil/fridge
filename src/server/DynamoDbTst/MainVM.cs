@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Fridge.DynamoDb;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Windows.Input;
 using System.Linq;
+using System.Windows.Input;
 
 namespace DynamoDbTst
 {
