@@ -135,13 +135,12 @@ namespace Fridge.DynamoDb
 
 		public async Task<TableDescription> GetTableDescription(string tableName)
 		{
+			Logger.LogInformation($"FridgeDynamoClient.GetTableDescription tableName = '{tableName}'");
 			TableDescription result = null;
 
 			// If the table exists, get its description.
-
 			var response = await Client.DescribeTableAsync(tableName);
 			result = response.Table;
-
 
 			return result;
 		}
@@ -158,7 +157,6 @@ namespace Fridge.DynamoDb
 
 		private async Task CreateExampleTable(string tableName)
 		{
-			Console.WriteLine("\n*** Creating table ***");
 			var request = new CreateTableRequest
 			{
 				AttributeDefinitions = new List<AttributeDefinition>()
@@ -198,14 +196,14 @@ namespace Fridge.DynamoDb
 			var response = await Client.CreateTableAsync(request);
 
 			var tableDescription = response.TableDescription;
-			Console.WriteLine("{1}: {0} \t ReadsPerSec: {2} \t WritesPerSec: {3}",
+			Logger.LogInformation(string.Format("{1}: {0} \t ReadsPerSec: {2} \t WritesPerSec: {3}",
 								tableDescription.TableStatus,
 								tableDescription.TableName,
 								tableDescription.ProvisionedThroughput.ReadCapacityUnits,
-								tableDescription.ProvisionedThroughput.WriteCapacityUnits);
+								tableDescription.ProvisionedThroughput.WriteCapacityUnits));
 
 			string status = tableDescription.TableStatus;
-			Console.WriteLine(tableName + " - " + status);
+			Logger.LogDebug(tableName + " - " + status);
 
 			await WaitUntilTableReady(tableName);
 		}
@@ -217,7 +215,7 @@ namespace Fridge.DynamoDb
 			// Let us wait until table is created. Call DescribeTable.
 			do
 			{
-				System.Threading.Thread.Sleep(5000); // Wait 5 seconds.
+				System.Threading.Thread.Sleep(1000); // Wait 5 seconds.
 
 					var res = await Client.DescribeTableAsync(new DescribeTableRequest
 					{

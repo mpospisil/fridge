@@ -36,10 +36,20 @@ namespace DynamoDbTst
 		private async Task DeleteTableAsync(object obj)
 		{
 			Debug.Assert(obj != null);
-			string tableName = obj.ToString();
-			Logger.LogInformation($"MainVM.DeleteTableAsync '{tableName}'");
+			try
+			{
+				string tableName = obj.ToString();
+				Logger.LogInformation($"MainVM.DeleteTableAsync '{tableName}'");
 
-			await Client.DeleteTableAsync(tableName);
+				await Client.DeleteTableAsync(tableName);
+
+				await RefreshTableView();
+			}
+			catch(Exception e)
+			{
+				Logger.LogError($"MainVM.DeleteTableAsync : failed", e);
+				ReportError(e.Message);
+			}
 		}
 
 		private bool CanDeleteTable(object arg)
@@ -50,15 +60,23 @@ namespace DynamoDbTst
 		private async Task CreateTableAsync(object obj)
 		{
 			Debug.Assert(obj != null);
-			string tableName = obj.ToString();
-			Logger.LogInformation($"MainVM.CreateTableAsync '{tableName}'");
-
-			if(tableName.Equals(DynDbConstants.UserTableName))
+			try
 			{
-				await Client.CreateUsersTable();
-			}
+				string tableName = obj.ToString();
+				Logger.LogInformation($"MainVM.CreateTableAsync '{tableName}'");
 
-			NotifyPropertyChanged("");
+				if (tableName.Equals(DynDbConstants.UserTableName))
+				{
+					await Client.CreateUsersTable();
+				}
+
+				await RefreshTableView();
+			}
+			catch(Exception e)
+			{
+				Logger.LogError($"MainVM.CreateTableAsync : failed", e);
+				ReportError(e.Message);
+			}
 		}
 
 		private bool CanCreateTable(object arg)
@@ -129,20 +147,25 @@ namespace DynamoDbTst
 
 				Client = newClient;
 
-				var tablesInDb = await Client.GetTablesAsync();
-				if(tablesInDb != null)
-				{
-					var tableList = new ObservableCollection<TableVM>(tablesInDb.Select(t => new TableVM(t)));
-					Tables = tableList;
-				}
-
-				NotifyPropertyChanged("");
+				await RefreshTableView();
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				Logger.LogError($"MainVM.ConnectDbAsync : failed", e);
 				ReportError(e.Message);
 			}
+		}
+
+		private async Task RefreshTableView()
+		{
+			var tablesInDb = await Client.GetTablesAsync();
+			if (tablesInDb != null)
+			{
+				var tableList = new ObservableCollection<TableVM>(tablesInDb.Select(t => new TableVM(t)));
+				Tables = tableList;
+			}
+
+			NotifyPropertyChanged("");
 		}
 
 		protected virtual void Dispose(bool disposing)
