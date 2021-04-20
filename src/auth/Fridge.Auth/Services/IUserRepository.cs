@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Fridge.Model;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace Fridge.Auth.Services

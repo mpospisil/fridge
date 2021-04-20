@@ -1,4 +1,5 @@
-﻿using IdentityModel;
+﻿using Fridge.Model;
+using IdentityModel;
 using IdentityServer4;
 using System;
 using System.Collections.Generic;

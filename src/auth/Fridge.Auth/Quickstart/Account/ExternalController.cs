@@ -1,4 +1,5 @@
 using Fridge.Auth.Services;
+using Fridge.Model;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Events;

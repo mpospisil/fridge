@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace Fridge.Auth.Services
+namespace Fridge.Model
 {
 	public interface IIdentityUser
 	{
@@ -35,6 +32,6 @@ namespace Fridge.Auth.Services
 		//
 		// Summary:
 		//     Gets or sets the claims.
-		public ICollection<Claim> Claims { get; set; }
+		ICollection<Claim> Claims { get; set; }
 	}
 }
