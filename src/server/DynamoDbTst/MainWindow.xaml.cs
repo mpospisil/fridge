@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using Fridge.Logger;
+using Serilog;
+using System.Windows;
 
 namespace DynamoDbTst
 {
@@ -10,7 +12,7 @@ namespace DynamoDbTst
 		MainVM vm;
 		public MainWindow()
 		{
-			this.vm = new MainVM();
+			this.vm = new MainVM(App.Logger);
 			DataContext = vm;
 			InitializeComponent();
 		}

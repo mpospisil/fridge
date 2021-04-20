@@ -9,6 +9,8 @@
   <DockPanel LastChildFill="False">
     <ToolBar DockPanel.Dock="Top">
       <Button Command="{Binding ConnectCommand}">Connect</Button>
+      <Button Command="{Binding DeleteTableCommand}" CommandParameter="{Binding SelectedTable.TableName}">Delete Table</Button>
+      <Button Command="{Binding CreateTableCommand}" CommandParameter="Users">Create Users Table</Button>
     </ToolBar>
     <Grid>
       <Grid.ColumnDefinitions>
@@ -16,7 +18,7 @@
         <ColumnDefinition></ColumnDefinition>
       </Grid.ColumnDefinitions>
 
-      <ListView ItemsSource="{Binding Tables}">
+      <ListView ItemsSource="{Binding Tables}" SelectedItem="{Binding SelectedTable, Mode=TwoWay}">
         <ListView.View>
           <GridView>
             <GridViewColumn Header="Table Name">

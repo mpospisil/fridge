@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.0.13" />
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.Debug" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Fridge.Diagnostics\Fridge.Diagnostics.csproj" />
     <ProjectReference Include="..\..\Fridge.Model\Fridge.Model.csproj" />
     <ProjectReference Include="..\Fridge.DynamoDb\Fridge.DynamoDb.csproj" />
   </ItemGroup>

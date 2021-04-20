@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge.DynamoDb", "Fridge.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamoDbTst", "DynamoDbTst\DynamoDbTst.csproj", "{ADB7C138-768C-4F7F-98B7-996BBAB8C349}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fridge.Diagnostics", "..\Fridge.Diagnostics\Fridge.Diagnostics.csproj", "{622D599A-7BCD-43C2-841B-70380E6AF5FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{ADB7C138-768C-4F7F-98B7-996BBAB8C349}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADB7C138-768C-4F7F-98B7-996BBAB8C349}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADB7C138-768C-4F7F-98B7-996BBAB8C349}.Release|Any CPU.Build.0 = Release|Any CPU
+		{622D599A-7BCD-43C2-841B-70380E6AF5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{622D599A-7BCD-43C2-841B-70380E6AF5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{622D599A-7BCD-43C2-841B-70380E6AF5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{622D599A-7BCD-43C2-841B-70380E6AF5FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

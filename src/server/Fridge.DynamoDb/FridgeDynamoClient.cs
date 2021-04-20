@@ -1,5 +1,6 @@
 ﻿using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
+using FridgeApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -10,13 +11,14 @@ namespace Fridge.DynamoDb
 {
 	public class FridgeDynamoClient : IDisposable
 	{
+		private  IFridgeLogger Logger { get; set; }
+
 		private bool disposedValue;
 		private AmazonDynamoDBClient Client { get; set; }
 
-		const string UserTableName = "Users";
-
-		public FridgeDynamoClient()
+		public FridgeDynamoClient(IFridgeLogger logger)
 		{
+			Logger = logger;
 		}
 
 		public async Task ConnectAsync(bool useLocalDb)
@@ -27,12 +29,6 @@ namespace Fridge.DynamoDb
 			}
 
 			Client = CreateDbClient(useLocalDb);
-
-			var isUserTable = await CheckingTableExistence_async(UserTableName);
-			if(!isUserTable)
-			{
-				await CreateExampleTable(UserTableName);
-			}
 
 			var response = await Client.ListTablesAsync();
 		}
@@ -101,8 +97,15 @@ namespace Fridge.DynamoDb
 
 		public async Task<List<string>> GetTablesAsync()
 		{
+			Logger.LogInformation("FridgeDynamoClient.GetTablesAsync'");
 			var response = await Client.ListTablesAsync();
 			return response.TableNames;
+		}
+
+		public async Task DeleteTableAsync(string tableName)
+		{
+			Logger.LogInformation($"FridgeDynamoClient.DeleteTableAsync tableName = '{tableName}'");
+			var response = await Client.DeleteTableAsync(tableName);
 		}
 
 		public async Task<bool> CreateTable_async(string tableName,
@@ -143,10 +146,15 @@ namespace Fridge.DynamoDb
 			return result;
 		}
 
-		//private async Task CreateUsersTable()
-		//{
-
-		//}
+		public  async Task CreateUsersTable()
+		{
+			Logger.LogInformation($"FridgeDynamoClient.CreateUsersTable");
+			var isUserTable = await CheckingTableExistence_async(DynDbConstants.UserTableName);
+			if (!isUserTable)
+			{
+				await CreateExampleTable(DynDbConstants.UserTableName);
+			}
+		}
 
 		private async Task CreateExampleTable(string tableName)
 		{
