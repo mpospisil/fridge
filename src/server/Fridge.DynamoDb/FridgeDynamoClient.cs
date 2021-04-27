@@ -151,7 +151,33 @@ namespace Fridge.DynamoDb
 			var isUserTable = await CheckingTableExistence_async(DynDbConstants.UserTableName);
 			if (!isUserTable)
 			{
-				await CreateExampleTable(DynDbConstants.UserTableName);
+				//await CreateExampleTable(DynDbConstants.UserTableName);
+
+				var attDef = new List<AttributeDefinition>()
+						{
+								new AttributeDefinition
+								{
+										AttributeName = "SubjectId",
+										AttributeType = "S"
+								}
+						};
+
+				var keySchema = new List<KeySchemaElement>
+						{
+								new KeySchemaElement
+								{
+										AttributeName = "SubjectId",
+										KeyType = "HASH" //Partition key
+                },
+						};
+
+				var provi = new ProvisionedThroughput
+				{
+					ReadCapacityUnits = 5,
+					WriteCapacityUnits = 6
+				};
+
+				await CreateTable_async(DynDbConstants.UserTableName, attDef, keySchema, provi);
 			}
 		}
 
@@ -207,6 +233,8 @@ namespace Fridge.DynamoDb
 
 			await WaitUntilTableReady(tableName);
 		}
+
+
 
 
 		private async Task WaitUntilTableReady(string tableName)
