@@ -1,4 +1,5 @@
 ﻿using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DocumentModel;
 using Fridge.Model;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Fridge.DynamoDb
 
 		public override void Add(IdentityUser item)
 		{
-			//DbTable.
+			//Document.
 		}
 
 		public override IEnumerable<IdentityUser> GetItems()
